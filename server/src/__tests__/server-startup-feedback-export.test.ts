@@ -8,7 +8,7 @@ const {
   feedbackServiceFactoryMock,
   fakeServer,
 } = vi.hoisted(() => {
-  const createAppMock = vi.fn(async () => ((_: unknown, __: unknown) => {}) as never);
+  const createAppMock = vi.fn(async () => ({ app: ((_: unknown, __: unknown) => {}) as never, closeWatchers: vi.fn(async () => {}) }));
   const createDbMock = vi.fn(() => ({}) as never);
   const detectPortMock = vi.fn(async (port: number) => port);
   const feedbackExportServiceMock = {

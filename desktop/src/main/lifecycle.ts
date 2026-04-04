@@ -15,26 +15,37 @@ export function setupLifecycle(
     }
   });
 
-  // Graceful shutdown: stop the server before quitting
-  app.on("before-quit", (event) => {
-    if (isQuitting) return;
+  app.on("before-quit", () => {
     isQuitting = true;
+  });
+
+  // Graceful shutdown: close the server (including Vite file watchers)
+  // before Electron tears down the Node environment.
+  app.on("will-quit", (event) => {
     event.preventDefault();
+
+    // Hard deadline so the app always exits even if shutdown hangs
+    const forceExitTimer = setTimeout(() => {
+      app.exit(0);
+    }, 8000);
+
+    startedServer.server.closeAllConnections();
 
     void startedServer
       .shutdown()
-      .catch((err) => {
-        console.error("Error during server shutdown:", err);
-      })
+      .catch(() => {})
       .finally(() => {
+        clearTimeout(forceExitTimer);
         app.exit(0);
       });
   });
 
   // macOS: re-show window when dock icon clicked
   app.on("activate", () => {
-    mainWindow.show();
-    mainWindow.focus();
+    if (!mainWindow.isDestroyed()) {
+      mainWindow.show();
+      mainWindow.focus();
+    }
   });
 
   // Ensure app quits on all platforms when all windows are destroyed
