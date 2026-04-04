@@ -529,7 +529,7 @@ export async function startServer(): Promise<StartedServer> {
   const feedback = feedbackService(db as any, {
     shareClient: createFeedbackTraceShareClientFromConfig(config),
   });
-  const app = await createApp(db as any, {
+  const { app, closeWatchers } = await createApp(db as any, {
     uiMode,
     serverPort: listenPort,
     storageService,
@@ -560,7 +560,7 @@ export async function startServer(): Promise<StartedServer> {
   process.env.PAPERCLIP_LISTEN_PORT = String(listenPort);
   process.env.PAPERCLIP_API_URL = `http://${runtimeApiHost}:${listenPort}`;
   
-  setupLiveEventsWebSocketServer(server, db as any, {
+  const wss = setupLiveEventsWebSocketServer(server, db as any, {
     deploymentMode: config.deploymentMode,
     resolveSessionFromHeaders,
   });
@@ -737,12 +737,25 @@ export async function startServer(): Promise<StartedServer> {
     if (shuttingDown) return;
     shuttingDown = true;
 
+    // Close file watchers (Vite + plugin dev watcher) first so their
+    // fsevents native handles are cleaned up before the Node environment
+    // tears down (prevents SIGABRT on exit).
+    try {
+      await closeWatchers();
+    } catch {
+      // Ignore errors during watcher close
+    }
+
+    // Terminate all WebSocket clients and close the WS server so its ping
+    // interval and connections don't keep the HTTP server alive.
+    for (const client of wss.clients) {
+      client.terminate();
+    }
+    await new Promise<void>((resolve) => wss.close(() => resolve()));
+
+    server.closeAllConnections();
     await new Promise<void>((resolve) => {
       server.close(() => resolve());
-      // Force-close all connections after a grace period so shutdown doesn't hang
-      setTimeout(() => {
-        server.closeAllConnections();
-      }, 2000);
     });
 
     const telemetryClient = getTelemetryClient();

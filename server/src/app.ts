@@ -271,6 +271,7 @@ export async function createApp(
     }
   }
 
+  let viteDevServer: { close(): Promise<void> } | undefined;
   if (opts.uiMode === "vite-dev") {
     const uiRoot = path.resolve(__dirname, "../../ui");
     const hmrPort = resolveViteHmrPort(opts.serverPort);
@@ -289,6 +290,7 @@ export async function createApp(
       },
     });
 
+    viteDevServer = vite;
     app.use(vite.middlewares);
     app.get(/.*/, async (req, res, next) => {
       try {
@@ -340,7 +342,6 @@ export async function createApp(
   });
   process.once("exit", () => {
     if (feedbackExportTimer) clearInterval(feedbackExportTimer);
-    devWatcher?.close();
     hostServiceCleanup.disposeAll();
     hostServiceCleanup.teardown();
   });
@@ -348,5 +349,15 @@ export async function createApp(
     void flushPluginLogBuffer();
   });
 
-  return app;
+  /** Close file watchers (Vite + plugin dev watcher) before process exit.
+   *  Must be called before Node tears down, since fsevents native destructor
+   *  crashes if the UV event loop is already gone. */
+  async function closeWatchers(): Promise<void> {
+    devWatcher?.close();
+    if (viteDevServer) {
+      await viteDevServer.close();
+    }
+  }
+
+  return { app, closeWatchers };
 }
