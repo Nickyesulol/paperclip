@@ -1,10 +1,6 @@
 import { useState } from "react";
 import type { Agent } from "@paperclipai/shared";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover } from "@heroui/react";
 import { User } from "lucide-react";
 import { cn } from "../lib/utils";
 import { roleLabels } from "./agent-config-primitives";
@@ -37,8 +33,8 @@ export function ReportsToPicker({
   const unknownManager = Boolean(value && !current);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <Popover isOpen={open} onOpenChange={setOpen}>
+      <Popover.Trigger>
         <button
           type="button"
           className={cn(
@@ -74,8 +70,8 @@ export function ReportsToPicker({
             </>
           )}
         </button>
-      </PopoverTrigger>
-      <PopoverContent className="w-48 p-1" align="start">
+      </Popover.Trigger>
+      <Popover.Content className="w-48 p-1">
         <button
           type="button"
           className={cn(
@@ -120,7 +116,7 @@ export function ReportsToPicker({
             <span className="text-muted-foreground ml-auto shrink-0">{roleLabels[a.role] ?? a.role}</span>
           </button>
         ))}
-      </PopoverContent>
+      </Popover.Content>
     </Popover>
   );
 }

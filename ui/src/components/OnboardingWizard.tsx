@@ -10,13 +10,9 @@ import { agentsApi } from "../api/agents";
 import { issuesApi } from "../api/issues";
 import { projectsApi } from "../api/projects";
 import { queryKeys } from "../lib/queryKeys";
-import { Dialog, DialogPortal } from "@/components/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
+import { Modal } from "@heroui/react";
+import { Popover } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { cn } from "../lib/utils";
 import {
   extractModelName,
@@ -614,8 +610,8 @@ export function OnboardingWizard() {
   if (!effectiveOnboardingOpen) return null;
 
   return (
-    <Dialog
-      open={effectiveOnboardingOpen}
+    <Modal
+      isOpen={effectiveOnboardingOpen}
       onOpenChange={(open) => {
         if (!open) {
           setRouteDismissed(true);
@@ -623,12 +619,11 @@ export function OnboardingWizard() {
         }
       }}
     >
-      <DialogPortal>
-        {/* Plain div instead of DialogOverlay — Radix's overlay wraps in
-            RemoveScroll which blocks wheel events on our custom (non-DialogContent)
-            scroll container. A plain div preserves the background without scroll-locking. */}
-        <div className="fixed inset-0 z-50 bg-background" />
-        <div className="fixed inset-0 z-50 flex" onKeyDown={handleKeyDown}>
+      <Modal.Backdrop />
+      <Modal.Container className="fixed inset-0 z-50 flex bg-background max-w-none w-full h-full rounded-none p-0">
+        <Modal.Dialog>
+        {() => (
+        <div className="w-full h-full flex bg-background" onKeyDown={handleKeyDown}>
           {/* Close button */}
           <button
             onClick={handleClose}
@@ -923,13 +918,13 @@ export function OnboardingWizard() {
                           Model
                         </label>
                         <Popover
-                          open={modelOpen}
+                          isOpen={modelOpen}
                           onOpenChange={(next) => {
                             setModelOpen(next);
                             if (!next) setModelSearch("");
                           }}
                         >
-                          <PopoverTrigger asChild>
+                          <Popover.Trigger>
                             <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-sm hover:bg-accent/50 transition-colors w-full justify-between">
                               <span
                                 className={cn(
@@ -945,11 +940,8 @@ export function OnboardingWizard() {
                               </span>
                               <ChevronDown className="h-3 w-3 text-muted-foreground" />
                             </button>
-                          </PopoverTrigger>
-                          <PopoverContent
-                            className="w-[var(--radix-popover-trigger-width)] p-1"
-                            align="start"
-                          >
+                          </Popover.Trigger>
+                          <Popover.Content className="p-1">
                             <input
                               className="w-full px-2 py-1.5 text-xs bg-transparent outline-none border-b border-border mb-1 placeholder:text-muted-foreground/50"
                               placeholder="Search models..."
@@ -1012,7 +1004,7 @@ export function OnboardingWizard() {
                                 No models discovered.
                               </p>
                             )}
-                          </PopoverContent>
+                          </Popover.Content>
                         </Popover>
                       </div>
                     </div>
@@ -1034,8 +1026,8 @@ export function OnboardingWizard() {
                           size="sm"
                           variant="outline"
                           className="h-7 px-2.5 text-xs"
-                          disabled={adapterEnvLoading}
-                          onClick={() => void runAdapterEnvironmentTest()}
+                          isDisabled={adapterEnvLoading}
+                          onPress={() => void runAdapterEnvironmentTest()}
                         >
                           {adapterEnvLoading ? "Testing..." : "Test now"}
                         </Button>
@@ -1069,10 +1061,10 @@ export function OnboardingWizard() {
                             size="sm"
                             variant="outline"
                             className="h-7 px-2.5 text-xs"
-                            disabled={
+                            isDisabled={
                               adapterEnvLoading || unsetAnthropicLoading
                             }
-                            onClick={() => void handleUnsetAnthropicApiKey()}
+                            onPress={() => void handleUnsetAnthropicApiKey()}
                           >
                             {unsetAnthropicLoading
                               ? "Retrying..."
@@ -1265,8 +1257,8 @@ export function OnboardingWizard() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => setStep((step - 1) as Step)}
-                      disabled={loading}
+                      onPress={() => setStep((step - 1) as Step)}
+                      isDisabled={loading}
                     >
                       <ArrowLeft className="h-3.5 w-3.5 mr-1" />
                       Back
@@ -1277,8 +1269,8 @@ export function OnboardingWizard() {
                   {step === 1 && (
                     <Button
                       size="sm"
-                      disabled={!companyName.trim() || loading}
-                      onClick={handleStep1Next}
+                      isDisabled={!companyName.trim() || loading}
+                      onPress={handleStep1Next}
                     >
                       {loading ? (
                         <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
@@ -1291,10 +1283,10 @@ export function OnboardingWizard() {
                   {step === 2 && (
                     <Button
                       size="sm"
-                      disabled={
+                      isDisabled={
                         !agentName.trim() || loading || adapterEnvLoading
                       }
-                      onClick={handleStep2Next}
+                      onPress={handleStep2Next}
                     >
                       {loading ? (
                         <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
@@ -1307,8 +1299,8 @@ export function OnboardingWizard() {
                   {step === 3 && (
                     <Button
                       size="sm"
-                      disabled={!taskTitle.trim() || loading}
-                      onClick={handleStep3Next}
+                      isDisabled={!taskTitle.trim() || loading}
+                      onPress={handleStep3Next}
                     >
                       {loading ? (
                         <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
@@ -1319,7 +1311,7 @@ export function OnboardingWizard() {
                     </Button>
                   )}
                   {step === 4 && (
-                    <Button size="sm" disabled={loading} onClick={handleLaunch}>
+                    <Button size="sm" isDisabled={loading} onPress={handleLaunch}>
                       {loading ? (
                         <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" />
                       ) : (
@@ -1343,8 +1335,10 @@ export function OnboardingWizard() {
             <AsciiArtAnimation />
           </div>
         </div>
-      </DialogPortal>
-    </Dialog>
+        )}
+        </Modal.Dialog>
+      </Modal.Container>
+    </Modal>
   );
 }
 

@@ -11,13 +11,7 @@ import { queryKeys } from "../lib/queryKeys";
 import { EmptyState } from "../components/EmptyState";
 import { ActivityRow } from "../components/ActivityRow";
 import { PageSkeleton } from "../components/PageSkeleton";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select } from "@heroui/react";
 import { History } from "lucide-react";
 import type { Agent } from "@paperclipai/shared";
 
@@ -101,18 +95,21 @@ export function Activity() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-end">
-        <Select value={filter} onValueChange={setFilter}>
-          <SelectTrigger className="w-[140px] h-8 text-xs">
-            <SelectValue placeholder="Filter by type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All types</SelectItem>
+        <Select
+          selectedKey={filter}
+          onSelectionChange={(key) => setFilter(String(key))}
+          className="w-[140px]"
+          aria-label="Filter by type"
+        >
+          <Select.Trigger className="h-8 text-xs" />
+          <Select.Content>
+            <Select.Item id="all">All types</Select.Item>
             {entityTypes.map((type) => (
-              <SelectItem key={type} value={type}>
+              <Select.Item key={type} id={type}>
                 {type.charAt(0).toUpperCase() + type.slice(1)}
-              </SelectItem>
+              </Select.Item>
             ))}
-          </SelectContent>
+          </Select.Content>
         </Select>
       </div>
 

@@ -10,7 +10,7 @@ import { StatusBadge } from "../components/StatusBadge";
 import { EmptyState } from "../components/EmptyState";
 import { PageSkeleton } from "../components/PageSkeleton";
 import { formatDate, projectUrl } from "../lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@heroui/react";
 import { Hexagon, Plus } from "lucide-react";
 
 export function Projects() {
@@ -43,7 +43,7 @@ export function Projects() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-end">
-        <Button size="sm" variant="outline" onClick={openNewProject}>
+        <Button size="sm" variant="outline" onPress={openNewProject}>
           <Plus className="h-4 w-4 mr-1" />
           Add Project
         </Button>

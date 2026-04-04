@@ -22,24 +22,7 @@ import {
   type RoutineRunDialogSubmitData,
 } from "../components/RoutineRunVariablesDialog";
 import { RoutineVariablesEditor, RoutineVariablesHint } from "../components/RoutineVariablesEditor";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Button, Card, Modal, Select, Dropdown, ListBox, Separator } from "@heroui/react";
 import type { RoutineListItem, RoutineVariable } from "@paperclipai/shared";
 
 const concurrencyPolicies = ["coalesce_if_active", "always_enqueue", "skip_if_active"];
@@ -287,24 +270,24 @@ export function Routines() {
             Recurring work definitions that materialize into auditable execution issues.
           </p>
         </div>
-        <Button onClick={() => setComposerOpen(true)}>
+        <Button onPress={() => setComposerOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
           Create routine
         </Button>
       </div>
 
-      <Dialog
-        open={composerOpen}
+      <Modal
+        isOpen={composerOpen}
         onOpenChange={(open) => {
           if (!createRoutine.isPending) {
             setComposerOpen(open);
           }
         }}
       >
-        <DialogContent
-          showCloseButton={false}
-          className="flex max-h-[calc(100dvh-2rem)] max-w-3xl flex-col gap-0 overflow-hidden p-0"
-        >
+        <Modal.Backdrop />
+        <Modal.Container className="flex max-h-[calc(100dvh-2rem)] max-w-3xl flex-col gap-0 overflow-hidden p-0">
+          <Modal.Dialog>
+          {() => (<>
           <div className="shrink-0 flex flex-wrap items-center justify-between gap-3 border-b border-border/60 px-5 py-3">
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">New routine</p>
@@ -315,11 +298,11 @@ export function Routines() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => {
+              onPress={() => {
                 setComposerOpen(false);
                 setAdvancedOpen(false);
               }}
-              disabled={createRoutine.isPending}
+              isDisabled={createRoutine.isPending}
             >
               Cancel
             </Button>
@@ -475,53 +458,57 @@ export function Routines() {
             </div>
 
             <div className="border-t border-border/60 px-5 py-3">
-              <Collapsible open={advancedOpen} onOpenChange={setAdvancedOpen}>
-                <CollapsibleTrigger className="flex w-full items-center justify-between text-left">
-                  <div>
-                    <p className="text-sm font-medium">Advanced delivery settings</p>
-                    <p className="text-sm text-muted-foreground">Keep policy controls secondary to the work definition.</p>
-                  </div>
-                  {advancedOpen ? <ChevronDown className="h-4 w-4 text-muted-foreground" /> : <ChevronRight className="h-4 w-4 text-muted-foreground" />}
-                </CollapsibleTrigger>
-                <CollapsibleContent className="pt-3">
+              <button
+                type="button"
+                className="flex w-full items-center justify-between text-left"
+                onClick={() => setAdvancedOpen((v) => !v)}
+              >
+                <div>
+                  <p className="text-sm font-medium">Advanced delivery settings</p>
+                  <p className="text-sm text-muted-foreground">Keep policy controls secondary to the work definition.</p>
+                </div>
+                {advancedOpen ? <ChevronDown className="h-4 w-4 text-muted-foreground" /> : <ChevronRight className="h-4 w-4 text-muted-foreground" />}
+              </button>
+              {advancedOpen && (
+                <div className="pt-3">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                       <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">Concurrency</p>
                       <Select
-                        value={draft.concurrencyPolicy}
-                        onValueChange={(concurrencyPolicy) => setDraft((current) => ({ ...current, concurrencyPolicy }))}
+                        selectedKey={draft.concurrencyPolicy}
+                        onSelectionChange={(key) => setDraft((current) => ({ ...current, concurrencyPolicy: key as string }))}
                       >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {concurrencyPolicies.map((value) => (
-                            <SelectItem key={value} value={value}>{value.replaceAll("_", " ")}</SelectItem>
-                          ))}
-                        </SelectContent>
+                        <Select.Trigger><Select.Indicator /></Select.Trigger>
+                        <Select.Popover>
+                          <ListBox>
+                            {concurrencyPolicies.map((value) => (
+                              <ListBox.Item key={value} id={value}>{value.replaceAll("_", " ")}</ListBox.Item>
+                            ))}
+                          </ListBox>
+                        </Select.Popover>
                       </Select>
                       <p className="text-xs text-muted-foreground">{concurrencyPolicyDescriptions[draft.concurrencyPolicy]}</p>
                     </div>
                     <div className="space-y-2">
                       <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">Catch-up</p>
                       <Select
-                        value={draft.catchUpPolicy}
-                        onValueChange={(catchUpPolicy) => setDraft((current) => ({ ...current, catchUpPolicy }))}
+                        selectedKey={draft.catchUpPolicy}
+                        onSelectionChange={(key) => setDraft((current) => ({ ...current, catchUpPolicy: key as string }))}
                       >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {catchUpPolicies.map((value) => (
-                            <SelectItem key={value} value={value}>{value.replaceAll("_", " ")}</SelectItem>
-                          ))}
-                        </SelectContent>
+                        <Select.Trigger><Select.Indicator /></Select.Trigger>
+                        <Select.Popover>
+                          <ListBox>
+                            {catchUpPolicies.map((value) => (
+                              <ListBox.Item key={value} id={value}>{value.replaceAll("_", " ")}</ListBox.Item>
+                            ))}
+                          </ListBox>
+                        </Select.Popover>
                       </Select>
                       <p className="text-xs text-muted-foreground">{catchUpPolicyDescriptions[draft.catchUpPolicy]}</p>
                     </div>
                   </div>
-                </CollapsibleContent>
-              </Collapsible>
+                </div>
+              )}
             </div>
           </div>
 
@@ -531,8 +518,8 @@ export function Routines() {
             </div>
             <div className="flex flex-col gap-2 sm:items-end">
               <Button
-                onClick={() => createRoutine.mutate()}
-                disabled={
+                onPress={() => createRoutine.mutate()}
+                isDisabled={
                   createRoutine.isPending ||
                   !draft.title.trim() ||
                   !draft.projectId ||
@@ -549,14 +536,16 @@ export function Routines() {
               ) : null}
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
+          </>)}
+          </Modal.Dialog>
+        </Modal.Container>
+      </Modal>
 
       {error ? (
         <Card>
-          <CardContent className="pt-6 text-sm text-destructive">
+          <Card.Content className="pt-6 text-sm text-destructive">
             {error instanceof Error ? error.message : "Failed to load routines"}
-          </CardContent>
+          </Card.Content>
         </Card>
       ) : null}
 
@@ -669,47 +658,53 @@ export function Routines() {
                         </div>
                       </td>
                       <td className="px-3 py-2.5 text-right" onClick={(e) => e.stopPropagation()}>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon-sm" aria-label={`More actions for ${routine.title}`}>
+                        <Dropdown>
+                          <Dropdown.Trigger>
+                            <Button variant="ghost" size="sm" aria-label={`More actions for ${routine.title}`}>
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => navigate(`/routines/${routine.id}`)}>
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              disabled={runningRoutineId === routine.id || isArchived}
-                              onClick={() => handleRunNow(routine)}
-                            >
-                              {runningRoutineId === routine.id ? "Running..." : "Run now"}
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={() =>
-                                updateRoutineStatus.mutate({
-                                  id: routine.id,
-                                  status: enabled ? "paused" : "active",
-                                })
-                              }
-                              disabled={isStatusPending || isArchived}
-                            >
-                              {enabled ? "Pause" : "Enable"}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() =>
-                                updateRoutineStatus.mutate({
-                                  id: routine.id,
-                                  status: routine.status === "archived" ? "active" : "archived",
-                                })
-                              }
-                              disabled={isStatusPending}
-                            >
-                              {routine.status === "archived" ? "Restore" : "Archive"}
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                          </Dropdown.Trigger>
+                          <Dropdown.Popover>
+                            <Dropdown.Menu>
+                              <Dropdown.Item id="edit" onAction={() => navigate(`/routines/${routine.id}`)}>
+                                Edit
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                id="run"
+                                isDisabled={runningRoutineId === routine.id || isArchived}
+                                onAction={() => handleRunNow(routine)}
+                              >
+                                {runningRoutineId === routine.id ? "Running..." : "Run now"}
+                              </Dropdown.Item>
+                              <Dropdown.Section className="border-t border-border my-1" aria-label="Status">
+                                <Dropdown.Item
+                                  id="toggle-status"
+                                  onAction={() =>
+                                    updateRoutineStatus.mutate({
+                                      id: routine.id,
+                                      status: enabled ? "paused" : "active",
+                                    })
+                                  }
+                                  isDisabled={isStatusPending || isArchived}
+                                >
+                                  {enabled ? "Pause" : "Enable"}
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                  id="archive"
+                                  onAction={() =>
+                                    updateRoutineStatus.mutate({
+                                      id: routine.id,
+                                      status: routine.status === "archived" ? "active" : "archived",
+                                    })
+                                  }
+                                  isDisabled={isStatusPending}
+                                >
+                                  {routine.status === "archived" ? "Restore" : "Archive"}
+                                </Dropdown.Item>
+                              </Dropdown.Section>
+                            </Dropdown.Menu>
+                          </Dropdown.Popover>
+                        </Dropdown>
                       </td>
                     </tr>
                   );

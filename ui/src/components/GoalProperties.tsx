@@ -9,9 +9,7 @@ import { useCompany } from "../context/CompanyContext";
 import { queryKeys } from "../lib/queryKeys";
 import { StatusBadge } from "./StatusBadge";
 import { formatDate, cn, agentUrl } from "../lib/utils";
-import { Separator } from "@/components/ui/separator";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
+import { Separator, Popover } from "@heroui/react";
 
 interface GoalPropertiesProps {
   goal: Goal;
@@ -44,28 +42,26 @@ function PickerButton({
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <Popover isOpen={open} onOpenChange={setOpen}>
+      <Popover.Trigger>
         <button className="cursor-pointer hover:opacity-80 transition-opacity">
           {children}
         </button>
-      </PopoverTrigger>
-      <PopoverContent className="w-40 p-1" align="end">
+      </Popover.Trigger>
+      <Popover.Content className="w-40 p-1">
         {options.map((opt) => (
-          <Button
+          <button
             key={opt}
-            variant="ghost"
-            size="sm"
-            className={cn("w-full justify-start text-xs", opt === current && "bg-accent")}
+            className={cn("w-full justify-start text-xs px-2 py-1.5 text-left rounded hover:bg-accent/50", opt === current && "bg-accent")}
             onClick={() => {
               onChange(opt);
               setOpen(false);
             }}
           >
             {label(opt)}
-          </Button>
+          </button>
         ))}
-      </PopoverContent>
+      </Popover.Content>
     </Popover>
   );
 }

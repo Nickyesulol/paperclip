@@ -36,33 +36,7 @@ import { approvalLabel, defaultTypeIcon, typeIcon } from "../components/Approval
 import { pickTextColorForPillBg } from "@/lib/color-contrast";
 import { timeAgo } from "../lib/timeAgo";
 import { formatAssigneeUserLabel } from "../lib/assignees";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { Tabs } from "@/components/ui/tabs";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Button, Separator, Select, Modal, Dropdown, Input, ListBox } from "@heroui/react";
 import {
   Inbox as InboxIcon,
   AlertTriangle,
@@ -73,7 +47,6 @@ import {
   Columns3,
   Search,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { PageTabBar } from "../components/PageTabBar";
 import type { Approval, HeartbeatRun, Issue, JoinRequest } from "@paperclipai/shared";
 import {
@@ -470,8 +443,8 @@ export function FailedRunInboxRow({
             variant="outline"
             size="sm"
             className="h-8 shrink-0 px-2.5"
-            onClick={onRetry}
-            disabled={isRetrying}
+            onPress={onRetry}
+            isDisabled={isRetrying}
           >
             <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
             {isRetrying ? "Retrying…" : "Retry"}
@@ -494,8 +467,8 @@ export function FailedRunInboxRow({
           variant="outline"
           size="sm"
           className="h-8 shrink-0 px-2.5"
-          onClick={onRetry}
-          disabled={isRetrying}
+          onPress={onRetry}
+          isDisabled={isRetrying}
         >
           <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
           {isRetrying ? "Retrying…" : "Retry"}
@@ -616,16 +589,16 @@ function ApprovalInboxRow({
               size="sm"
               className="h-8 bg-green-700 px-3 text-white hover:bg-green-600"
               onClick={onApprove}
-              disabled={isPending}
+              isDisabled={isPending}
             >
               Approve
             </Button>
             <Button
-              variant="destructive"
+              variant="danger"
               size="sm"
               className="h-8 px-3"
               onClick={onReject}
-              disabled={isPending}
+              isDisabled={isPending}
             >
               Reject
             </Button>
@@ -638,16 +611,16 @@ function ApprovalInboxRow({
             size="sm"
             className="h-8 bg-green-700 px-3 text-white hover:bg-green-600"
             onClick={onApprove}
-            disabled={isPending}
+            isDisabled={isPending}
           >
             Approve
           </Button>
           <Button
-            variant="destructive"
+            variant="danger"
             size="sm"
             className="h-8 px-3"
             onClick={onReject}
-            disabled={isPending}
+            isDisabled={isPending}
           >
             Reject
           </Button>
@@ -747,16 +720,16 @@ function JoinRequestInboxRow({
             size="sm"
             className="h-8 bg-green-700 px-3 text-white hover:bg-green-600"
             onClick={onApprove}
-            disabled={isPending}
+            isDisabled={isPending}
           >
             Approve
           </Button>
           <Button
-            variant="destructive"
+            variant="danger"
             size="sm"
             className="h-8 px-3"
             onClick={onReject}
-            disabled={isPending}
+            isDisabled={isPending}
           >
             Reject
           </Button>
@@ -767,16 +740,16 @@ function JoinRequestInboxRow({
           size="sm"
           className="h-8 bg-green-700 px-3 text-white hover:bg-green-600"
           onClick={onApprove}
-          disabled={isPending}
+          isDisabled={isPending}
         >
           Approve
         </Button>
         <Button
-          variant="destructive"
+          variant="danger"
           size="sm"
           className="h-8 px-3"
           onClick={onReject}
-          disabled={isPending}
+          isDisabled={isPending}
         >
           Reject
         </Button>
@@ -1567,22 +1540,16 @@ export function Inbox() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-2">
-        <Tabs value={tab} onValueChange={(value) => navigate(`/inbox/${value}`)}>
-          <PageTabBar
-            items={[
-              {
-                value: "mine",
-                label: "Mine",
-              },
-              {
-                value: "recent",
-                label: "Recent",
-              },
-              { value: "unread", label: "Unread" },
-              { value: "all", label: "All" },
-            ]}
-          />
-        </Tabs>
+        <PageTabBar
+          items={[
+            { value: "mine", label: "Mine" },
+            { value: "recent", label: "Recent" },
+            { value: "unread", label: "Unread" },
+            { value: "all", label: "All" },
+          ]}
+          value={tab}
+          onValueChange={(value) => navigate(`/inbox/${value}`)}
+        />
 
         <div className="flex items-center gap-2">
           <div className="relative">
@@ -1595,8 +1562,8 @@ export function Inbox() {
               className="h-8 w-[180px] pl-8 text-xs sm:w-[220px]"
             />
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+          <Dropdown>
+            <Dropdown.Trigger>
               <Button
                 type="button"
                 variant="ghost"
@@ -1606,47 +1573,63 @@ export function Inbox() {
                 <Columns3 className="mr-1 h-3.5 w-3.5" />
                 Show / hide columns
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[300px] rounded-xl border-border/70 p-1.5 shadow-xl shadow-black/10">
-              <DropdownMenuLabel className="px-2 pb-1 pt-1.5">
-                <div className="space-y-1">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-                    Desktop issue rows
-                  </div>
-                  <div className="text-sm font-medium text-foreground">
-                    Choose which inbox columns stay visible
-                  </div>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {availableIssueColumns.map((column) => (
-                <DropdownMenuCheckboxItem
-                  key={column}
-                  checked={visibleIssueColumnSet.has(column)}
-                  onSelect={(event) => event.preventDefault()}
-                  onCheckedChange={(checked) => toggleIssueColumn(column, checked === true)}
-                  className="items-start rounded-lg px-3 py-2.5 pl-8"
-                >
-                  <span className="flex flex-col gap-0.5">
-                    <span className="text-sm font-medium text-foreground">
-                      {inboxIssueColumnLabels[column]}
-                    </span>
-                    <span className="text-xs leading-relaxed text-muted-foreground">
-                      {inboxIssueColumnDescriptions[column]}
-                    </span>
-                  </span>
-                </DropdownMenuCheckboxItem>
-              ))}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onSelect={() => setIssueColumns(DEFAULT_INBOX_ISSUE_COLUMNS)}
-                className="rounded-lg px-3 py-2 text-sm"
-              >
-                Reset defaults
-                <span className="ml-auto text-xs text-muted-foreground">status, id, updated</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </Dropdown.Trigger>
+            <Dropdown.Popover className="w-[300px] rounded-xl border-border/70 p-1.5 shadow-xl shadow-black/10">
+              <Dropdown.Menu>
+                <Dropdown.Section aria-label="Column visibility">
+                  <Dropdown.Item id="__header__" className="pointer-events-none">
+                    <div className="px-2 pb-1 pt-1.5">
+                      <div className="space-y-1">
+                        <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                          Desktop issue rows
+                        </div>
+                        <div className="text-sm font-medium text-foreground">
+                          Choose which inbox columns stay visible
+                        </div>
+                      </div>
+                    </div>
+                  </Dropdown.Item>
+                </Dropdown.Section>
+                <Dropdown.Section aria-label="Columns">
+                  {availableIssueColumns.map((column) => (
+                    <Dropdown.Item
+                      key={column}
+                      id={column}
+                      className="items-start rounded-lg px-3 py-2.5"
+                      onAction={() => toggleIssueColumn(column, !visibleIssueColumnSet.has(column))}
+                    >
+                      <span className="flex items-start gap-2">
+                        <input
+                          type="checkbox"
+                          checked={visibleIssueColumnSet.has(column)}
+                          readOnly
+                          className="mt-0.5"
+                        />
+                        <span className="flex flex-col gap-0.5">
+                          <span className="text-sm font-medium text-foreground">
+                            {inboxIssueColumnLabels[column]}
+                          </span>
+                          <span className="text-xs leading-relaxed text-muted-foreground">
+                            {inboxIssueColumnDescriptions[column]}
+                          </span>
+                        </span>
+                      </span>
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Section>
+                <Dropdown.Section aria-label="Actions">
+                  <Dropdown.Item
+                    id="reset-defaults"
+                    onAction={() => setIssueColumns(DEFAULT_INBOX_ISSUE_COLUMNS)}
+                    className="rounded-lg px-3 py-2 text-sm"
+                  >
+                    Reset defaults
+                    <span className="ml-auto text-xs text-muted-foreground">status, id, updated</span>
+                  </Dropdown.Item>
+                </Dropdown.Section>
+              </Dropdown.Menu>
+            </Dropdown.Popover>
+          </Dropdown>
           {canMarkAllRead && (
             <>
               <Button
@@ -1654,34 +1637,43 @@ export function Inbox() {
                 variant="outline"
                 size="sm"
                 className="h-8 shrink-0"
-                onClick={() => setShowMarkAllReadConfirm(true)}
-                disabled={markAllReadMutation.isPending}
+                onPress={() => setShowMarkAllReadConfirm(true)}
+                isDisabled={markAllReadMutation.isPending}
               >
                 {markAllReadMutation.isPending ? "Marking…" : "Mark all as read"}
               </Button>
-              <Dialog open={showMarkAllReadConfirm} onOpenChange={setShowMarkAllReadConfirm}>
-                <DialogContent className="sm:max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Mark all as read?</DialogTitle>
-                    <DialogDescription>
-                      This will mark {unreadIssueIds.length} unread {unreadIssueIds.length === 1 ? "item" : "items"} as read.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter>
-                    <Button variant="outline" onClick={() => setShowMarkAllReadConfirm(false)}>
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setShowMarkAllReadConfirm(false);
-                        markAllReadMutation.mutate(unreadIssueIds);
-                      }}
-                    >
-                      Mark all as read
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+              <Modal isOpen={showMarkAllReadConfirm} onOpenChange={setShowMarkAllReadConfirm}>
+                <Modal.Backdrop />
+                <Modal.Container>
+                  <Modal.Dialog>
+                    {({ close }) => (
+                      <>
+                        <Modal.Header>
+                          <span>Mark all as read?</span>
+                        </Modal.Header>
+                        <Modal.Body>
+                          <p className="text-sm text-muted-foreground">
+                            This will mark {unreadIssueIds.length} unread {unreadIssueIds.length === 1 ? "item" : "items"} as read.
+                          </p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button variant="outline" onPress={close}>
+                            Cancel
+                          </Button>
+                          <Button
+                            onPress={() => {
+                              close();
+                              markAllReadMutation.mutate(unreadIssueIds);
+                            }}
+                          >
+                            Mark all as read
+                          </Button>
+                        </Modal.Footer>
+                      </>
+                    )}
+                  </Modal.Dialog>
+                </Modal.Container>
+              </Modal>
             </>
           )}
         </div>
@@ -1690,35 +1682,39 @@ export function Inbox() {
       {tab === "all" && (
         <div className="flex flex-wrap items-center gap-2">
           <Select
-            value={allCategoryFilter}
-            onValueChange={(value) => setAllCategoryFilter(value as InboxCategoryFilter)}
+            selectedKey={allCategoryFilter}
+            onSelectionChange={(key) => setAllCategoryFilter(String(key) as InboxCategoryFilter)}
           >
-            <SelectTrigger className="h-8 w-[170px] text-xs">
-              <SelectValue placeholder="Category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="everything">All categories</SelectItem>
-              <SelectItem value="issues_i_touched">My recent issues</SelectItem>
-              <SelectItem value="join_requests">Join requests</SelectItem>
-              <SelectItem value="approvals">Approvals</SelectItem>
-              <SelectItem value="failed_runs">Failed runs</SelectItem>
-              <SelectItem value="alerts">Alerts</SelectItem>
-            </SelectContent>
+            <Select.Trigger className="h-8 w-[170px] text-xs">
+              <Select.Value /><Select.Indicator />
+            </Select.Trigger>
+            <Select.Popover>
+              <ListBox>
+                <ListBox.Item id="everything">All categories</ListBox.Item>
+                <ListBox.Item id="issues_i_touched">My recent issues</ListBox.Item>
+                <ListBox.Item id="join_requests">Join requests</ListBox.Item>
+                <ListBox.Item id="approvals">Approvals</ListBox.Item>
+                <ListBox.Item id="failed_runs">Failed runs</ListBox.Item>
+                <ListBox.Item id="alerts">Alerts</ListBox.Item>
+              </ListBox>
+            </Select.Popover>
           </Select>
 
           {showApprovalsCategory && (
             <Select
-              value={allApprovalFilter}
-              onValueChange={(value) => setAllApprovalFilter(value as InboxApprovalFilter)}
+              selectedKey={allApprovalFilter}
+              onSelectionChange={(key) => setAllApprovalFilter(String(key) as InboxApprovalFilter)}
             >
-              <SelectTrigger className="h-8 w-[170px] text-xs">
-                <SelectValue placeholder="Approval status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All approval statuses</SelectItem>
-                <SelectItem value="actionable">Needs action</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
-              </SelectContent>
+              <Select.Trigger className="h-8 w-[170px] text-xs">
+                <Select.Value /><Select.Indicator />
+              </Select.Trigger>
+              <Select.Popover>
+                <ListBox>
+                  <ListBox.Item id="all">All approval statuses</ListBox.Item>
+                  <ListBox.Item id="actionable">Needs action</ListBox.Item>
+                  <ListBox.Item id="resolved">Resolved</ListBox.Item>
+                </ListBox>
+              </Select.Popover>
             </Select>
           )}
         </div>

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { Link, useLocation } from "@/lib/router";
+import { useLocation } from "@/lib/router";
 import { AlertTriangle, Compass } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@heroui/react";
 import { useBreadcrumbs } from "../context/BreadcrumbContext";
 import { useCompany } from "../context/CompanyContext";
 
@@ -50,15 +50,11 @@ export function NotFoundPage({ scope = "global", requestedPrefix }: NotFoundPage
         </div>
 
         <div className="mt-5 flex flex-wrap gap-2">
-          <Button asChild>
-            <Link to={dashboardHref}>
-              <Compass className="mr-1.5 h-4 w-4" />
-              Open dashboard
-            </Link>
+          <Button onPress={() => window.location.href = dashboardHref}>
+            <Compass className="mr-1.5 h-4 w-4" />
+            Open dashboard
           </Button>
-          <Button variant="outline" asChild>
-            <Link to="/">Go home</Link>
-          </Button>
+          <Button variant="outline" onPress={() => window.location.href = "/"}>Go home</Button>
         </div>
       </div>
     </div>

@@ -16,8 +16,7 @@ import { InlineEditor } from "../components/InlineEditor";
 import { EntityRow } from "../components/EntityRow";
 import { PageSkeleton } from "../components/PageSkeleton";
 import { projectUrl } from "../lib/utils";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button, Tabs } from "@heroui/react";
 import { Plus } from "lucide-react";
 import type { Goal, Project } from "@paperclipai/shared";
 
@@ -145,22 +144,22 @@ export function GoalDetail() {
         />
       </div>
 
-      <Tabs defaultValue="children">
-        <TabsList>
-          <TabsTrigger value="children">
+      <Tabs defaultSelectedKey="children">
+        <Tabs.List>
+          <Tabs.Tab id="children">
             Sub-Goals ({childGoals.length})
-          </TabsTrigger>
-          <TabsTrigger value="projects">
+          </Tabs.Tab>
+          <Tabs.Tab id="projects">
             Projects ({linkedProjects.length})
-          </TabsTrigger>
-        </TabsList>
+          </Tabs.Tab>
+        </Tabs.List>
 
-        <TabsContent value="children" className="mt-4 space-y-3">
+        <Tabs.Panel id="children" className="mt-4 space-y-3">
           <div className="flex items-center justify-start">
             <Button
               size="sm"
               variant="outline"
-              onClick={() => openNewGoal({ parentId: goalId })}
+              onPress={() => openNewGoal({ parentId: goalId })}
             >
               <Plus className="h-3.5 w-3.5 mr-1.5" />
               Sub Goal
@@ -171,9 +170,9 @@ export function GoalDetail() {
           ) : (
             <GoalTree goals={childGoals} goalLink={(g) => `/goals/${g.id}`} />
           )}
-        </TabsContent>
+        </Tabs.Panel>
 
-        <TabsContent value="projects" className="mt-4">
+        <Tabs.Panel id="projects" className="mt-4">
           {linkedProjects.length === 0 ? (
             <p className="text-sm text-muted-foreground">No linked projects.</p>
           ) : (
@@ -189,7 +188,7 @@ export function GoalDetail() {
               ))}
             </div>
           )}
-        </TabsContent>
+        </Tabs.Panel>
       </Tabs>
     </div>
   );

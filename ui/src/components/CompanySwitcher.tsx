@@ -1,15 +1,8 @@
 import { ChevronsUpDown, Plus, Settings } from "lucide-react";
 import { Link } from "@/lib/router";
 import { useCompany } from "../context/CompanyContext";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { Dropdown } from "@heroui/react";
+import { Separator } from "@heroui/react";
 
 function statusDotColor(status?: string): string {
   switch (status) {
@@ -29,12 +22,9 @@ export function CompanySwitcher() {
   const sidebarCompanies = companies.filter((company) => company.status !== "archived");
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="w-full justify-between px-2 py-1.5 h-auto text-left"
-        >
+    <Dropdown>
+      <Dropdown.Trigger>
+        <button className="w-full flex items-center justify-between px-2 py-1.5 h-auto text-left rounded-md hover:bg-accent/50 transition-colors">
           <div className="flex items-center gap-2 min-w-0">
             {selectedCompany && (
               <span className={`h-2 w-2 rounded-full shrink-0 ${statusDotColor(selectedCompany.status)}`} />
@@ -44,38 +34,38 @@ export function CompanySwitcher() {
             </span>
           </div>
           <ChevronsUpDown className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-[220px]">
-        <DropdownMenuLabel>Companies</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        </button>
+      </Dropdown.Trigger>
+      <Dropdown.Content>
+        <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">Companies</div>
+        <Separator />
         {sidebarCompanies.map((company) => (
-          <DropdownMenuItem
+          <Dropdown.Item
             key={company.id}
-            onClick={() => setSelectedCompanyId(company.id)}
+            onPress={() => setSelectedCompanyId(company.id)}
             className={company.id === selectedCompany?.id ? "bg-accent" : ""}
           >
             <span className={`h-2 w-2 rounded-full shrink-0 mr-2 ${statusDotColor(company.status)}`} />
             <span className="truncate">{company.name}</span>
-          </DropdownMenuItem>
+          </Dropdown.Item>
         ))}
         {sidebarCompanies.length === 0 && (
-          <DropdownMenuItem disabled>No companies</DropdownMenuItem>
+          <Dropdown.Item isDisabled>No companies</Dropdown.Item>
         )}
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link to="/company/settings" className="no-underline text-inherit">
+        <Separator />
+        <Dropdown.Item>
+          <Link to="/company/settings" className="no-underline text-inherit flex items-center">
             <Settings className="h-4 w-4 mr-2" />
             Company Settings
           </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/companies" className="no-underline text-inherit">
+        </Dropdown.Item>
+        <Dropdown.Item>
+          <Link to="/companies" className="no-underline text-inherit flex items-center">
             <Plus className="h-4 w-4 mr-2" />
             Manage Companies
           </Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </Dropdown.Item>
+      </Dropdown.Content>
+    </Dropdown>
   );
 }

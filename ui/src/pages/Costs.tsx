@@ -29,9 +29,7 @@ import { useCompany } from "../context/CompanyContext";
 import { useDateRange, PRESET_KEYS, PRESET_LABELS } from "../hooks/useDateRange";
 import { queryKeys } from "../lib/queryKeys";
 import { billingTypeDisplayName, cn, formatCents, formatTokens, providerDisplayName } from "../lib/utils";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button, Card, Tabs } from "@heroui/react";
 
 const NO_COMPANY = "__none__";
 
@@ -110,13 +108,13 @@ function FinanceSummaryCard({
 }) {
   return (
     <Card>
-      <CardHeader className="px-5 pt-5 pb-2">
-        <CardTitle className="text-base">Finance ledger</CardTitle>
-        <CardDescription>
+      <Card.Header className="px-5 pt-5 pb-2">
+        <div className="text-base font-semibold">Finance ledger</div>
+        <p className="text-sm text-muted-foreground">
           Account-level charges that do not map to a single inference request.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-3 px-5 pb-5 pt-2 sm:grid-cols-2 xl:grid-cols-4">
+        </p>
+      </Card.Header>
+      <Card.Body className="grid gap-3 px-5 pb-5 pt-2 sm:grid-cols-2 xl:grid-cols-4">
         <MetricTile
           label="Debits"
           value={formatCents(debitCents)}
@@ -141,7 +139,7 @@ function FinanceSummaryCard({
           subtitle="Estimated debits that are not yet invoice-authoritative"
           icon={Coins}
         />
-      </CardContent>
+      </Card.Body>
     </Card>
   );
 }
@@ -553,7 +551,7 @@ export function Costs() {
                   key={key}
                   variant={preset === key ? "secondary" : "ghost"}
                   size="sm"
-                  onClick={() => setPreset(key)}
+                  onPress={() => setPreset(key)}
                 >
                   {PRESET_LABELS[key]}
                 </Button>
@@ -617,16 +615,16 @@ export function Costs() {
           </div>
       </div>
 
-      <Tabs value={mainTab} onValueChange={(value) => setMainTab(value as typeof mainTab)}>
-        <TabsList variant="line" className="justify-start">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="budgets">Budgets</TabsTrigger>
-          <TabsTrigger value="providers">Providers</TabsTrigger>
-          <TabsTrigger value="billers">Billers</TabsTrigger>
-          <TabsTrigger value="finance">Finance</TabsTrigger>
-        </TabsList>
+      <Tabs selectedKey={mainTab} onSelectionChange={(key) => setMainTab(key as typeof mainTab)}>
+        <Tabs.List className="justify-start">
+          <Tabs.Tab id="overview">Overview</Tabs.Tab>
+          <Tabs.Tab id="budgets">Budgets</Tabs.Tab>
+          <Tabs.Tab id="providers">Providers</Tabs.Tab>
+          <Tabs.Tab id="billers">Billers</Tabs.Tab>
+          <Tabs.Tab id="finance">Finance</Tabs.Tab>
+        </Tabs.List>
 
-        <TabsContent value="overview" className="mt-4 space-y-4">
+        <Tabs.Panel id="overview" className="mt-4 space-y-4">
           {showCustomPrompt ? (
             <p className="text-sm text-muted-foreground">Select a start and end date to load data.</p>
           ) : showOverviewLoading ? (
@@ -656,13 +654,13 @@ export function Costs() {
 
               <div className="grid gap-4 xl:grid-cols-[1.3fr,1fr]">
                 <Card>
-                  <CardHeader className="px-5 pt-5 pb-2">
-                    <CardTitle className="text-base">Inference ledger</CardTitle>
-                    <CardDescription>
+                  <Card.Header className="px-5 pt-5 pb-2">
+                    <div className="text-base" className="text-base font-semibold">Inference ledger</div>
+                    <p className="text-sm text-muted-foreground">
                       Request-scoped inference spend for the selected period.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4 px-5 pb-5 pt-2">
+                    </p>
+                  </Card.Header>
+                  <Card.Body className="space-y-4 px-5 pb-5 pt-2">
                     <div className="flex flex-wrap items-end justify-between gap-3">
                       <div>
                         <div className="text-3xl font-semibold tabular-nums">
@@ -701,7 +699,7 @@ export function Costs() {
                         </div>
                       </div>
                     ) : null}
-                  </CardContent>
+                  </Card.Body>
                 </Card>
 
                 <FinanceSummaryCard
@@ -715,11 +713,11 @@ export function Costs() {
 
               <div className="grid gap-4 xl:grid-cols-[1.25fr,0.95fr]">
                 <Card>
-                  <CardHeader className="px-5 pt-5 pb-2">
-                    <CardTitle className="text-base">By agent</CardTitle>
-                    <CardDescription>What each agent consumed in the selected period.</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2 px-5 pb-5 pt-2">
+                  <Card.Header className="px-5 pt-5 pb-2">
+                    <div className="text-base" className="text-base font-semibold">By agent</div>
+                    <p className="text-sm text-muted-foreground">What each agent consumed in the selected period.</p>
+                  </Card.Header>
+                  <Card.Body className="space-y-2 px-5 pb-5 pt-2">
                     {(spendData?.byAgent.length ?? 0) === 0 ? (
                       <p className="text-sm text-muted-foreground">No cost events yet.</p>
                     ) : (
@@ -798,16 +796,16 @@ export function Costs() {
                         );
                       })
                     )}
-                  </CardContent>
+                  </Card.Body>
                 </Card>
 
                 <div className="space-y-4">
                   <Card>
-                    <CardHeader className="px-5 pt-5 pb-2">
-                      <CardTitle className="text-base">By project</CardTitle>
-                      <CardDescription>Run costs attributed through project-linked issues.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-2 px-5 pb-5 pt-2">
+                    <Card.Header className="px-5 pt-5 pb-2">
+                      <div className="text-base" className="text-base font-semibold">By project</div>
+                      <p className="text-sm text-muted-foreground">Run costs attributed through project-linked issues.</p>
+                    </Card.Header>
+                    <Card.Body className="space-y-2 px-5 pb-5 pt-2">
                       {(spendData?.byProject.length ?? 0) === 0 ? (
                         <p className="text-sm text-muted-foreground">No project-attributed run costs yet.</p>
                       ) : (
@@ -821,7 +819,7 @@ export function Costs() {
                           </div>
                         ))
                       )}
-                    </CardContent>
+                    </Card.Body>
                   </Card>
 
                   <FinanceTimelineCard rows={topFinanceEvents.slice(0, 6)} emptyMessage="No finance events yet. Add account-level charges once biller invoices or credits land." />
@@ -829,9 +827,9 @@ export function Costs() {
               </div>
             </>
           )}
-        </TabsContent>
+        </Tabs.Panel>
 
-        <TabsContent value="budgets" className="mt-4 space-y-4">
+        <Tabs.Panel id="budgets" className="mt-4 space-y-4">
           {budgetLoading ? (
             <PageSkeleton variant="costs" />
           ) : budgetError ? (
@@ -839,13 +837,13 @@ export function Costs() {
           ) : (
             <>
               <Card className="border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))]">
-                <CardHeader className="px-5 pt-5 pb-3">
-                  <CardTitle className="text-base">Budget control plane</CardTitle>
-                  <CardDescription>
+                <Card.Header className="px-5 pt-5 pb-3">
+                  <div className="text-base" className="text-base font-semibold">Budget control plane</div>
+                  <p className="text-sm text-muted-foreground">
                     Hard-stop spend limits for agents and projects. Provider subscription quota stays separate and appears under Providers.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="grid gap-3 px-5 pb-5 pt-0 md:grid-cols-4">
+                  </p>
+                </Card.Header>
+                <Card.Body className="grid gap-3 px-5 pb-5 pt-0 md:grid-cols-4">
                   <MetricTile
                     label="Active incidents"
                     value={String(activeBudgetIncidents.length)}
@@ -870,7 +868,7 @@ export function Costs() {
                     subtitle="Project execution blocked by budget"
                     icon={DollarSign}
                   />
-                </CardContent>
+                </Card.Body>
               </Card>
 
               {activeBudgetIncidents.length > 0 ? (
@@ -938,25 +936,25 @@ export function Costs() {
 
                 {budgetPolicies.length === 0 ? (
                   <Card>
-                    <CardContent className="px-5 py-8 text-sm text-muted-foreground">
+                    <Card.Body className="px-5 py-8 text-sm text-muted-foreground">
                       No budget policies yet. Set agent and project budgets from their detail pages, or use the existing company monthly budget control.
-                    </CardContent>
+                    </Card.Body>
                   </Card>
                 ) : null}
               </div>
             </>
           )}
-        </TabsContent>
+        </Tabs.Panel>
 
-        <TabsContent value="providers" className="mt-4 space-y-4">
+        <Tabs.Panel id="providers" className="mt-4 space-y-4">
           {showCustomPrompt ? (
             <p className="text-sm text-muted-foreground">Select a start and end date to load data.</p>
           ) : (
             <>
-              <Tabs value={effectiveProvider} onValueChange={setActiveProvider}>
+              <Tabs selectedKey={effectiveProvider} onSelectionChange={(key) => setActiveProvider(String(key))}>
                 <PageTabBar items={providerTabItems} value={effectiveProvider} />
 
-                <TabsContent value="all" className="mt-4">
+                <Tabs.Panel id="all" className="mt-4">
                   {providers.length === 0 ? (
                     <p className="text-sm text-muted-foreground">No cost events in this period.</p>
                   ) : (
@@ -979,10 +977,10 @@ export function Costs() {
                       ))}
                     </div>
                   )}
-                </TabsContent>
+                </Tabs.Panel>
 
                 {providers.map((provider) => (
-                  <TabsContent key={provider} value={provider} className="mt-4">
+                  <Tabs.Panel key={provider} id={provider} className="mt-4">
                     <ProviderQuotaCard
                       provider={provider}
                       rows={byProvider.get(provider) ?? []}
@@ -996,22 +994,22 @@ export function Costs() {
                       quotaSource={quotaSourcesByProvider.get(provider) ?? null}
                       quotaLoading={quotaLoading}
                     />
-                  </TabsContent>
+                  </Tabs.Panel>
                 ))}
               </Tabs>
             </>
           )}
-        </TabsContent>
+        </Tabs.Panel>
 
-        <TabsContent value="billers" className="mt-4 space-y-4">
+        <Tabs.Panel id="billers" className="mt-4 space-y-4">
           {showCustomPrompt ? (
             <p className="text-sm text-muted-foreground">Select a start and end date to load data.</p>
           ) : (
             <>
-              <Tabs value={effectiveBiller} onValueChange={setActiveBiller}>
+              <Tabs selectedKey={effectiveBiller} onSelectionChange={(key) => setActiveBiller(String(key))}>
                 <PageTabBar items={billerTabItems} value={effectiveBiller} />
 
-                <TabsContent value="all" className="mt-4">
+                <Tabs.Panel id="all" className="mt-4">
                   {billers.length === 0 ? (
                     <p className="text-sm text-muted-foreground">No billable events in this period.</p>
                   ) : (
@@ -1033,14 +1031,14 @@ export function Costs() {
                       })}
                     </div>
                   )}
-                </TabsContent>
+                </Tabs.Panel>
 
                 {billers.map((biller) => {
                   const row = (byBiller.get(biller) ?? [])[0];
                   if (!row) return null;
                   const providerRows = (providerData ?? []).filter((entry) => entry.biller === biller);
                   return (
-                    <TabsContent key={biller} value={biller} className="mt-4">
+                    <Tabs.Panel key={biller} id={biller} className="mt-4">
                       <BillerSpendCard
                         row={row}
                         weekSpendCents={weekSpendByBiller.get(biller) ?? 0}
@@ -1048,15 +1046,15 @@ export function Costs() {
                         totalCompanySpendCents={spendData?.summary.spendCents ?? 0}
                         providerRows={providerRows}
                       />
-                    </TabsContent>
+                    </Tabs.Panel>
                   );
                 })}
               </Tabs>
             </>
           )}
-        </TabsContent>
+        </Tabs.Panel>
 
-        <TabsContent value="finance" className="mt-4 space-y-4">
+        <Tabs.Panel id="finance" className="mt-4 space-y-4">
           {showCustomPrompt ? (
             <p className="text-sm text-muted-foreground">Select a start and end date to load data.</p>
           ) : financeLoading ? (
@@ -1076,17 +1074,17 @@ export function Costs() {
               <div className="grid gap-4 xl:grid-cols-[1.2fr,0.95fr]">
                 <div className="space-y-4">
                   <Card>
-                    <CardHeader className="px-5 pt-5 pb-2">
-                      <CardTitle className="text-base">By biller</CardTitle>
-                      <CardDescription>Account-level financial events grouped by who charged or credited them.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid gap-4 px-5 pb-5 pt-2 md:grid-cols-2">
+                    <Card.Header className="px-5 pt-5 pb-2">
+                      <div className="text-base" className="text-base font-semibold">By biller</div>
+                      <p className="text-sm text-muted-foreground">Account-level financial events grouped by who charged or credited them.</p>
+                    </Card.Header>
+                    <Card.Body className="grid gap-4 px-5 pb-5 pt-2 md:grid-cols-2">
                       {(financeData?.byBiller.length ?? 0) === 0 ? (
                         <p className="text-sm text-muted-foreground">No finance events yet.</p>
                       ) : (
                         financeData?.byBiller.map((row) => <FinanceBillerCard key={row.biller} row={row} />)
                       )}
-                    </CardContent>
+                    </Card.Body>
                   </Card>
                   <FinanceTimelineCard rows={topFinanceEvents} />
                 </div>
@@ -1095,7 +1093,7 @@ export function Costs() {
               </div>
             </>
           )}
-        </TabsContent>
+        </Tabs.Panel>
       </Tabs>
     </div>
   );

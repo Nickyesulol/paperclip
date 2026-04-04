@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { Apple, Monitor, Terminal } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Modal } from "@heroui/react";
 import { cn } from "@/lib/utils";
 
 type Platform = "mac" | "windows" | "linux";
@@ -66,56 +60,58 @@ export function PathInstructionsModal({
   const current = instructions[platform];
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-base">How to get a full path</DialogTitle>
-          <DialogDescription>
+    <Modal isOpen={open} onOpenChange={onOpenChange}>
+      <Modal.Content className="sm:max-w-md">
+        <div className="px-6 pt-6 pb-2">
+          <h2 className="text-base font-semibold">How to get a full path</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             Paste the absolute path (e.g.{" "}
             <code className="text-xs bg-muted px-1 py-0.5 rounded">/Users/you/project</code>
             ) into the input field.
-          </DialogDescription>
-        </DialogHeader>
-
-        {/* Platform tabs */}
-        <div className="flex gap-1 rounded-md border border-border p-0.5">
-          {platforms.map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              className={cn(
-                "flex flex-1 items-center justify-center gap-1.5 rounded px-2 py-1 text-xs transition-colors",
-                platform === p.id
-                  ? "bg-accent text-foreground"
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent/50",
-              )}
-              onClick={() => setPlatform(p.id)}
-            >
-              <p.icon className="h-3.5 w-3.5" />
-              {p.label}
-            </button>
-          ))}
+          </p>
         </div>
 
-        {/* Steps */}
-        <ol className="space-y-2 text-sm">
-          {current.steps.map((step, i) => (
-            <li key={i} className="flex gap-2">
-              <span className="text-muted-foreground font-mono text-xs mt-0.5 shrink-0">
-                {i + 1}.
-              </span>
-              <span>{step}</span>
-            </li>
-          ))}
-        </ol>
+        <div className="px-6 pb-6 space-y-4">
+          {/* Platform tabs */}
+          <div className="flex gap-1 rounded-md border border-border p-0.5">
+            {platforms.map((p) => (
+              <button
+                key={p.id}
+                type="button"
+                className={cn(
+                  "flex flex-1 items-center justify-center gap-1.5 rounded px-2 py-1 text-xs transition-colors",
+                  platform === p.id
+                    ? "bg-accent text-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent/50",
+                )}
+                onClick={() => setPlatform(p.id)}
+              >
+                <p.icon className="h-3.5 w-3.5" />
+                {p.label}
+              </button>
+            ))}
+          </div>
 
-        {current.tip && (
-          <p className="text-xs text-muted-foreground border-l-2 border-border pl-3">
-            {current.tip}
-          </p>
-        )}
-      </DialogContent>
-    </Dialog>
+          {/* Steps */}
+          <ol className="space-y-2 text-sm">
+            {current.steps.map((step, i) => (
+              <li key={i} className="flex gap-2">
+                <span className="text-muted-foreground font-mono text-xs mt-0.5 shrink-0">
+                  {i + 1}.
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+
+          {current.tip && (
+            <p className="text-xs text-muted-foreground border-l-2 border-border pl-3">
+              {current.tip}
+            </p>
+          )}
+        </div>
+      </Modal.Content>
+    </Modal>
   );
 }
 

@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+import { Button, Select, Input } from "@heroui/react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 
 type SchedulePreset = "every_minute" | "every_hour" | "every_day" | "weekdays" | "weekly" | "monthly" | "custom";
@@ -194,17 +192,19 @@ export function ScheduleEditor({
 
   return (
     <div className="space-y-3">
-      <Select value={preset} onValueChange={(v) => handlePresetChange(v as SchedulePreset)}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Choose frequency..." />
-        </SelectTrigger>
-        <SelectContent>
+      <Select
+        selectedKey={preset}
+        onSelectionChange={(key) => handlePresetChange(key as SchedulePreset)}
+        className="w-full"
+      >
+        <Select.Trigger />
+        <Select.Content>
           {PRESETS.map((p) => (
-            <SelectItem key={p.value} value={p.value}>
+            <Select.Item key={p.value} id={p.value}>
               {p.label}
-            </SelectItem>
+            </Select.Item>
           ))}
-        </SelectContent>
+        </Select.Content>
       </Select>
 
       {preset === "custom" ? (
@@ -228,41 +228,39 @@ export function ScheduleEditor({
             <>
               <span className="text-sm text-muted-foreground">at</span>
               <Select
-                value={hour}
-                onValueChange={(h) => {
-                  setHour(h);
-                  emitChange(preset, h, minute, dayOfWeek, dayOfMonth, customCron);
+                selectedKey={hour}
+                onSelectionChange={(h) => {
+                  setHour(h as string);
+                  emitChange(preset, h as string, minute, dayOfWeek, dayOfMonth, customCron);
                 }}
+                className="w-[120px]"
               >
-                <SelectTrigger className="w-[120px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
+                <Select.Trigger />
+                <Select.Content>
                   {HOURS.map((h) => (
-                    <SelectItem key={h.value} value={h.value}>
+                    <Select.Item key={h.value} id={h.value}>
                       {h.label}
-                    </SelectItem>
+                    </Select.Item>
                   ))}
-                </SelectContent>
+                </Select.Content>
               </Select>
               <span className="text-sm text-muted-foreground">:</span>
               <Select
-                value={minute}
-                onValueChange={(m) => {
-                  setMinute(m);
-                  emitChange(preset, hour, m, dayOfWeek, dayOfMonth, customCron);
+                selectedKey={minute}
+                onSelectionChange={(m) => {
+                  setMinute(m as string);
+                  emitChange(preset, hour, m as string, dayOfWeek, dayOfMonth, customCron);
                 }}
+                className="w-[80px]"
               >
-                <SelectTrigger className="w-[80px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
+                <Select.Trigger />
+                <Select.Content>
                   {MINUTES.map((m) => (
-                    <SelectItem key={m.value} value={m.value}>
+                    <Select.Item key={m.value} id={m.value}>
                       {m.label}
-                    </SelectItem>
+                    </Select.Item>
                   ))}
-                </SelectContent>
+                </Select.Content>
               </Select>
             </>
           )}
@@ -271,22 +269,21 @@ export function ScheduleEditor({
             <>
               <span className="text-sm text-muted-foreground">at minute</span>
               <Select
-                value={minute}
-                onValueChange={(m) => {
-                  setMinute(m);
-                  emitChange(preset, hour, m, dayOfWeek, dayOfMonth, customCron);
+                selectedKey={minute}
+                onSelectionChange={(m) => {
+                  setMinute(m as string);
+                  emitChange(preset, hour, m as string, dayOfWeek, dayOfMonth, customCron);
                 }}
+                className="w-[80px]"
               >
-                <SelectTrigger className="w-[80px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
+                <Select.Trigger />
+                <Select.Content>
                   {MINUTES.map((m) => (
-                    <SelectItem key={m.value} value={m.value}>
+                    <Select.Item key={m.value} id={m.value}>
                       :{m.label}
-                    </SelectItem>
+                    </Select.Item>
                   ))}
-                </SelectContent>
+                </Select.Content>
               </Select>
             </>
           )}
@@ -299,10 +296,10 @@ export function ScheduleEditor({
                   <Button
                     key={d.value}
                     type="button"
-                    variant={dayOfWeek === d.value ? "default" : "outline"}
+                    variant={dayOfWeek === d.value ? "primary" : "outline"}
                     size="sm"
                     className="h-7 px-2 text-xs"
-                    onClick={() => {
+                    onPress={() => {
                       setDayOfWeek(d.value);
                       emitChange(preset, hour, minute, d.value, dayOfMonth, customCron);
                     }}
@@ -318,22 +315,21 @@ export function ScheduleEditor({
             <>
               <span className="text-sm text-muted-foreground">on day</span>
               <Select
-                value={dayOfMonth}
-                onValueChange={(dom) => {
-                  setDayOfMonth(dom);
-                  emitChange(preset, hour, minute, dayOfWeek, dom, customCron);
+                selectedKey={dayOfMonth}
+                onSelectionChange={(dom) => {
+                  setDayOfMonth(dom as string);
+                  emitChange(preset, hour, minute, dayOfWeek, dom as string, customCron);
                 }}
+                className="w-[80px]"
               >
-                <SelectTrigger className="w-[80px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
+                <Select.Trigger />
+                <Select.Content>
                   {DAYS_OF_MONTH.map((d) => (
-                    <SelectItem key={d.value} value={d.value}>
+                    <Select.Item key={d.value} id={d.value}>
                       {d.label}
-                    </SelectItem>
+                    </Select.Item>
                   ))}
-                </SelectContent>
+                </Select.Content>
               </Select>
             </>
           )}

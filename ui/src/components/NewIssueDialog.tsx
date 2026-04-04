@@ -19,16 +19,9 @@ import {
   currentUserAssigneeOption,
   parseAssigneeValue,
 } from "../lib/assignees";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Modal } from "@heroui/react";
+import { Button } from "@heroui/react";
+import { Popover } from "@heroui/react";
 import {
   Maximize2,
   Minimize2,
@@ -859,15 +852,15 @@ export function NewIssueDialog() {
   );
 
   return (
-    <Dialog
-      open={newIssueOpen}
+    <Modal
+      isOpen={newIssueOpen}
       onOpenChange={(open) => {
         if (!open && !createIssue.isPending) closeNewIssue();
       }}
     >
-      <DialogContent
-        showCloseButton={false}
-        aria-describedby={undefined}
+      <Modal.Content>
+        {() => (
+      <div
         className={cn(
           "p-0 gap-0 flex flex-col max-h-[calc(100dvh-2rem)]",
           expanded
@@ -875,33 +868,12 @@ export function NewIssueDialog() {
             : "sm:max-w-lg"
         )}
         onKeyDown={handleKeyDown}
-        onEscapeKeyDown={(event) => {
-          if (createIssue.isPending) {
-            event.preventDefault();
-          }
-        }}
-        onPointerDownOutside={(event) => {
-          if (createIssue.isPending) {
-            event.preventDefault();
-            return;
-          }
-          // Radix Dialog's modal DismissableLayer calls preventDefault() on
-          // pointerdown events that originate outside the Dialog DOM tree.
-          // Popover portals render at the body level (outside the Dialog), so
-          // touch events on popover content get their default prevented — which
-          // kills scroll gesture recognition on mobile.  Telling Radix "this
-          // event is handled" skips that preventDefault, restoring touch scroll.
-          const target = event.detail.originalEvent.target as HTMLElement | null;
-          if (target?.closest("[data-radix-popper-content-wrapper]")) {
-            event.preventDefault();
-          }
-        }}
       >
         {/* Header bar */}
         <div className="flex items-center justify-between px-4 py-2.5 border-b border-border shrink-0">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Popover open={companyOpen} onOpenChange={setCompanyOpen}>
-              <PopoverTrigger asChild>
+            <Popover isOpen={companyOpen} onOpenChange={setCompanyOpen}>
+              <Popover.Trigger>
                 <button
                   className={cn(
                     "px-1.5 py-0.5 rounded text-xs font-semibold cursor-pointer hover:opacity-80 transition-opacity",
@@ -918,8 +890,8 @@ export function NewIssueDialog() {
                 >
                   {(dialogCompany?.name ?? "").slice(0, 3).toUpperCase()}
                 </button>
-              </PopoverTrigger>
-              <PopoverContent className="w-48 p-1" align="start">
+              </Popover.Trigger>
+              <Popover.Content className="w-48 p-1">
                 {companies.filter((c) => c.status !== "archived").map((c) => (
                   <button
                     key={c.id}
@@ -951,7 +923,7 @@ export function NewIssueDialog() {
                     <span className="truncate">{c.name}</span>
                   </button>
                 ))}
-              </PopoverContent>
+              </Popover.Content>
             </Popover>
             <span className="text-muted-foreground/60">&rsaquo;</span>
             <span>New issue</span>
@@ -959,19 +931,21 @@ export function NewIssueDialog() {
           <div className="flex items-center gap-1">
             <Button
               variant="ghost"
-              size="icon-xs"
+              isIconOnly
+              size="sm"
               className="text-muted-foreground"
-              onClick={() => setExpanded(!expanded)}
-              disabled={createIssue.isPending}
+              onPress={() => setExpanded(!expanded)}
+              isDisabled={createIssue.isPending}
             >
               {expanded ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
             </Button>
             <Button
               variant="ghost"
-              size="icon-xs"
+              isIconOnly
+              size="sm"
               className="text-muted-foreground"
-              onClick={() => closeNewIssue()}
-              disabled={createIssue.isPending}
+              onPress={() => closeNewIssue()}
+              isDisabled={createIssue.isPending}
             >
               <span className="text-lg leading-none">&times;</span>
             </Button>
@@ -1282,11 +1256,12 @@ export function NewIssueDialog() {
                         </div>
                         <Button
                           variant="ghost"
-                          size="icon-xs"
+                          isIconOnly
+                          size="sm"
                           className="shrink-0 text-muted-foreground"
-                          onClick={() => removeStagedFile(file.id)}
-                          disabled={createIssue.isPending}
-                          title="Remove document"
+                          onPress={() => removeStagedFile(file.id)}
+                          isDisabled={createIssue.isPending}
+                          aria-label="Remove document"
                         >
                           <X className="h-3.5 w-3.5" />
                         </Button>
@@ -1313,11 +1288,12 @@ export function NewIssueDialog() {
                         </div>
                         <Button
                           variant="ghost"
-                          size="icon-xs"
+                          isIconOnly
+                          size="sm"
                           className="shrink-0 text-muted-foreground"
-                          onClick={() => removeStagedFile(file.id)}
-                          disabled={createIssue.isPending}
-                          title="Remove attachment"
+                          onPress={() => removeStagedFile(file.id)}
+                          isDisabled={createIssue.isPending}
+                          aria-label="Remove attachment"
                         >
                           <X className="h-3.5 w-3.5" />
                         </Button>
@@ -1333,14 +1309,14 @@ export function NewIssueDialog() {
         {/* Property chips bar */}
         <div className="flex items-center gap-1.5 px-4 py-2 border-t border-border flex-wrap shrink-0">
           {/* Status chip */}
-          <Popover open={statusOpen} onOpenChange={setStatusOpen}>
-            <PopoverTrigger asChild>
+          <Popover isOpen={statusOpen} onOpenChange={setStatusOpen}>
+            <Popover.Trigger>
               <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs hover:bg-accent/50 transition-colors">
                 <CircleDot className={cn("h-3 w-3", currentStatus.color)} />
                 {currentStatus.label}
               </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-36 p-1" align="start">
+            </Popover.Trigger>
+            <Popover.Content className="w-36 p-1">
               {statuses.map((s) => (
                 <button
                   key={s.value}
@@ -1354,12 +1330,12 @@ export function NewIssueDialog() {
                   {s.label}
                 </button>
               ))}
-            </PopoverContent>
+            </Popover.Content>
           </Popover>
 
           {/* Priority chip */}
-          <Popover open={priorityOpen} onOpenChange={setPriorityOpen}>
-            <PopoverTrigger asChild>
+          <Popover isOpen={priorityOpen} onOpenChange={setPriorityOpen}>
+            <Popover.Trigger>
               <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs hover:bg-accent/50 transition-colors">
                 {currentPriority ? (
                   <>
@@ -1373,8 +1349,8 @@ export function NewIssueDialog() {
                   </>
                 )}
               </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-36 p-1" align="start">
+            </Popover.Trigger>
+            <Popover.Content className="w-36 p-1">
               {priorities.map((p) => (
                 <button
                   key={p.value}
@@ -1388,7 +1364,7 @@ export function NewIssueDialog() {
                   {p.label}
                 </button>
               ))}
-            </PopoverContent>
+            </Popover.Content>
           </Popover>
 
           {/* Labels chip (placeholder) */}
@@ -1415,13 +1391,13 @@ export function NewIssueDialog() {
           </button>
 
           {/* More (dates) */}
-          <Popover open={moreOpen} onOpenChange={setMoreOpen}>
-            <PopoverTrigger asChild>
+          <Popover isOpen={moreOpen} onOpenChange={setMoreOpen}>
+            <Popover.Trigger>
               <button className="inline-flex items-center justify-center rounded-md border border-border p-1 text-xs hover:bg-accent/50 transition-colors text-muted-foreground">
                 <MoreHorizontal className="h-3 w-3" />
               </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-44 p-1" align="start">
+            </Popover.Trigger>
+            <Popover.Content className="w-44 p-1">
               <button className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50 text-muted-foreground">
                 <Calendar className="h-3 w-3" />
                 Start date
@@ -1430,7 +1406,7 @@ export function NewIssueDialog() {
                 <Calendar className="h-3 w-3" />
                 Due date
               </button>
-            </PopoverContent>
+            </Popover.Content>
           </Popover>
         </div>
 
@@ -1440,8 +1416,8 @@ export function NewIssueDialog() {
             variant="ghost"
             size="sm"
             className="text-muted-foreground"
-            onClick={discardDraft}
-            disabled={createIssue.isPending || !canDiscardDraft}
+            onPress={discardDraft}
+            isDisabled={createIssue.isPending || !canDiscardDraft}
           >
             Discard Draft
           </Button>
@@ -1459,8 +1435,8 @@ export function NewIssueDialog() {
             <Button
               size="sm"
               className="min-w-[8.5rem] disabled:opacity-100"
-              disabled={!title.trim() || createIssue.isPending}
-              onClick={handleSubmit}
+              isDisabled={!title.trim() || createIssue.isPending}
+              onPress={handleSubmit}
               aria-busy={createIssue.isPending}
             >
               <span className="inline-flex items-center justify-center gap-1.5">
@@ -1470,7 +1446,9 @@ export function NewIssueDialog() {
             </Button>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+        )}
+      </Modal.Content>
+    </Modal>
   );
 }

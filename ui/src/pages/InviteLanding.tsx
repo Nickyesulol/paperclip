@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link, useParams } from "@/lib/router";
+import { useParams } from "@/lib/router";
 import { accessApi } from "../api/access";
 import { authApi } from "../api/auth";
 import { healthApi } from "../api/health";
 import { queryKeys } from "../lib/queryKeys";
-import { Button } from "@/components/ui/button";
+import { Button } from "@heroui/react";
 import { AGENT_ADAPTER_TYPES } from "@paperclipai/shared";
 import type { AgentAdapterType, JoinRequest } from "@paperclipai/shared";
 
@@ -146,9 +146,7 @@ export function InviteLandingPage() {
           <p className="mt-2 text-sm text-muted-foreground">
             The first instance admin is now configured. You can continue to the board.
           </p>
-          <Button asChild className="mt-4">
-            <Link to="/">Open board</Link>
-          </Button>
+          <Button className="mt-4" onPress={() => window.location.href = "/"}>Open board</Button>
         </div>
       </div>
     );
@@ -300,9 +298,7 @@ export function InviteLandingPage() {
           <div className="mt-4 rounded-md border border-border bg-muted/30 p-3 text-sm">
             Sign in or create an account before submitting a human join request.
             <div className="mt-2">
-              <Button asChild size="sm" variant="outline">
-                <Link to={`/auth?next=${encodeURIComponent(`/invite/${token}`)}`}>Sign in / Create account</Link>
-              </Button>
+              <Button size="sm" variant="outline" onPress={() => window.location.href = `/auth?next=${encodeURIComponent(`/invite/${token}`)}`}>Sign in / Create account</Button>
             </div>
           </div>
         )}
@@ -311,12 +307,12 @@ export function InviteLandingPage() {
 
         <Button
           className="mt-5"
-          disabled={
+          isDisabled={
             acceptMutation.isPending ||
             (joinType === "agent" && invite.inviteType !== "bootstrap_ceo" && agentName.trim().length === 0) ||
             requiresAuthForHuman
           }
-          onClick={() => acceptMutation.mutate()}
+          onPress={() => acceptMutation.mutate()}
         >
           {acceptMutation.isPending
             ? "Submitting…"

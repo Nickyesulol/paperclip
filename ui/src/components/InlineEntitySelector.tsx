@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Check } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Popover } from "@heroui/react";
 import { cn } from "../lib/utils";
 
 export interface InlineEntityOption {
@@ -87,13 +87,13 @@ export const InlineEntitySelector = forwardRef<HTMLButtonElement, InlineEntitySe
 
     return (
       <Popover
-        open={open}
+        isOpen={open}
         onOpenChange={(next) => {
           setOpen(next);
           if (!next) setQuery("");
         }}
       >
-        <PopoverTrigger asChild>
+        <Popover.Trigger>
           <button
             ref={ref}
             type="button"
@@ -111,29 +111,8 @@ export const InlineEntitySelector = forwardRef<HTMLButtonElement, InlineEntitySe
               ? renderTriggerValue(currentOption)
               : (currentOption?.label ?? <span className="text-muted-foreground">{placeholder}</span>)}
           </button>
-        </PopoverTrigger>
-        <PopoverContent
-          align="start"
-          side="bottom"
-          collisionPadding={16}
-          className="w-[min(20rem,calc(100vw-2rem))] p-1"
-          disablePortal={disablePortal}
-          onOpenAutoFocus={(event) => {
-            event.preventDefault();
-            // On touch devices, don't auto-focus the search input to avoid
-            // opening the virtual keyboard which reshapes the viewport and
-            // pushes the popover off-screen.
-            const isTouch = window.matchMedia("(pointer: coarse)").matches;
-            if (!isTouch) {
-              inputRef.current?.focus();
-            }
-          }}
-          onCloseAutoFocus={(event) => {
-            if (!shouldPreventCloseAutoFocusRef.current) return;
-            event.preventDefault();
-            shouldPreventCloseAutoFocusRef.current = false;
-          }}
-        >
+        </Popover.Trigger>
+        <Popover.Content className="w-[min(20rem,calc(100vw-2rem))] p-1">
           <input
             ref={inputRef}
             className="w-full border-b border-border bg-transparent px-2 py-1.5 text-sm outline-none placeholder:text-muted-foreground/60"
@@ -199,7 +178,7 @@ export const InlineEntitySelector = forwardRef<HTMLButtonElement, InlineEntitySe
               })
             )}
           </div>
-        </PopoverContent>
+        </Popover.Content>
       </Popover>
     );
   },

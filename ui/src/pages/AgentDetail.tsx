@@ -41,15 +41,7 @@ import { PackageFileTree, buildFileTree } from "../components/PackageFileTree";
 import { ScrollToBottom } from "../components/ScrollToBottom";
 import { formatCents, formatDate, relativeTime, formatTokens, visibleRunCostUsd } from "../lib/utils";
 import { cn } from "../lib/utils";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs } from "@/components/ui/tabs";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Button, Skeleton, Tabs, Tooltip, Popover } from "@heroui/react";
 import {
   MoreHorizontal,
   CheckCircle2,
@@ -71,9 +63,7 @@ import {
   HelpCircle,
   FolderOpen,
 } from "lucide-react";
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { Input } from "@/components/ui/input";
+import { Input } from "@heroui/react";
 import { AgentIcon, AgentIconPicker } from "../components/AgentIconPicker";
 import { RunTranscriptView, type TranscriptMode } from "../components/transcript/RunTranscriptView";
 import {
@@ -373,7 +363,7 @@ function WorkspaceOperationLogViewer({
       <button
         type="button"
         className="text-[11px] text-muted-foreground underline underline-offset-2 hover:text-foreground"
-        onClick={() => setOpen((value) => !value)}
+        onPress={() => setOpen((value) => !value)}
       >
         {open ? "Hide full log" : "Show full log"}
       </button>
@@ -828,21 +818,21 @@ export function AgentDetail() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => openNewIssue({ assigneeAgentId: agent.id })}
+            onPress={() => openNewIssue({ assigneeAgentId: agent.id })}
           >
             <Plus className="h-3.5 w-3.5 sm:mr-1" />
             <span className="hidden sm:inline">Assign Task</span>
           </Button>
           <RunButton
-            onClick={() => agentAction.mutate("invoke")}
-            disabled={agentAction.isPending || isPendingApproval}
+            onPress={() => agentAction.mutate("invoke")}
+            isDisabled={agentAction.isPending || isPendingApproval}
             label="Run Heartbeat"
           />
           <PauseResumeButton
             isPaused={agent.status === "paused"}
             onPause={() => agentAction.mutate("pause")}
             onResume={() => agentAction.mutate("resume")}
-            disabled={agentAction.isPending || isPendingApproval}
+            isDisabled={agentAction.isPending || isPendingApproval}
           />
           <span className="hidden sm:inline"><StatusBadge status={agent.status} /></span>
           {mobileLiveRun && (
@@ -859,13 +849,13 @@ export function AgentDetail() {
           )}
 
           {/* Overflow menu */}
-          <Popover open={moreOpen} onOpenChange={setMoreOpen}>
-            <PopoverTrigger asChild>
+          <Popover isOpen={moreOpen} onOpenChange={setMoreOpen}>
+            <Popover.Trigger>
               <Button variant="ghost" size="icon-xs">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-44 p-1" align="end">
+            </Popover.Trigger>
+            <Popover.Content className="w-44 p-1">
               <button
                 className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50"
                 onClick={() => {
@@ -896,29 +886,24 @@ export function AgentDetail() {
                 <Trash2 className="h-3 w-3" />
                 Terminate
               </button>
-            </PopoverContent>
+            </Popover.Content>
           </Popover>
         </div>
       </div>
 
       {!urlRunId && (
-        <Tabs
+        <PageTabBar
+          items={[
+            { value: "dashboard", label: "Dashboard" },
+            { value: "instructions", label: "Instructions" },
+            { value: "skills", label: "Skills" },
+            { value: "configuration", label: "Configuration" },
+            { value: "runs", label: "Runs" },
+            { value: "budget", label: "Budget" },
+          ]}
           value={activeView}
           onValueChange={(value) => navigate(`/agents/${canonicalAgentRef}/${value}`)}
-        >
-          <PageTabBar
-            items={[
-              { value: "dashboard", label: "Dashboard" },
-              { value: "instructions", label: "Instructions" },
-              { value: "skills", label: "Skills" },
-              { value: "configuration", label: "Configuration" },
-              { value: "runs", label: "Runs" },
-              { value: "budget", label: "Budget" },
-            ]}
-            value={activeView}
-            onValueChange={(value) => navigate(`/agents/${canonicalAgentRef}/${value}`)}
-          />
-        </Tabs>
+        />
       )}
 
       {actionError && <p className="text-sm text-destructive">{actionError}</p>}
@@ -942,15 +927,15 @@ export function AgentDetail() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => cancelConfigActionRef.current?.()}
-              disabled={configSaving}
+              onPress={() => cancelConfigActionRef.current?.()}
+              isDisabled={configSaving}
             >
               Cancel
             </Button>
             <Button
               size="sm"
-              onClick={() => saveConfigActionRef.current?.()}
-              disabled={configSaving}
+              onPress={() => saveConfigActionRef.current?.()}
+              isDisabled={configSaving}
             >
               {configSaving ? "Saving…" : "Save"}
             </Button>
@@ -968,15 +953,15 @@ export function AgentDetail() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => cancelConfigActionRef.current?.()}
-              disabled={configSaving}
+              onPress={() => cancelConfigActionRef.current?.()}
+              isDisabled={configSaving}
             >
               Cancel
             </Button>
             <Button
               size="sm"
-              onClick={() => saveConfigActionRef.current?.()}
-              disabled={configSaving}
+              onPress={() => saveConfigActionRef.current?.()}
+              isDisabled={configSaving}
             >
               {configSaving ? "Saving…" : "Save"}
             </Button>
@@ -1368,7 +1353,7 @@ function AgentConfigurePage({
       <div>
         <button
           className="flex items-center gap-2 text-sm font-medium hover:text-foreground transition-colors"
-          onClick={() => setRevisionsOpen((v) => !v)}
+          onPress={() => setRevisionsOpen((v) => !v)}
         >
           {revisionsOpen
             ? <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
@@ -1397,8 +1382,8 @@ function AgentConfigurePage({
                         size="sm"
                         variant="outline"
                         className="h-7 px-2.5 text-xs"
-                        onClick={() => rollbackConfig.mutate(revision.id)}
-                        disabled={rollbackConfig.isPending}
+                        onPress={() => rollbackConfig.mutate(revision.id)}
+                        isDisabled={rollbackConfig.isPending}
                       >
                         Restore
                       </Button>
@@ -1539,13 +1524,13 @@ function ConfigurationTab({
                 "relative inline-flex h-5 w-9 items-center rounded-full transition-colors shrink-0 disabled:cursor-not-allowed disabled:opacity-50",
                 canCreateAgents ? "bg-green-600" : "bg-muted",
               )}
-              onClick={() =>
+              onPress={() =>
                 updatePermissions.mutate({
                   canCreateAgents: !canCreateAgents,
                   canAssignTasks: !canCreateAgents ? true : canAssignTasks,
                 })
               }
-              disabled={updatePermissions.isPending}
+              isDisabled={updatePermissions.isPending}
             >
               <span
                 className={cn(
@@ -1571,13 +1556,13 @@ function ConfigurationTab({
                 "relative inline-flex h-5 w-9 items-center rounded-full transition-colors shrink-0 disabled:cursor-not-allowed disabled:opacity-50",
                 canAssignTasks ? "bg-green-600" : "bg-muted",
               )}
-              onClick={() =>
+              onPress={() =>
                 updatePermissions.mutate({
                   canCreateAgents,
                   canAssignTasks: !canAssignTasks,
                 })
               }
-              disabled={updatePermissions.isPending || taskAssignLocked}
+              isDisabled={updatePermissions.isPending || taskAssignLocked}
             >
               <span
                 className={cn(
@@ -1628,6 +1613,7 @@ function PromptsTab({
   const [filePanelWidth, setFilePanelWidth] = useState(260);
   const containerRef = useRef<HTMLDivElement>(null);
   const [awaitingRefresh, setAwaitingRefresh] = useState(false);
+  const [advancedOpen, setAdvancedOpen] = useState(false);
   const lastFileVersionRef = useRef<string | null>(null);
   const externalBundleRef = useRef<{
     rootPath: string;
@@ -1928,24 +1914,28 @@ function PromptsTab({
         </div>
       )}
 
-      <Collapsible defaultOpen={currentMode === "external"}>
-        <CollapsibleTrigger className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors group">
-          <ChevronRight className="h-3 w-3 transition-transform group-data-[state=open]:rotate-90" />
+      <div>
+        <button
+          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+          onClick={() => setAdvancedOpen((v) => !v)}
+        >
+          <ChevronRight className={cn("h-3 w-3 transition-transform", advancedOpen && "rotate-90")} />
           Advanced
-        </CollapsibleTrigger>
-        <CollapsibleContent className="pt-4 pb-6">
-          <TooltipProvider>
+        </button>
+        {advancedOpen && (
+          <div className="pt-4 pb-6">
+          <div>
             <div className="grid gap-x-6 gap-y-4 sm:grid-cols-[auto_1fr_1fr]">
               <label className="space-y-1.5">
                 <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
                   Mode
                   <Tooltip>
-                    <TooltipTrigger asChild>
+                    <Tooltip.Trigger>
                       <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent side="right" sideOffset={4}>
+                    </Tooltip.Trigger>
+                    <Tooltip.Content side="right" sideOffset={4}>
                       Managed: Paperclip stores and serves the instructions bundle. External: you provide a path on disk where the instructions live.
-                    </TooltipContent>
+                    </Tooltip.Content>
                   </Tooltip>
                 </span>
                 <div className="flex gap-2">
@@ -1953,7 +1943,7 @@ function PromptsTab({
                     type="button"
                     size="sm"
                     variant={currentMode === "managed" ? "default" : "outline"}
-                    onClick={() => {
+                    onPress={() => {
                       if (currentMode === "external") {
                         externalBundleRef.current = {
                           rootPath: currentRootPath,
@@ -1976,7 +1966,7 @@ function PromptsTab({
                     type="button"
                     size="sm"
                     variant={currentMode === "external" ? "default" : "outline"}
-                    onClick={() => {
+                    onPress={() => {
                       const externalBundle = externalBundleRef.current;
                       const nextEntryFile = externalBundle?.entryFile ?? currentEntryFile ?? "AGENTS.md";
                       setBundleDraft({
@@ -1995,12 +1985,12 @@ function PromptsTab({
                 <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
                   Root path
                   <Tooltip>
-                    <TooltipTrigger asChild>
+                    <Tooltip.Trigger>
                       <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent side="right" sideOffset={4}>
+                    </Tooltip.Trigger>
+                    <Tooltip.Content side="right" sideOffset={4}>
                       The absolute directory on disk where the instructions bundle lives. In managed mode this is set by Paperclip automatically.
-                    </TooltipContent>
+                    </Tooltip.Content>
                   </Tooltip>
                 </span>
                 {currentMode === "managed" ? (
@@ -2044,12 +2034,12 @@ function PromptsTab({
                 <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
                   Entry file
                   <Tooltip>
-                    <TooltipTrigger asChild>
+                    <Tooltip.Trigger>
                       <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent side="right" sideOffset={4}>
+                    </Tooltip.Trigger>
+                    <Tooltip.Content side="right" sideOffset={4}>
                       The main file the agent reads first when loading instructions. Defaults to AGENTS.md.
-                    </TooltipContent>
+                    </Tooltip.Content>
                   </Tooltip>
                 </span>
                 <Input
@@ -2077,9 +2067,10 @@ function PromptsTab({
                 />
               </label>
             </div>
-          </TooltipProvider>
-        </CollapsibleContent>
-      </Collapsible>
+          </div>
+          </div>
+        )}
+      </div>
 
       <div ref={containerRef} className={cn("flex gap-0", isMobile && "flex-col gap-3")}>
         <div className={cn(
@@ -2096,7 +2087,7 @@ function PromptsTab({
                   size="icon"
                   variant="outline"
                   className="h-7 w-7"
-                  onClick={() => setShowNewFileInput(true)}
+                  onPress={() => setShowNewFileInput(true)}
                 >
                   +
                 </Button>
@@ -2107,7 +2098,7 @@ function PromptsTab({
                   size="icon"
                   variant="ghost"
                   className="h-7 w-7"
-                  onClick={() => setShowFilePanel(false)}
+                  onPress={() => setShowFilePanel(false)}
                 >
                   ✕
                 </Button>
@@ -2135,8 +2126,8 @@ function PromptsTab({
                   size="sm"
                   variant="default"
                   className="flex-1"
-                  disabled={!newFilePath.trim() || newFilePath.includes("..")}
-                  onClick={() => {
+                  isDisabled={!newFilePath.trim() || newFilePath.includes("..")}
+                  onPress={() => {
                     const candidate = newFilePath.trim();
                     if (!candidate || candidate.includes("..")) return;
                     setPendingFiles((prev) => prev.includes(candidate) ? prev : [...prev, candidate]);
@@ -2153,7 +2144,7 @@ function PromptsTab({
                   size="sm"
                   variant="outline"
                   className="flex-1"
-                  onClick={() => {
+                  onPress={() => {
                     setShowNewFileInput(false);
                     setNewFilePath("");
                   }}
@@ -2187,14 +2178,14 @@ function PromptsTab({
               if (file.deprecated) {
                 return (
                   <Tooltip>
-                    <TooltipTrigger asChild>
+                    <Tooltip.Trigger>
                       <span className="ml-3 shrink-0 rounded border border-amber-500/40 bg-amber-500/10 text-amber-200 px-1.5 py-0.5 text-[10px] uppercase tracking-wide cursor-help">
                         virtual file
                       </span>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" sideOffset={4}>
+                    </Tooltip.Trigger>
+                    <Tooltip.Content side="right" sideOffset={4}>
                       Legacy inline prompt — this deprecated virtual file preserves the old promptTemplate content
-                    </TooltipContent>
+                    </Tooltip.Content>
                   </Tooltip>
                 );
               }
@@ -2224,7 +2215,7 @@ function PromptsTab({
                   size="icon"
                   variant="outline"
                   className="h-7 w-7 shrink-0"
-                  onClick={() => setShowFilePanel(true)}
+                  onPress={() => setShowFilePanel(true)}
                 >
                   <FolderOpen className="h-3.5 w-3.5" />
                 </Button>
@@ -2245,7 +2236,7 @@ function PromptsTab({
                 type="button"
                 size="sm"
                 variant="outline"
-                onClick={() => {
+                onPress={() => {
                   if (confirm(`Delete ${selectedOrEntryFile}?`)) {
                     deleteFile.mutate(selectedOrEntryFile, {
                       onSuccess: () => {
@@ -2255,7 +2246,7 @@ function PromptsTab({
                     });
                   }
                 }}
-                disabled={deleteFile.isPending}
+                isDisabled={deleteFile.isPending}
               >
                 Delete
               </Button>
@@ -2631,7 +2622,7 @@ function AgentSkillsTab({
                 <input
                   type="checkbox"
                   checked={checked}
-                  disabled={disabled}
+                  isDisabled={disabled}
                   onChange={(event) => {
                     const next = event.target.checked
                       ? Array.from(new Set([...skillDraft, skill.key]))
@@ -2646,19 +2637,19 @@ function AgentSkillsTab({
                 <label key={skill.id} className={rowClassName}>
                   {required && adapterEntry?.requiredReason ? (
                     <Tooltip>
-                      <TooltipTrigger asChild>
+                      <Tooltip.Trigger>
                         <span>{checkbox}</span>
-                      </TooltipTrigger>
-                      <TooltipContent side="top">{adapterEntry.requiredReason}</TooltipContent>
+                      </Tooltip.Trigger>
+                      <Tooltip.Content side="top">{adapterEntry.requiredReason}</Tooltip.Content>
                     </Tooltip>
                   ) : skillSnapshot?.mode === "unsupported" ? (
                     <Tooltip>
-                      <TooltipTrigger asChild>
+                      <Tooltip.Trigger>
                         <span>{checkbox}</span>
-                      </TooltipTrigger>
-                      <TooltipContent side="top">
+                      </Tooltip.Trigger>
+                      <Tooltip.Content side="top">
                         {unsupportedSkillMessage ?? "Manage skills in the adapter directly."}
-                      </TooltipContent>
+                      </Tooltip.Content>
                     </Tooltip>
                   ) : (
                     checkbox
@@ -2703,7 +2694,7 @@ function AgentSkillsTab({
                       role="button"
                       tabIndex={0}
                       className="flex cursor-pointer items-center gap-2 border-b border-border bg-muted/40 px-3 py-2 select-none"
-                      onClick={() => setUnmanagedOpen((v) => !v)}
+                      onPress={() => setUnmanagedOpen((v) => !v)}
                       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setUnmanagedOpen((v) => !v); } }}
                     >
                       <span className="text-xs font-medium text-muted-foreground">
@@ -3051,8 +3042,8 @@ function RunDetail({ run: initialRun, agentRouteId, adapterType }: { run: Heartb
                   variant="ghost"
                   size="sm"
                   className="text-destructive hover:text-destructive text-xs h-6 px-2"
-                  onClick={() => cancelRun.mutate()}
-                  disabled={cancelRun.isPending}
+                  onPress={() => cancelRun.mutate()}
+                  isDisabled={cancelRun.isPending}
                 >
                   {cancelRun.isPending ? "Cancelling…" : "Cancel"}
                 </Button>
@@ -3062,8 +3053,8 @@ function RunDetail({ run: initialRun, agentRouteId, adapterType }: { run: Heartb
                   variant="ghost"
                   size="sm"
                   className="text-xs h-6 px-2"
-                  onClick={() => resumeRun.mutate()}
-                  disabled={resumeRun.isPending}
+                  onPress={() => resumeRun.mutate()}
+                  isDisabled={resumeRun.isPending}
                 >
                   <RotateCcw className="h-3.5 w-3.5 mr-1" />
                   {resumeRun.isPending ? "Resuming…" : "Resume"}
@@ -3074,8 +3065,8 @@ function RunDetail({ run: initialRun, agentRouteId, adapterType }: { run: Heartb
                   variant="ghost"
                   size="sm"
                   className="text-xs h-6 px-2"
-                  onClick={() => retryRun.mutate()}
-                  disabled={retryRun.isPending}
+                  onPress={() => retryRun.mutate()}
+                  isDisabled={retryRun.isPending}
                 >
                   <RotateCcw className="h-3.5 w-3.5 mr-1" />
                   {retryRun.isPending ? "Retrying…" : "Retry"}
@@ -3122,8 +3113,8 @@ function RunDetail({ run: initialRun, agentRouteId, adapterType }: { run: Heartb
                   variant="outline"
                   size="sm"
                   className="h-7 px-2 text-xs"
-                  onClick={() => runClaudeLogin.mutate()}
-                  disabled={runClaudeLogin.isPending}
+                  onPress={() => runClaudeLogin.mutate()}
+                  isDisabled={runClaudeLogin.isPending}
                 >
                   {runClaudeLogin.isPending ? "Running claude login..." : "Login to Claude Code"}
                 </Button>
@@ -3199,7 +3190,7 @@ function RunDetail({ run: initialRun, agentRouteId, adapterType }: { run: Heartb
           <div className="border-t border-border">
             <button
               className="flex items-center gap-1.5 w-full px-4 py-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
-              onClick={() => setSessionOpen((v) => !v)}
+              onPress={() => setSessionOpen((v) => !v)}
             >
               <ChevronRight className={cn("h-3 w-3 transition-transform", sessionOpen && "rotate-90")} />
               Session
@@ -3224,8 +3215,8 @@ function RunDetail({ run: initialRun, agentRouteId, adapterType }: { run: Heartb
                     <button
                       type="button"
                       className="text-[11px] text-muted-foreground underline underline-offset-2 hover:text-foreground disabled:opacity-60"
-                      disabled={clearSessionsForTouchedIssues.isPending}
-                      onClick={() => {
+                      isDisabled={clearSessionsForTouchedIssues.isPending}
+                      onPress={() => {
                         const issueCount = touchedIssueIds.length;
                         const confirmed = window.confirm(
                           `Clear session for ${issueCount} issue${issueCount === 1 ? "" : "s"} touched by this run?`,
@@ -3787,7 +3778,7 @@ function LogViewer({ run, adapterType }: { run: HeartbeatRun; adapterType: strin
                     ? "bg-accent text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground",
                 )}
-                onClick={() => setTranscriptMode(mode)}
+                onPress={() => setTranscriptMode(mode)}
               >
                 {mode}
               </button>
@@ -3797,7 +3788,7 @@ function LogViewer({ run, adapterType }: { run: HeartbeatRun; adapterType: strin
             <Button
               variant="ghost"
               size="xs"
-              onClick={() => {
+              onPress={() => {
                 const container = getScrollContainer();
                 isFollowingRef.current = true;
                 setIsFollowing(true);
@@ -3961,7 +3952,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
             <Button
               variant="ghost"
               size="icon-sm"
-              onClick={() => setTokenVisible((v) => !v)}
+              onPress={() => setTokenVisible((v) => !v)}
               title={tokenVisible ? "Hide" : "Show"}
             >
               {tokenVisible ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
@@ -3969,7 +3960,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
             <Button
               variant="ghost"
               size="icon-sm"
-              onClick={copyToken}
+              onPress={copyToken}
               title="Copy"
             >
               <Copy className="h-3.5 w-3.5" />
@@ -3980,7 +3971,7 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
             variant="ghost"
             size="sm"
             className="text-muted-foreground text-xs"
-            onClick={() => setNewToken(null)}
+            onPress={() => setNewToken(null)}
           >
             Dismiss
           </Button>
@@ -4008,8 +3999,8 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
           />
           <Button
             size="sm"
-            onClick={() => createKey.mutate()}
-            disabled={createKey.isPending}
+            onPress={() => createKey.mutate()}
+            isDisabled={createKey.isPending}
           >
             <Plus className="h-3.5 w-3.5 mr-1" />
             Create
@@ -4042,8 +4033,8 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
                   variant="ghost"
                   size="sm"
                   className="text-destructive hover:text-destructive text-xs"
-                  onClick={() => revokeKey.mutate(key.id)}
-                  disabled={revokeKey.isPending}
+                  onPress={() => revokeKey.mutate(key.id)}
+                  isDisabled={revokeKey.isPending}
                 >
                   Revoke
                 </Button>

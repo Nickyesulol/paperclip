@@ -15,8 +15,7 @@ import { EmptyState } from "../components/EmptyState";
 import { PageSkeleton } from "../components/PageSkeleton";
 import { relativeTime, cn, agentRouteRef, agentUrl } from "../lib/utils";
 import { PageTabBar } from "../components/PageTabBar";
-import { Tabs } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import { Button } from "@heroui/react";
 import { Bot, Plus, List, GitBranch, SlidersHorizontal } from "lucide-react";
 import { AGENT_ROLE_LABELS, type Agent } from "@paperclipai/shared";
 
@@ -136,18 +135,16 @@ export function Agents() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Tabs value={tab} onValueChange={(v) => navigate(`/agents/${v}`)}>
-          <PageTabBar
-            items={[
-              { value: "all", label: "All" },
-              { value: "active", label: "Active" },
-              { value: "paused", label: "Paused" },
-              { value: "error", label: "Error" },
-            ]}
-            value={tab}
-            onValueChange={(v) => navigate(`/agents/${v}`)}
-          />
-        </Tabs>
+        <PageTabBar
+          items={[
+            { value: "all", label: "All" },
+            { value: "active", label: "Active" },
+            { value: "paused", label: "Paused" },
+            { value: "error", label: "Error" },
+          ]}
+          value={tab}
+          onValueChange={(v) => navigate(`/agents/${v}`)}
+        />
         <div className="flex items-center gap-2">
           {/* Filters */}
           <div className="relative">
@@ -202,7 +199,7 @@ export function Agents() {
               </button>
             </div>
           )}
-          <Button size="sm" variant="outline" onClick={openNewAgent}>
+          <Button size="sm" variant="outline" onPress={openNewAgent}>
             <Plus className="h-3.5 w-3.5 mr-1.5" />
             New Agent
           </Button>
