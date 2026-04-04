@@ -37,12 +37,14 @@ export function ArtifactPreview({ artifactId, mimeType, title }: ArtifactPreview
             Download
           </a>
         </Button>
-        <Button variant="ghost" size="sm" className="h-7 text-xs" asChild>
-          <a href={contentUrl} target="_blank" rel="noreferrer">
-            <ExternalLink className="w-3.5 h-3.5 mr-1" />
-            Open
-          </a>
-        </Button>
+        {!isHtml && (
+          <Button variant="ghost" size="sm" className="h-7 text-xs" asChild>
+            <a href={contentUrl} target="_blank" rel="noreferrer">
+              <ExternalLink className="w-3.5 h-3.5 mr-1" />
+              Open
+            </a>
+          </Button>
+        )}
       </div>
 
       {/* Preview content */}
@@ -65,10 +67,10 @@ export function ArtifactPreview({ artifactId, mimeType, title }: ArtifactPreview
       {isHtml && (
         <div className="rounded-md overflow-hidden border border-border/50" style={{ height: "calc(100vh - 280px)", minHeight: 300 }}>
           <iframe
-            src={contentUrl}
+            src={`${contentUrl}?inline=true`}
             className="w-full h-full bg-white"
             title={title}
-            sandbox="allow-scripts"
+            sandbox=""
           />
         </div>
       )}

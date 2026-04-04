@@ -2009,7 +2009,7 @@ export function issueRoutes(
         issueId,
         issue.title,
       );
-      await artifactSvc.createArtifact(companyId, {
+      const artifact = await artifactSvc.createArtifact(companyId, {
         folderId,
         assetId: attachment.assetId,
         title: attachment.originalFilename ?? "Untitled",
@@ -2017,6 +2017,17 @@ export function issueRoutes(
         issueId,
         createdByAgentId: actor.agentId,
         createdByUserId: actor.actorType === "user" ? actor.actorId : null,
+      });
+      await logActivity(db, {
+        companyId,
+        actorType: actor.actorType,
+        actorId: actor.actorId,
+        agentId: actor.agentId,
+        runId: actor.runId,
+        action: "artifact.created",
+        entityType: "artifact",
+        entityId: artifact.id,
+        details: { title: artifact.title, mimeType: artifact.mimeType, folderId, autoCreated: true },
       });
     } catch (err) {
       logger.warn({ err, issueId }, "failed to auto-create artifact for attachment");

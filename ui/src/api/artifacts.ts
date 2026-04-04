@@ -11,7 +11,7 @@ export interface ListArtifactsParams {
   agentId?: string;
   mimeType?: string;
   search?: string;
-  sort?: "name" | "createdAt" | "size";
+  sort?: "name" | "createdAt";
   order?: "asc" | "desc";
   limit?: number;
   offset?: number;

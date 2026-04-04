@@ -136,8 +136,8 @@ export const queryKeys = {
   },
   artifacts: {
     tree: (companyId: string) => ["artifacts", "tree", companyId] as const,
-    list: (companyId: string, folderId?: string) =>
-      ["artifacts", companyId, folderId ?? "__all__"] as const,
+    list: (companyId: string, folderId?: string, search?: string) =>
+      ["artifacts", companyId, folderId ?? "__all__", search ?? ""] as const,
     detail: (id: string) => ["artifacts", "detail", id] as const,
   },
   plugins: {

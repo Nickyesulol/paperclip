@@ -67,7 +67,7 @@ export interface ListArtifactsFilters {
   agentId?: string;
   mimeType?: string;
   search?: string;
-  sort?: "name" | "createdAt" | "size";
+  sort?: "name" | "createdAt";
   order?: "asc" | "desc";
   limit?: number;
   offset?: number;
@@ -118,6 +118,9 @@ export function artifactService(db: Db) {
         // Create from path — ensure all intermediaries exist
         const normalized = normalizePath(data.path);
         const segments = normalized.split("/").filter((s) => s.length > 0);
+        if (segments.length === 0) {
+          throw new Error("Path must contain at least one folder name");
+        }
         let currentPath = "/";
         let parentId: string | null = null;
         let lastFolder: ArtifactFolder | null = null;
@@ -195,6 +198,10 @@ export function artifactService(db: Db) {
         const newName = patch.name ?? existing.name;
         const newParentId = patch.parentId !== undefined ? patch.parentId : existing.parentId;
 
+        if (newParentId === id) {
+          throw new Error("Folder cannot be its own parent");
+        }
+
         // Compute new path
         let parentPath = "/";
         if (newParentId) {
@@ -203,7 +210,13 @@ export function artifactService(db: Db) {
             .from(artifactFolders)
             .where(eq(artifactFolders.id, newParentId))
             .then((rows) => rows[0] ?? null);
-          if (parent) parentPath = parent.path;
+          if (parent) {
+            // Reject if the new parent is a descendant of this folder (would create a cycle)
+            if (parent.path.startsWith(existing.path)) {
+              throw new Error("Cannot move a folder under one of its own descendants");
+            }
+            parentPath = parent.path;
+          }
         }
         const newPath = parentPath + newName + "/";
         const oldPath = existing.path;
@@ -381,13 +394,27 @@ export function artifactService(db: Db) {
       return row ? toArtifact(row) : null;
     },
 
-    deleteArtifact: async (id: string, companyId: string): Promise<Artifact | null> => {
+    deleteArtifact: async (id: string, companyId: string): Promise<{ artifact: Artifact; assetId: string } | null> => {
       const row = await db
         .delete(artifacts)
         .where(and(eq(artifacts.id, id), eq(artifacts.companyId, companyId)))
         .returning()
         .then((rows) => rows[0] ?? null);
-      return row ? toArtifact(row) : null;
+      return row ? { artifact: toArtifact(row), assetId: row.assetId } : null;
+    },
+
+    /** Collect artifact metadata (id, title, assetId) for a folder tree, used for activity logging and asset cleanup before recursive deletion. */
+    getArtifactInfoForFolderTree: async (companyId: string, folderPath: string, folderId: string): Promise<Array<{ id: string; title: string; assetId: string }>> => {
+      const descendantFolders = await db
+        .select({ id: artifactFolders.id })
+        .from(artifactFolders)
+        .where(and(eq(artifactFolders.companyId, companyId), like(artifactFolders.path, folderPath + "%")));
+      const allFolderIds = [folderId, ...descendantFolders.map((d) => d.id)];
+      const rows = await db
+        .select({ id: artifacts.id, title: artifacts.title, assetId: artifacts.assetId })
+        .from(artifacts)
+        .where(inArray(artifacts.folderId, allFolderIds));
+      return rows;
     },
 
     // ── Auto-folder helper ──

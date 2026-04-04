@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Artifact, ArtifactFolderTreeNode } from "@paperclipai/shared";
 import { useCompany } from "@/context/CompanyContext";
 import { useBreadcrumbs } from "@/context/BreadcrumbContext";
+import { useToast } from "@/context/ToastContext";
 import { queryKeys } from "@/lib/queryKeys";
 import { artifactsApi } from "@/api/artifacts";
 import { ArtifactFolderTree } from "@/components/artifacts/ArtifactFolderTree";
@@ -15,6 +16,7 @@ import { FolderOpen } from "lucide-react";
 export function Artifacts() {
   const { selectedCompanyId } = useCompany();
   const { setBreadcrumbs } = useBreadcrumbs();
+  const { pushToast } = useToast();
   const { folderId: urlFolderId } = useParams<{ folderId?: string }>();
   const [searchParams] = useSearchParams();
   const issueIdFilter = searchParams.get("issueId") ?? undefined;
@@ -40,7 +42,7 @@ export function Artifacts() {
 
   // Fetch artifacts for selected folder (or filtered by issueId)
   const { data: artifacts = [], isLoading: artifactsLoading } = useQuery({
-    queryKey: queryKeys.artifacts.list(selectedCompanyId!, selectedFolderId ?? issueIdFilter ?? undefined),
+    queryKey: queryKeys.artifacts.list(selectedCompanyId!, selectedFolderId ?? issueIdFilter ?? undefined, search || undefined),
     queryFn: () =>
       artifactsApi.list(selectedCompanyId!, {
         folderId: issueIdFilter ? undefined : selectedFolderId ?? undefined,
@@ -61,40 +63,51 @@ export function Artifacts() {
         folderId: selectedFolderId ?? undefined,
       }),
     onSuccess: invalidate,
+    onError: () => pushToast({ title: "Failed to upload file", tone: "error" }),
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => artifactsApi.remove(id),
     onSuccess: invalidate,
+    onError: () => pushToast({ title: "Failed to delete artifact", tone: "error" }),
   });
 
   const deleteFolderMutation = useMutation({
     mutationFn: ({ id, recursive }: { id: string; recursive: boolean }) =>
       artifactsApi.removeFolder(id, recursive),
     onSuccess: invalidate,
+    onError: () => pushToast({ title: "Failed to delete folder", tone: "error" }),
   });
 
   const handleCreateFolder = useCallback(
     async (parentId: string | null) => {
       const name = prompt("Folder name:");
       if (!name?.trim()) return;
-      await artifactsApi.createFolder(selectedCompanyId!, {
-        parentId: parentId ?? undefined,
-        name: name.trim(),
-      });
-      invalidate();
+      try {
+        await artifactsApi.createFolder(selectedCompanyId!, {
+          parentId: parentId ?? undefined,
+          name: name.trim(),
+        });
+        invalidate();
+      } catch {
+        pushToast({ title: "Failed to create folder", tone: "error" });
+      }
     },
-    [selectedCompanyId, invalidate],
+    [selectedCompanyId, invalidate, pushToast],
   );
 
   const handleRenameFolder = useCallback(
     async (folder: ArtifactFolderTreeNode) => {
       const name = prompt("New folder name:", folder.name);
       if (!name?.trim() || name === folder.name) return;
-      await artifactsApi.updateFolder(folder.id, { name: name.trim() });
-      invalidate();
+      try {
+        await artifactsApi.updateFolder(folder.id, { name: name.trim() });
+        invalidate();
+      } catch {
+        pushToast({ title: "Failed to rename folder", tone: "error" });
+      }
     },
-    [invalidate],
+    [invalidate, pushToast],
   );
 
   const handleDeleteFolder = useCallback(
@@ -114,21 +127,29 @@ export function Artifacts() {
     async (artifact: Artifact) => {
       const name = prompt("New name:", artifact.title);
       if (!name?.trim() || name === artifact.title) return;
-      await artifactsApi.update(artifact.id, { title: name.trim() });
-      invalidate();
+      try {
+        await artifactsApi.update(artifact.id, { title: name.trim() });
+        invalidate();
+      } catch {
+        pushToast({ title: "Failed to rename artifact", tone: "error" });
+      }
     },
-    [invalidate],
+    [invalidate, pushToast],
   );
 
   const handleMoveArtifact = useCallback(
     async (artifact: Artifact) => {
       const folderPath = prompt("Enter destination folder path (e.g. /reports/weekly/):");
       if (!folderPath?.trim()) return;
-      const folder = await artifactsApi.createFolder(selectedCompanyId!, { path: folderPath.trim() });
-      await artifactsApi.update(artifact.id, { folderId: folder.id });
-      invalidate();
+      try {
+        const folder = await artifactsApi.createFolder(selectedCompanyId!, { path: folderPath.trim() });
+        await artifactsApi.update(artifact.id, { folderId: folder.id });
+        invalidate();
+      } catch {
+        pushToast({ title: "Failed to move artifact", tone: "error" });
+      }
     },
-    [selectedCompanyId, invalidate],
+    [selectedCompanyId, invalidate, pushToast],
   );
 
   const handleDeleteArtifact = useCallback(

@@ -8,7 +8,9 @@ export const createArtifactFolderSchema = z.union([
     name: z.string().min(1).max(255),
   }),
   z.object({
-    path: z.string().min(1).max(1024),
+    path: z.string().min(1).max(1024).refine((p) => p.split("/").some((s) => s.trim().length > 0), {
+      message: "Path must contain at least one folder name",
+    }),
   }),
 ]);
 
@@ -23,7 +25,9 @@ export type UpdateArtifactFolder = z.infer<typeof updateArtifactFolderSchema>;
 
 export const createArtifactSchema = z.object({
   folderId: z.string().uuid().optional(),
-  path: z.string().min(1).max(1024).optional(),
+  path: z.string().min(1).max(1024).refine((p) => p.split("/").some((s) => s.trim().length > 0), {
+    message: "Path must contain at least one folder name",
+  }).optional(),
   issueId: z.string().uuid().optional().nullable(),
   title: z.string().min(1).max(255).optional(),
   description: z.string().max(4096).optional().nullable(),
@@ -45,7 +49,7 @@ export const listArtifactsQuerySchema = z.object({
   agentId: z.string().uuid().optional(),
   mimeType: z.string().optional(),
   search: z.string().optional(),
-  sort: z.enum(["name", "createdAt", "size"]).optional().default("createdAt"),
+  sort: z.enum(["name", "createdAt"]).optional().default("createdAt"),
   order: z.enum(["asc", "desc"]).optional().default("desc"),
   limit: z.coerce.number().int().min(1).max(200).optional().default(50),
   offset: z.coerce.number().int().min(0).optional().default(0),

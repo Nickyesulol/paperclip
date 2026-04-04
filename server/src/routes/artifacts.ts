@@ -89,7 +89,16 @@ export function artifactRoutes(db: Db, storage: StorageService, options: Artifac
       return;
     }
 
-    const updated = await svc.updateFolder(id, existing.companyId, parsed.data);
+    let updated;
+    try {
+      updated = await svc.updateFolder(id, existing.companyId, parsed.data);
+    } catch (err) {
+      if (err instanceof Error && (err.message.includes("cannot be its own parent") || err.message.includes("Cannot move a folder under one of its own descendants"))) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      throw err;
+    }
     if (!updated) {
       res.status(404).json({ error: "Folder not found" });
       return;
@@ -122,8 +131,25 @@ export function artifactRoutes(db: Db, storage: StorageService, options: Artifac
     }
     assertCompanyAccess(req, existing.companyId);
 
+    // Collect artifact metadata before deletion so we can log each one
+    let deletedArtifacts: Array<{ id: string; title: string; assetId: string }> = [];
+
     try {
-      await svc.deleteFolder(id, existing.companyId, recursive);
+      if (recursive) {
+        // Collect artifact info for activity logging and asset cleanup
+        deletedArtifacts = await svc.getArtifactInfoForFolderTree(existing.companyId, existing.path, id);
+        await svc.deleteFolder(id, existing.companyId, recursive);
+        // Clean up storage objects and asset rows
+        for (const { assetId } of deletedArtifacts) {
+          const asset = await assetSvc.getById(assetId);
+          if (asset) {
+            await storage.deleteObject(existing.companyId, asset.objectKey);
+            await assetSvc.delete(assetId);
+          }
+        }
+      } else {
+        await svc.deleteFolder(id, existing.companyId, recursive);
+      }
     } catch (err) {
       if (err instanceof Error && err.message.includes("not empty")) {
         res.status(409).json({ error: err.message });
@@ -133,6 +159,22 @@ export function artifactRoutes(db: Db, storage: StorageService, options: Artifac
     }
 
     const actor = getActorInfo(req);
+
+    // Log individual artifact deletions
+    for (const artifact of deletedArtifacts) {
+      await logActivity(db, {
+        companyId: existing.companyId,
+        actorType: actor.actorType,
+        actorId: actor.actorId,
+        agentId: actor.agentId,
+        runId: actor.runId,
+        action: "artifact.deleted",
+        entityType: "artifact",
+        entityId: artifact.id,
+        details: { title: artifact.title, deletedViaFolder: id },
+      });
+    }
+
     await logActivity(db, {
       companyId: existing.companyId,
       actorType: actor.actorType,
@@ -142,7 +184,7 @@ export function artifactRoutes(db: Db, storage: StorageService, options: Artifac
       action: "artifact_folder.deleted",
       entityType: "artifact_folder",
       entityId: id,
-      details: { name: existing.name, path: existing.path, recursive },
+      details: { name: existing.name, path: existing.path, recursive, artifactCount: deletedArtifacts.length },
     });
 
     res.status(204).end();
@@ -298,10 +340,17 @@ export function artifactRoutes(db: Db, storage: StorageService, options: Artifac
       res.setHeader("Content-Length", String(asset.byteSize || object.contentLength || 0));
     }
     res.setHeader("Cache-Control", "private, max-age=60");
-    res.setHeader(
-      "Content-Disposition",
-      `inline; filename="${(artifact.title || "file").replaceAll('"', "")}"`,
-    );
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    if (artifact.mimeType === "image/svg+xml") {
+      res.setHeader("Content-Security-Policy", "sandbox; default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'");
+    }
+    // Allow inline rendering when explicitly requested (e.g. iframe preview with sandbox=""),
+    // otherwise force download for HTML/SVG files to prevent stored XSS when opened directly.
+    const inlineRequested = req.query.inline === "true";
+    const dangerousInline = artifact.mimeType === "text/html" || artifact.mimeType === "image/svg+xml";
+    const disposition = dangerousInline && !inlineRequested ? "attachment" : "inline";
+    const safeFilename = (artifact.title || "file").replaceAll('"', "").replaceAll(/[\r\n]/g, "");
+    res.setHeader("Content-Disposition", `${disposition}; filename="${safeFilename}"`);
 
     object.stream.on("error", (err) => {
       next(err);
@@ -379,7 +428,16 @@ export function artifactRoutes(db: Db, storage: StorageService, options: Artifac
     }
     assertCompanyAccess(req, existing.companyId);
 
-    await svc.deleteArtifact(id, existing.companyId);
+    const result = await svc.deleteArtifact(id, existing.companyId);
+
+    // Clean up the underlying asset and storage object
+    if (result) {
+      const asset = await assetSvc.getById(result.assetId);
+      if (asset) {
+        await storage.deleteObject(existing.companyId, asset.objectKey);
+        await assetSvc.delete(result.assetId);
+      }
+    }
 
     const actor = getActorInfo(req);
     await logActivity(db, {
