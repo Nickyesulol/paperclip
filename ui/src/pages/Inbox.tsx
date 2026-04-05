@@ -152,7 +152,7 @@ export function InboxIssueMetaLeading({
         </span>
       ) : null}
       {showIdentifier ? (
-        <span className="shrink-0 font-mono text-xs text-muted-foreground">
+        <span className="shrink-0 font-mono text-xs text-foreground/40">
           {issue.identifier ?? issue.id.slice(0, 8)}
         </span>
       ) : null}
@@ -243,14 +243,14 @@ export function InboxIssueTrailingColumns({
 
           if (issue.assigneeUserId) {
             return (
-              <span key={column} className="min-w-0 truncate text-xs font-medium text-muted-foreground">
+              <span key={column} className="min-w-0 truncate text-xs font-medium text-foreground/40">
                 {userLabel}
               </span>
             );
           }
 
           return (
-            <span key={column} className="min-w-0 truncate text-xs text-muted-foreground">
+            <span key={column} className="min-w-0 truncate text-xs text-foreground/40">
               Unassigned
             </span>
           );
@@ -275,7 +275,7 @@ export function InboxIssueTrailingColumns({
           }
 
           return (
-            <span key={column} className="min-w-0 truncate text-xs text-muted-foreground">
+            <span key={column} className="min-w-0 truncate text-xs text-foreground/40">
               No project
             </span>
           );
@@ -297,7 +297,7 @@ export function InboxIssueTrailingColumns({
                   </span>
                 ))}
                 {(issue.labels ?? []).length > 2 ? (
-                  <span className="shrink-0 text-[11px] font-medium text-muted-foreground">
+                  <span className="shrink-0 text-[11px] font-medium text-foreground/40">
                     +{(issue.labels ?? []).length - 2}
                   </span>
                 ) : null}
@@ -314,14 +314,14 @@ export function InboxIssueTrailingColumns({
           }
 
           return (
-            <span key={column} className="min-w-0 truncate text-xs text-muted-foreground">
+            <span key={column} className="min-w-0 truncate text-xs text-foreground/40">
               {workspaceName}
             </span>
           );
         }
 
         return (
-          <span key={column} className="min-w-0 truncate text-right text-[11px] font-medium text-muted-foreground">
+          <span key={column} className="min-w-0 truncate whitespace-nowrap text-right text-[11px] font-medium text-foreground/40">
             {activityText}
           </span>
         );
@@ -394,7 +394,7 @@ export function FailedRunInboxRow({
                 type="button"
                 onClick={onArchive}
                 disabled={archiveDisabled}
-                className="inline-flex h-4 w-4 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-30"
+                className="inline-flex h-4 w-4 items-center justify-center rounded-md text-foreground/40 opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-30"
                 aria-label="Dismiss from inbox"
               >
                 <X className="h-3.5 w-3.5" />
@@ -420,7 +420,7 @@ export function FailedRunInboxRow({
             <span className="line-clamp-2 text-sm font-medium sm:truncate sm:line-clamp-none">
               {issue ? (
                 <>
-                  <span className="font-mono text-muted-foreground mr-1.5">
+                  <span className="font-mono text-foreground/40 mr-1.5">
                     {issue.identifier ?? issue.id.slice(0, 8)}
                   </span>
                   {issue.title}
@@ -429,7 +429,7 @@ export function FailedRunInboxRow({
                 <>Failed run{linkedAgentName ? ` — ${linkedAgentName}` : ""}</>
               )}
             </span>
-            <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+            <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-foreground/40">
               <StatusBadge status={run.status} />
               {linkedAgentName && issue ? <span>{linkedAgentName}</span> : null}
               <span className="truncate max-w-[300px]">{displayError}</span>
@@ -453,7 +453,7 @@ export function FailedRunInboxRow({
             <button
               type="button"
               onClick={onDismiss}
-              className="rounded-md p-1 text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-foreground group-hover:opacity-100"
+              className="rounded-md p-1 text-foreground/40 opacity-0 transition-opacity hover:bg-accent hover:text-foreground group-hover:opacity-100"
               aria-label="Dismiss"
             >
               <X className="h-4 w-4" />
@@ -477,7 +477,7 @@ export function FailedRunInboxRow({
           <button
             type="button"
             onClick={onDismiss}
-            className="rounded-md p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="rounded-md p-1 text-foreground/40 hover:bg-accent hover:text-foreground"
             aria-label="Dismiss"
           >
             <X className="h-4 w-4" />
@@ -550,7 +550,7 @@ function ApprovalInboxRow({
                 type="button"
                 onClick={onArchive}
                 disabled={archiveDisabled}
-                className="inline-flex h-4 w-4 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-30"
+                className="inline-flex h-4 w-4 items-center justify-center rounded-md text-foreground/40 opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-30"
                 aria-label="Dismiss from inbox"
               >
                 <X className="h-3.5 w-3.5" />
@@ -570,13 +570,13 @@ function ApprovalInboxRow({
           {!showUnreadSlot && <span className="hidden h-2 w-2 shrink-0 sm:inline-flex" aria-hidden="true" />}
           <span className="hidden h-3.5 w-3.5 shrink-0 sm:inline-flex" aria-hidden="true" />
           <span className="mt-0.5 shrink-0 rounded-md bg-muted p-1.5 sm:mt-0">
-            <Icon className="h-4 w-4 text-muted-foreground" />
+            <Icon className="h-4 w-4 text-foreground/40" />
           </span>
           <span className="min-w-0 flex-1">
             <span className="line-clamp-2 text-sm font-medium sm:truncate sm:line-clamp-none">
               {label}
             </span>
-            <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+            <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-foreground/40">
               <span className="capitalize">{approvalStatusLabel(approval.status)}</span>
               {requesterName ? <span>requested by {requesterName}</span> : null}
               <span>updated {timeAgo(approval.updatedAt)}</span>
@@ -689,7 +689,7 @@ function JoinRequestInboxRow({
                 type="button"
                 onClick={onArchive}
                 disabled={archiveDisabled}
-                className="inline-flex h-4 w-4 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-30"
+                className="inline-flex h-4 w-4 items-center justify-center rounded-md text-foreground/40 opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 disabled:pointer-events-none disabled:opacity-30"
                 aria-label="Dismiss from inbox"
               >
                 <X className="h-3.5 w-3.5" />
@@ -703,13 +703,13 @@ function JoinRequestInboxRow({
           {!showUnreadSlot && <span className="hidden h-2 w-2 shrink-0 sm:inline-flex" aria-hidden="true" />}
           <span className="hidden h-3.5 w-3.5 shrink-0 sm:inline-flex" aria-hidden="true" />
           <span className="mt-0.5 shrink-0 rounded-md bg-muted p-1.5 sm:mt-0">
-            <UserPlus className="h-4 w-4 text-muted-foreground" />
+            <UserPlus className="h-4 w-4 text-foreground/40" />
           </span>
           <span className="min-w-0 flex-1">
             <span className="line-clamp-2 text-sm font-medium sm:truncate sm:line-clamp-none">
               {label}
             </span>
-            <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+            <span className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-foreground/40">
               <span>requested {timeAgo(joinRequest.createdAt)} from IP {joinRequest.requestIp}</span>
               {joinRequest.adapterType && <span>adapter: {joinRequest.adapterType}</span>}
             </span>
@@ -1553,7 +1553,7 @@ export function Inbox() {
 
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-foreground/40" />
             <Input
               type="search"
               placeholder="Search inbox…"
@@ -1568,7 +1568,7 @@ export function Inbox() {
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="h-8 shrink-0 px-2 text-xs text-muted-foreground hover:text-foreground"
+                className="h-8 shrink-0 px-2 text-xs text-foreground/40 hover:text-foreground"
               >
                 <Columns3 className="mr-1 h-3.5 w-3.5" />
                 Show / hide columns
@@ -1580,7 +1580,7 @@ export function Inbox() {
                   <Dropdown.Item id="__header__" className="pointer-events-none">
                     <div className="px-2 pb-1 pt-1.5">
                       <div className="space-y-1">
-                        <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                        <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/40">
                           Desktop issue rows
                         </div>
                         <div className="text-sm font-medium text-foreground">
@@ -1609,7 +1609,7 @@ export function Inbox() {
                           <span className="text-sm font-medium text-foreground">
                             {inboxIssueColumnLabels[column]}
                           </span>
-                          <span className="text-xs leading-relaxed text-muted-foreground">
+                          <span className="text-xs leading-relaxed text-foreground/40">
                             {inboxIssueColumnDescriptions[column]}
                           </span>
                         </span>
@@ -1624,7 +1624,7 @@ export function Inbox() {
                     className="rounded-lg px-3 py-2 text-sm"
                   >
                     Reset defaults
-                    <span className="ml-auto text-xs text-muted-foreground">status, id, updated</span>
+                    <span className="ml-auto text-xs text-foreground/40">status, id, updated</span>
                   </Dropdown.Item>
                 </Dropdown.Section>
               </Dropdown.Menu>
@@ -1651,7 +1651,7 @@ export function Inbox() {
                           <span>Mark all as read?</span>
                         </Modal.Header>
                         <Modal.Body>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-foreground/40">
                             This will mark {unreadIssueIds.length} unread {unreadIssueIds.length === 1 ? "item" : "items"} as read.
                           </p>
                         </Modal.Body>
@@ -1982,7 +1982,7 @@ export function Inbox() {
                   <button
                     type="button"
                     onClick={() => dismiss("alert:agent-errors")}
-                    className="rounded-md p-1 text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-foreground group-hover/alert:opacity-100"
+                    className="rounded-md p-1 text-foreground/40 opacity-0 transition-opacity hover:bg-accent hover:text-foreground group-hover/alert:opacity-100"
                     aria-label="Dismiss"
                   >
                     <X className="h-3.5 w-3.5" />
@@ -2005,7 +2005,7 @@ export function Inbox() {
                   <button
                     type="button"
                     onClick={() => dismiss("alert:budget")}
-                    className="rounded-md p-1 text-muted-foreground opacity-0 transition-opacity hover:bg-accent hover:text-foreground group-hover/alert:opacity-100"
+                    className="rounded-md p-1 text-foreground/40 opacity-0 transition-opacity hover:bg-accent hover:text-foreground group-hover/alert:opacity-100"
                     aria-label="Dismiss"
                   >
                     <X className="h-3.5 w-3.5" />
