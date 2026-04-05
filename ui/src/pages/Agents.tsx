@@ -150,7 +150,7 @@ export function Agents() {
             <button
               className={cn(
                 "flex items-center gap-1.5 px-2 py-1.5 text-xs transition-colors border border-border",
-                filtersOpen || showTerminated ? "text-foreground bg-accent" : "text-muted-foreground hover:bg-accent/50"
+                filtersOpen || showTerminated ? "text-foreground bg-accent" : "text-foreground/40 hover:bg-accent/50"
               )}
               onClick={() => setFiltersOpen(!filtersOpen)}
             >
@@ -181,7 +181,7 @@ export function Agents() {
               <button
                 className={cn(
                   "p-1.5 transition-colors",
-                  effectiveView === "list" ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-accent/50"
+                  effectiveView === "list" ? "bg-accent text-foreground" : "text-foreground/40 hover:bg-accent/50"
                 )}
                 onClick={() => setView("list")}
               >
@@ -190,7 +190,7 @@ export function Agents() {
               <button
                 className={cn(
                   "p-1.5 transition-colors",
-                  effectiveView === "org" ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-accent/50"
+                  effectiveView === "org" ? "bg-accent text-foreground" : "text-foreground/40 hover:bg-accent/50"
                 )}
                 onClick={() => setView("org")}
               >
@@ -206,7 +206,7 @@ export function Agents() {
       </div>
 
       {filtered.length > 0 && (
-        <p className="text-xs text-muted-foreground">{filtered.length} agent{filtered.length !== 1 ? "s" : ""}</p>
+        <p className="text-xs text-foreground/40">{filtered.length} agent{filtered.length !== 1 ? "s" : ""}</p>
       )}
 
       {error && <p className="text-sm text-destructive">{error.message}</p>}
@@ -259,10 +259,10 @@ export function Agents() {
                           liveCount={liveRunByAgent.get(agent.id)!.liveCount}
                         />
                       )}
-                      <span className="text-xs text-muted-foreground font-mono w-14 text-right">
+                      <span className="text-xs text-foreground/40 font-mono w-14 text-right">
                         {adapterLabels[agent.adapterType] ?? agent.adapterType}
                       </span>
-                      <span className="text-xs text-muted-foreground w-16 text-right">
+                      <span className="text-xs text-foreground/40 w-16 text-right">
                         {agent.lastHeartbeatAt ? relativeTime(agent.lastHeartbeatAt) : "—"}
                       </span>
                       <span className="w-20 flex justify-end">
@@ -279,7 +279,7 @@ export function Agents() {
       )}
 
       {effectiveView === "list" && agents && agents.length > 0 && filtered.length === 0 && (
-        <p className="text-sm text-muted-foreground text-center py-8">
+        <p className="text-sm text-foreground/40 text-center py-8">
           No agents match the selected filter.
         </p>
       )}
@@ -296,13 +296,13 @@ export function Agents() {
       )}
 
       {effectiveView === "org" && orgTree && orgTree.length > 0 && filteredOrg.length === 0 && (
-        <p className="text-sm text-muted-foreground text-center py-8">
+        <p className="text-sm text-foreground/40 text-center py-8">
           No agents match the selected filter.
         </p>
       )}
 
       {effectiveView === "org" && orgTree && orgTree.length === 0 && (
-        <p className="text-sm text-muted-foreground text-center py-8">
+        <p className="text-sm text-foreground/40 text-center py-8">
           No organizational hierarchy defined.
         </p>
       )}
@@ -381,10 +381,10 @@ function OrgTreeNode({
             )}
             {agent && (
               <>
-                <span className="text-xs text-muted-foreground font-mono w-14 text-right">
+                <span className="text-xs text-foreground/40 font-mono w-14 text-right">
                   {adapterLabels[agent.adapterType] ?? agent.adapterType}
                 </span>
-                <span className="text-xs text-muted-foreground w-16 text-right">
+                <span className="text-xs text-foreground/40 w-16 text-right">
                   {agent.lastHeartbeatAt ? relativeTime(agent.lastHeartbeatAt) : "—"}
                 </span>
               </>
