@@ -334,19 +334,23 @@ export function NewProjectDialog() {
                     <StatusBadge status={status} />
                   </button>
                 </Popover.Trigger>
-                <Popover.Content className="w-44 p-1.5">
-                  {projectStatuses.map((s) => (
-                    <button
-                      key={s.value}
-                      className={cn(
-                        "flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded-lg hover:bg-accent/[0.05] transition-colors",
-                        s.value === status && "bg-accent/10 text-accent font-medium"
-                      )}
-                      onClick={() => { setStatus(s.value); setStatusOpen(false); }}
-                    >
-                      {s.label}
-                    </button>
-                  ))}
+                <Popover.Content className="w-44 p-0">
+                  <Popover.Dialog className="overflow-hidden rounded-xl border border-default-200/60 bg-overlay shadow-lg p-1.5">
+                    {projectStatuses.map((s) => (
+                      <button
+                        key={s.value}
+                        className={cn(
+                          "flex items-center gap-2 w-full px-2.5 py-2 text-xs rounded-lg transition-colors",
+                          s.value === status
+                            ? "bg-accent/[0.08] text-accent font-medium"
+                            : "text-foreground hover:bg-default/40"
+                        )}
+                        onClick={() => { setStatus(s.value); setStatusOpen(false); }}
+                      >
+                        {s.label}
+                      </button>
+                    ))}
+                  </Popover.Dialog>
                 </Popover.Content>
               </Popover>
 

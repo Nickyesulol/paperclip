@@ -891,38 +891,42 @@ export function NewIssueDialog() {
                   {(dialogCompany?.name ?? "").slice(0, 3).toUpperCase()}
                 </button>
               </Popover.Trigger>
-              <Popover.Content className="w-48 p-1">
-                {companies.filter((c) => c.status !== "archived").map((c) => (
-                  <button
-                    key={c.id}
-                    className={cn(
-                      "flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/[0.05] transition-colors",
-                      c.id === effectiveCompanyId && "bg-accent/10 text-accent font-medium",
-                    )}
-                    onClick={() => {
-                      handleCompanyChange(c.id);
-                      setCompanyOpen(false);
-                    }}
-                  >
-                    <span
+              <Popover.Content className="w-52 p-0">
+                <Popover.Dialog className="overflow-hidden rounded-xl border border-default-200/60 bg-overlay shadow-lg p-1.5">
+                  {companies.filter((c) => c.status !== "archived").map((c) => (
+                    <button
+                      key={c.id}
                       className={cn(
-                        "px-1 py-0.5 rounded text-[10px] font-semibold leading-none",
-                        !c.brandColor && "bg-muted",
+                        "flex items-center gap-2.5 w-full px-2.5 py-2 text-xs rounded-lg transition-colors",
+                        c.id === effectiveCompanyId
+                          ? "bg-accent/[0.08] text-accent font-medium"
+                          : "text-foreground hover:bg-default/40",
                       )}
-                      style={
-                        c.brandColor
-                          ? {
-                              backgroundColor: c.brandColor,
-                              color: pickTextColorForSolidBg(c.brandColor),
-                            }
-                          : undefined
-                      }
+                      onClick={() => {
+                        handleCompanyChange(c.id);
+                        setCompanyOpen(false);
+                      }}
                     >
-                      {c.name.slice(0, 3).toUpperCase()}
-                    </span>
-                    <span className="truncate">{c.name}</span>
-                  </button>
-                ))}
+                      <span
+                        className={cn(
+                          "px-1.5 py-0.5 rounded-md text-[10px] font-semibold leading-none",
+                          !c.brandColor && "bg-default",
+                        )}
+                        style={
+                          c.brandColor
+                            ? {
+                                backgroundColor: c.brandColor,
+                                color: pickTextColorForSolidBg(c.brandColor),
+                              }
+                            : undefined
+                        }
+                      >
+                        {c.name.slice(0, 3).toUpperCase()}
+                      </span>
+                      <span className="truncate">{c.name}</span>
+                    </button>
+                  ))}
+                </Popover.Dialog>
               </Popover.Content>
             </Popover>
             <span className="text-foreground/40/60">&rsaquo;</span>
@@ -1316,20 +1320,24 @@ export function NewIssueDialog() {
                 {currentStatus.label}
               </button>
             </Popover.Trigger>
-            <Popover.Content className="w-36 p-1">
-              {statuses.map((s) => (
-                <button
-                  key={s.value}
-                  className={cn(
-                    "flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/[0.05] transition-colors",
-                    s.value === status && "bg-accent/10 text-accent font-medium"
-                  )}
-                  onClick={() => { setStatus(s.value); setStatusOpen(false); }}
-                >
-                  <CircleDot className={cn("h-3 w-3", s.color)} />
-                  {s.label}
-                </button>
-              ))}
+            <Popover.Content className="w-40 p-0">
+              <Popover.Dialog className="overflow-hidden rounded-xl border border-default-200/60 bg-overlay shadow-lg p-1.5">
+                {statuses.map((s) => (
+                  <button
+                    key={s.value}
+                    className={cn(
+                      "flex items-center gap-2 w-full px-2.5 py-2 text-xs rounded-lg transition-colors",
+                      s.value === status
+                        ? "bg-accent/[0.08] text-accent font-medium"
+                        : "text-foreground hover:bg-default/40"
+                    )}
+                    onClick={() => { setStatus(s.value); setStatusOpen(false); }}
+                  >
+                    <CircleDot className={cn("h-3 w-3", s.color)} />
+                    {s.label}
+                  </button>
+                ))}
+              </Popover.Dialog>
             </Popover.Content>
           </Popover>
 
@@ -1350,20 +1358,24 @@ export function NewIssueDialog() {
                 )}
               </button>
             </Popover.Trigger>
-            <Popover.Content className="w-36 p-1">
-              {priorities.map((p) => (
-                <button
-                  key={p.value}
-                  className={cn(
-                    "flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/[0.05] transition-colors",
-                    p.value === priority && "bg-accent/10 text-accent font-medium"
-                  )}
-                  onClick={() => { setPriority(p.value); setPriorityOpen(false); }}
-                >
-                  <p.icon className={cn("h-3 w-3", p.color)} />
-                  {p.label}
-                </button>
-              ))}
+            <Popover.Content className="w-40 p-0">
+              <Popover.Dialog className="overflow-hidden rounded-xl border border-default-200/60 bg-overlay shadow-lg p-1.5">
+                {priorities.map((p) => (
+                  <button
+                    key={p.value}
+                    className={cn(
+                      "flex items-center gap-2 w-full px-2.5 py-2 text-xs rounded-lg transition-colors",
+                      p.value === priority
+                        ? "bg-accent/[0.08] text-accent font-medium"
+                        : "text-foreground hover:bg-default/40"
+                    )}
+                    onClick={() => { setPriority(p.value); setPriorityOpen(false); }}
+                  >
+                    <p.icon className={cn("h-3 w-3", p.color)} />
+                    {p.label}
+                  </button>
+                ))}
+              </Popover.Dialog>
             </Popover.Content>
           </Popover>
 
@@ -1397,15 +1409,17 @@ export function NewIssueDialog() {
                 <MoreHorizontal className="h-3 w-3" />
               </button>
             </Popover.Trigger>
-            <Popover.Content className="w-44 p-1">
-              <button className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/[0.05] text-foreground/40">
-                <Calendar className="h-3 w-3" />
-                Start date
-              </button>
-              <button className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/[0.05] text-foreground/40">
-                <Calendar className="h-3 w-3" />
-                Due date
-              </button>
+            <Popover.Content className="w-44 p-0">
+              <Popover.Dialog className="overflow-hidden rounded-xl border border-default-200/60 bg-overlay shadow-lg p-1.5">
+                <button className="flex items-center gap-2 w-full px-2.5 py-2 text-xs rounded-lg text-foreground hover:bg-default/40 transition-colors">
+                  <Calendar className="h-3 w-3 text-foreground/40" />
+                  Start date
+                </button>
+                <button className="flex items-center gap-2 w-full px-2.5 py-2 text-xs rounded-lg text-foreground hover:bg-default/40 transition-colors">
+                  <Calendar className="h-3 w-3 text-foreground/40" />
+                  Due date
+                </button>
+              </Popover.Dialog>
             </Popover.Content>
           </Popover>
         </div>

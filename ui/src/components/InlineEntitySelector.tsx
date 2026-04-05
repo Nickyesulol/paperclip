@@ -98,7 +98,7 @@ export const InlineEntitySelector = forwardRef<HTMLButtonElement, InlineEntitySe
             ref={ref}
             type="button"
             className={cn(
-              "inline-flex min-w-0 items-center gap-1 rounded-md border border-border bg-muted/40 px-2 py-1 text-sm font-medium text-foreground transition-colors hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "inline-flex min-w-0 items-center gap-1.5 rounded-lg border border-default-200/40 bg-default/30 px-2.5 py-1 text-sm font-medium text-foreground transition-colors hover:bg-default/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30",
               className,
             )}
             onPointerDown={() => { isPointerDownRef.current = true; }}
@@ -109,75 +109,79 @@ export const InlineEntitySelector = forwardRef<HTMLButtonElement, InlineEntitySe
           >
             {renderTriggerValue
               ? renderTriggerValue(currentOption)
-              : (currentOption?.label ?? <span className="text-muted-foreground">{placeholder}</span>)}
+              : (currentOption?.label ?? <span className="text-foreground/40">{placeholder}</span>)}
           </button>
         </Popover.Trigger>
-        <Popover.Content className="w-[min(20rem,calc(100vw-2rem))] p-1">
-          <input
-            ref={inputRef}
-            className="w-full border-b border-border bg-transparent px-2 py-1.5 text-sm outline-none placeholder:text-muted-foreground/60"
-            placeholder={searchPlaceholder}
-            value={query}
-            onChange={(event) => {
-              setQuery(event.target.value);
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "ArrowDown") {
-                event.preventDefault();
-                setHighlightedIndex((current) =>
-                  filteredOptions.length === 0 ? 0 : (current + 1) % filteredOptions.length,
-                );
-                return;
-              }
-              if (event.key === "ArrowUp") {
-                event.preventDefault();
-                setHighlightedIndex((current) => {
-                  if (filteredOptions.length === 0) return 0;
-                  return current <= 0 ? filteredOptions.length - 1 : current - 1;
-                });
-                return;
-              }
-              if (event.key === "Enter") {
-                event.preventDefault();
-                commitSelection(highlightedIndex, true);
-                return;
-              }
-              if (event.key === "Tab" && !event.shiftKey) {
-                event.preventDefault();
-                commitSelection(highlightedIndex, true);
-                return;
-              }
-              if (event.key === "Escape") {
-                event.preventDefault();
-                setOpen(false);
-              }
-            }}
-          />
-          <div className="max-h-56 overflow-y-auto overscroll-contain py-1 touch-pan-y">
-            {filteredOptions.length === 0 ? (
-              <p className="px-2 py-2 text-xs text-muted-foreground">{emptyMessage}</p>
-            ) : (
-              filteredOptions.map((option, index) => {
-                const isSelected = option.id === value;
-                const isHighlighted = index === highlightedIndex;
-                return (
-                  <button
-                    key={option.id || "__none__"}
-                    type="button"
-                    className={cn(
-                      "flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm touch-manipulation",
-                      isHighlighted && "bg-accent",
-                    )}
-                    onMouseEnter={() => setHighlightedIndex(index)}
-                    onClick={() => commitSelection(index, true)}
-                  >
-                    {renderOption ? renderOption(option, isSelected) : <span className="truncate">{option.label}</span>}
-                    <Check className={cn("ml-auto h-3.5 w-3.5 text-muted-foreground", isSelected ? "opacity-100" : "opacity-0")} />
-                  </button>
-                );
-              })
-            )}
-          </div>
+        <Popover.Content className="w-[min(20rem,calc(100vw-2rem))] p-0">
+          <Popover.Dialog className="overflow-hidden rounded-xl border border-default-200/60 bg-overlay shadow-lg">
+            <input
+              ref={inputRef}
+              className="w-full border-b border-default-200/30 bg-transparent px-3 py-2 text-sm outline-none placeholder:text-foreground/30"
+              placeholder={searchPlaceholder}
+              value={query}
+              onChange={(event) => {
+                setQuery(event.target.value);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "ArrowDown") {
+                  event.preventDefault();
+                  setHighlightedIndex((current) =>
+                    filteredOptions.length === 0 ? 0 : (current + 1) % filteredOptions.length,
+                  );
+                  return;
+                }
+                if (event.key === "ArrowUp") {
+                  event.preventDefault();
+                  setHighlightedIndex((current) => {
+                    if (filteredOptions.length === 0) return 0;
+                    return current <= 0 ? filteredOptions.length - 1 : current - 1;
+                  });
+                  return;
+                }
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  commitSelection(highlightedIndex, true);
+                  return;
+                }
+                if (event.key === "Tab" && !event.shiftKey) {
+                  event.preventDefault();
+                  commitSelection(highlightedIndex, true);
+                  return;
+                }
+                if (event.key === "Escape") {
+                  event.preventDefault();
+                  setOpen(false);
+                }
+              }}
+            />
+            <div className="max-h-56 overflow-y-auto overscroll-contain p-1.5 touch-pan-y">
+              {filteredOptions.length === 0 ? (
+                <p className="px-2 py-2 text-xs text-foreground/40">{emptyMessage}</p>
+              ) : (
+                filteredOptions.map((option, index) => {
+                  const isSelected = option.id === value;
+                  const isHighlighted = index === highlightedIndex;
+                  return (
+                    <button
+                      key={option.id || "__none__"}
+                      type="button"
+                      className={cn(
+                        "flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm transition-colors touch-manipulation",
+                        isHighlighted
+                          ? "bg-accent/[0.08] text-accent"
+                          : "text-foreground hover:bg-default/40",
+                      )}
+                      onMouseEnter={() => setHighlightedIndex(index)}
+                      onClick={() => commitSelection(index, true)}
+                    >
+                      {renderOption ? renderOption(option, isSelected) : <span className="truncate">{option.label}</span>}
+                      <Check className={cn("ml-auto h-3.5 w-3.5 shrink-0", isSelected ? "text-accent opacity-100" : "opacity-0")} />
+                    </button>
+                  );
+                })
+              )}
+            </div>
+          </Popover.Dialog>
         </Popover.Content>
       </Popover>
     );
