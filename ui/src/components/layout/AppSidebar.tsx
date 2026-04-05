@@ -24,6 +24,7 @@ import { useInboxBadge } from "../../hooks/useInboxBadge";
 import { cn } from "../../lib/utils";
 import { PluginSlotOutlet } from "@/plugins/slots";
 import { SidebarGroup } from "./SidebarGroup";
+import { CompanySwitcher } from "./CompanySwitcher";
 import type { HealthStatus } from "../../api/health";
 import type { LucideIcon } from "lucide-react";
 
@@ -280,11 +281,7 @@ export function AppSidebar({
     <aside className="flex h-full w-60 shrink-0 flex-col overflow-hidden border-r border-default-200/40 bg-content1/60 backdrop-blur-md">
       {/* ── Header ── */}
       <div className="flex flex-col gap-2 px-2 pb-2 pt-3">
-        <CompanyHeader
-          brandColor={selectedCompany?.brandColor}
-          name={selectedCompany?.name ?? "Select company"}
-          onOpen={handleCompanySwitcherOpen}
-        />
+        <CompanySwitcher />
         <SearchTrigger />
       </div>
 

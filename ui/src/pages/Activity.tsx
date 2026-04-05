@@ -96,18 +96,26 @@ export function Activity() {
     <div className="space-y-4">
       <div className="flex items-center justify-end">
         <Select
-          selectedKey={filter}
-          onSelectionChange={(key) => setFilter(String(key))}
-          className="w-[140px]"
+          value={filter}
+          onChange={(key) => setFilter(String(key))}
+          className="w-[160px]"
           aria-label="Filter by type"
+          placeholder="All types"
         >
-          <Select.Trigger className="h-8 text-xs" />
+          <Select.Trigger className="h-8 text-xs">
+            <Select.Value />
+            <Select.Indicator />
+          </Select.Trigger>
           <Select.Popover>
             <ListBox>
-              <ListBox.Item id="all">All types</ListBox.Item>
+              <ListBox.Item id="all" textValue="All types">
+                All types
+                <ListBox.ItemIndicator />
+              </ListBox.Item>
               {entityTypes.map((type) => (
-                <ListBox.Item key={type} id={type}>
+                <ListBox.Item key={type} id={type} textValue={type.charAt(0).toUpperCase() + type.slice(1)}>
                   {type.charAt(0).toUpperCase() + type.slice(1)}
+                  <ListBox.ItemIndicator />
                 </ListBox.Item>
               ))}
             </ListBox>
