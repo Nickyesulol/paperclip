@@ -229,12 +229,13 @@ export function Dashboard() {
             </div>
           ) : null}
 
-          <div className="grid grid-cols-2 xl:grid-cols-4 gap-1 sm:gap-2">
+          <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
             <MetricCard
               icon={Bot}
               value={data.agents.active + data.agents.running + data.agents.paused + data.agents.error}
               label="Agents Enabled"
               to="/agents"
+              tone="accent"
               description={
                 <span>
                   {data.agents.running} running{", "}
@@ -248,6 +249,7 @@ export function Dashboard() {
               value={data.tasks.inProgress}
               label="Tasks In Progress"
               to="/issues"
+              tone="neutral"
               description={
                 <span>
                   {data.tasks.open} open{", "}
@@ -260,6 +262,7 @@ export function Dashboard() {
               value={formatCents(data.costs.monthSpendCents)}
               label="Month Spend"
               to="/costs"
+              tone="success"
               description={
                 <span>
                   {data.costs.monthBudgetCents > 0
@@ -273,6 +276,7 @@ export function Dashboard() {
               value={data.pendingApprovals + data.budgets.pendingApprovals}
               label="Pending Approvals"
               to="/approvals"
+              tone="neutral"
               description={
                 <span>
                   {data.budgets.pendingApprovals > 0
