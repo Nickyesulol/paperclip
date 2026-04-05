@@ -21,7 +21,6 @@ import { Identity } from "../components/Identity";
 import { timeAgo } from "../lib/timeAgo";
 import { cn, formatCents } from "../lib/utils";
 import { Bot, CircleDot, DollarSign, ShieldCheck, LayoutDashboard, PauseCircle } from "lucide-react";
-import { ActiveAgentsPanel } from "../components/ActiveAgentsPanel";
 import { ChartCard, RunActivityChart, PriorityChart, IssueStatusChart, SuccessRateChart } from "../components/ActivityCharts";
 import { PageSkeleton } from "../components/PageSkeleton";
 import type { Agent, Issue } from "@paperclipai/shared";
@@ -82,7 +81,7 @@ export function Dashboard() {
   });
 
   const recentIssues = issues ? getRecentIssues(issues) : [];
-  const recentActivity = useMemo(() => (activity ?? []).slice(0, 10), [activity]);
+  const recentActivity = useMemo(() => (activity ?? []).slice(0, 5), [activity]);
 
   useEffect(() => {
     for (const timer of activityAnimationTimersRef.current) {
@@ -207,8 +206,6 @@ export function Dashboard() {
         </div>
       )}
 
-      <ActiveAgentsPanel companyId={selectedCompanyId!} />
-
       {data && (
         <>
           {data.budgets.activeIncidents > 0 ? (
@@ -229,6 +226,11 @@ export function Dashboard() {
               </Link>
             </div>
           ) : null}
+
+          <div className="mb-2">
+            <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+            <p className="text-sm text-foreground/40 mt-1">Here's what's happening across your company.</p>
+          </div>
 
           <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
             <MetricCard
@@ -288,7 +290,7 @@ export function Dashboard() {
             />
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <ChartCard title="Run Activity" subtitle="Last 14 days">
               <RunActivityChart runs={runs ?? []} />
             </ChartCard>
@@ -310,7 +312,7 @@ export function Dashboard() {
             itemClassName="rounded-lg border bg-card p-4 shadow-sm"
           />
 
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-3">
             {/* Recent Activity */}
             {recentActivity.length > 0 && (
               <div className="min-w-0">
@@ -349,11 +351,11 @@ export function Dashboard() {
                       <p className="text-sm text-foreground/40">No tasks yet.</p>
                     </div>
                   ) : (
-                    recentIssues.slice(0, 10).map((issue) => (
+                    recentIssues.slice(0, 5).map((issue) => (
                       <Link
                         key={issue.id}
                         to={`/issues/${issue.identifier ?? issue.id}`}
-                        className="px-4 py-3 text-sm cursor-pointer hover:bg-accent/[0.03] transition-colors no-underline text-inherit block border-b border-default-200/30 last:border-0"
+                        className="px-4 py-3 text-sm cursor-pointer hover:bg-accent/[0.03] transition-colors no-underline text-inherit block border-b border-default-200/30 last:border-0 first:rounded-t-none last:rounded-b-2xl"
                       >
                         <div className="flex items-start gap-2 sm:items-center sm:gap-3">
                           {/* Status icon - left column on mobile */}
@@ -368,7 +370,7 @@ export function Dashboard() {
                             </span>
                             <span className="flex items-center gap-2 sm:order-1 sm:shrink-0">
                               <span className="hidden sm:inline-flex"><StatusIcon status={issue.status} /></span>
-                              <span className="text-xs font-mono text-muted-foreground">
+                              <span className="text-xs font-mono text-foreground/40">
                                 {issue.identifier ?? issue.id.slice(0, 8)}
                               </span>
                               {issue.assigneeAgentId && (() => {
@@ -377,8 +379,8 @@ export function Dashboard() {
                                   ? <span className="hidden sm:inline-flex"><Identity name={name} size="sm" /></span>
                                   : null;
                               })()}
-                              <span className="text-xs text-muted-foreground sm:hidden">&middot;</span>
-                              <span className="text-xs text-muted-foreground shrink-0 sm:order-last">
+                              <span className="text-xs text-foreground/40 sm:hidden">&middot;</span>
+                              <span className="text-xs text-foreground/40 shrink-0 sm:order-last">
                                 {timeAgo(issue.updatedAt)}
                               </span>
                             </span>
