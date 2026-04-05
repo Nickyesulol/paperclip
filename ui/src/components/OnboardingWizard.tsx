@@ -619,8 +619,8 @@ export function OnboardingWizard() {
         }
       }}
     >
-      <Modal.Container className="fixed inset-0 z-50 flex bg-background max-w-none w-full h-full rounded-none p-0">
-        <Modal.Dialog className="w-full h-full">
+      <Modal.Container size="full" className="fixed inset-0 z-50 flex bg-background max-w-none w-full h-full !rounded-none p-0 m-0">
+        <Modal.Dialog className="w-full h-full !rounded-none !shadow-none !border-none">
         {() => (
         <div className="w-full h-full flex bg-background" onKeyDown={handleKeyDown}>
           {/* Close button */}
