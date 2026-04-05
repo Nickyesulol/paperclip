@@ -10,7 +10,6 @@ import { agentsApi } from "../api/agents";
 import { issuesApi } from "../api/issues";
 import { projectsApi } from "../api/projects";
 import { queryKeys } from "../lib/queryKeys";
-import { Modal } from "@heroui/react";
 import { Popover } from "@heroui/react";
 import { Button } from "@heroui/react";
 import { cn } from "../lib/utils";
@@ -610,27 +609,17 @@ export function OnboardingWizard() {
   if (!effectiveOnboardingOpen) return null;
 
   return (
-    <Modal.Backdrop
-      isOpen={effectiveOnboardingOpen}
-      onOpenChange={(open: boolean) => {
-        if (!open) {
-          setRouteDismissed(true);
-          handleClose();
-        }
-      }}
-    >
-      <Modal.Container size="full" className="fixed inset-0 z-50 flex bg-background max-w-none w-full h-full !rounded-none p-0 m-0">
-        <Modal.Dialog className="w-full h-full !rounded-none !shadow-none !border-none">
-        {() => (
-        <div className="w-full h-full flex bg-background" onKeyDown={handleKeyDown}>
-          {/* Close button */}
-          <button
-            onClick={handleClose}
-            className="absolute top-4 left-4 z-10 rounded-lg p-1.5 text-foreground/40 hover:text-foreground hover:bg-default/40 transition-colors"
-          >
-            <X className="h-5 w-5" />
-            <span className="sr-only">Close</span>
-          </button>
+    <div className="fixed inset-0 z-50 bg-background" onKeyDown={handleKeyDown}>
+      {/* Back button */}
+      <button
+        onClick={handleClose}
+        className="absolute top-5 left-5 z-10 flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm text-foreground/40 hover:text-foreground hover:bg-default/40 transition-colors"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        <span>Back</span>
+      </button>
+
+      <div className="w-full h-full flex">
 
           {/* Left half — form */}
           <div
@@ -1334,10 +1323,7 @@ export function OnboardingWizard() {
             <AsciiArtAnimation />
           </div>
         </div>
-        )}
-        </Modal.Dialog>
-      </Modal.Container>
-    </Modal.Backdrop>
+    </div>
   );
 }
 
