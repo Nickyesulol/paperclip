@@ -49,6 +49,7 @@ export const InlineEntitySelector = forwardRef<HTMLButtonElement, InlineEntitySe
     const inputRef = useRef<HTMLInputElement>(null);
     const shouldPreventCloseAutoFocusRef = useRef(false);
     const isPointerDownRef = useRef(false);
+    const justClosedRef = useRef(false);
 
     const allOptions = useMemo<InlineEntityOption[]>(
       () => [{ id: "", label: noneLabel, searchText: noneLabel }, ...options],
@@ -90,7 +91,11 @@ export const InlineEntitySelector = forwardRef<HTMLButtonElement, InlineEntitySe
         isOpen={open}
         onOpenChange={(next) => {
           setOpen(next);
-          if (!next) setQuery("");
+          if (!next) {
+            setQuery("");
+            justClosedRef.current = true;
+            setTimeout(() => { justClosedRef.current = false; }, 100);
+          }
         }}
       >
         <Popover.Trigger>
@@ -103,7 +108,7 @@ export const InlineEntitySelector = forwardRef<HTMLButtonElement, InlineEntitySe
             )}
             onPointerDown={() => { isPointerDownRef.current = true; }}
             onFocus={() => {
-              if (!isPointerDownRef.current) setOpen(true);
+              if (!isPointerDownRef.current && !justClosedRef.current) setOpen(true);
               isPointerDownRef.current = false;
             }}
           >
