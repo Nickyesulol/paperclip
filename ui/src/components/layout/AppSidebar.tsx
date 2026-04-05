@@ -78,7 +78,7 @@ function NavItem({
         cn(
           "flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium rounded-xl transition-colors",
           isActive
-            ? "bg-gradient-to-r from-accent/15 to-accent/5 border border-accent/10 text-accent font-semibold"
+            ? "bg-gradient-to-r from-accent/15 to-accent/5 border border-accent/10 text-accent font-semibold glow-accent"
             : "text-foreground/40 hover:bg-default/40 hover:text-foreground/70 transition-colors",
         )
       }
@@ -118,7 +118,7 @@ function NavItem({
           className={cn(
             "ml-auto flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold leading-none",
             badgeTone === "danger"
-              ? "bg-gradient-to-r from-danger to-red-500 text-white shadow-sm shadow-danger/30"
+              ? "bg-gradient-to-r from-danger to-red-500 text-white shadow-sm shadow-danger/30 glow-danger"
               : "bg-default-200 text-default-700",
           )}
         >

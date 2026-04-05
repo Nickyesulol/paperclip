@@ -16,7 +16,7 @@ function CompanyAvatar({ company }: { company: Company }) {
 
   return (
     <span
-      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold text-white shadow-sm"
+      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold text-white shadow-sm glow-accent"
       style={{ backgroundColor: color }}
     >
       {initials}

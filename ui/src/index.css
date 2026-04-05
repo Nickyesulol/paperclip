@@ -110,6 +110,66 @@
   background: oklch(0.5 0 0) !important;
 }
 
+/* ── Glow & Breathing Animations ───────────────────────────────────────── */
+
+/* Subtle breathing glow for accent elements */
+@keyframes accent-breathe {
+  0%, 100% { box-shadow: 0 0 8px 0 rgba(99, 102, 241, 0.05), 0 0 20px 0 rgba(99, 102, 241, 0.03); }
+  50% { box-shadow: 0 0 12px 2px rgba(99, 102, 241, 0.1), 0 0 28px 4px rgba(99, 102, 241, 0.05); }
+}
+
+@keyframes accent-breathe-text {
+  0%, 100% { text-shadow: 0 0 8px rgba(99, 102, 241, 0.15); }
+  50% { text-shadow: 0 0 14px rgba(99, 102, 241, 0.25); }
+}
+
+@keyframes success-breathe {
+  0%, 100% { box-shadow: 0 0 8px 0 rgba(52, 211, 153, 0.05), 0 0 20px 0 rgba(52, 211, 153, 0.03); }
+  50% { box-shadow: 0 0 12px 2px rgba(52, 211, 153, 0.1), 0 0 28px 4px rgba(52, 211, 153, 0.05); }
+}
+
+@keyframes danger-breathe {
+  0%, 100% { box-shadow: 0 0 6px 0 rgba(239, 68, 68, 0.08); }
+  50% { box-shadow: 0 0 10px 2px rgba(239, 68, 68, 0.15); }
+}
+
+@keyframes subtle-pulse-ring {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+/* Utility classes for breathing glows */
+.glow-accent {
+  animation: accent-breathe 4s ease-in-out infinite;
+}
+
+.glow-accent-text {
+  animation: accent-breathe-text 4s ease-in-out infinite;
+}
+
+.glow-success {
+  animation: success-breathe 4s ease-in-out infinite;
+}
+
+.glow-danger {
+  animation: danger-breathe 3s ease-in-out infinite;
+}
+
+.glow-pulse-ring {
+  animation: subtle-pulse-ring 3s ease-in-out infinite;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .glow-accent,
+  .glow-accent-text,
+  .glow-success,
+  .glow-danger,
+  .glow-pulse-ring {
+    animation: none;
+  }
+}
+
 /* ── Electron integration ───────────────────────────────────────────────── */
 .electron.mac .sidebar-header {
   padding-left: 78px;
