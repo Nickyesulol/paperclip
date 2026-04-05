@@ -16,7 +16,7 @@ import { EmptyState } from "./EmptyState";
 import { Identity } from "./Identity";
 import { IssueRow } from "./IssueRow";
 import { PageSkeleton } from "./PageSkeleton";
-import { Button, Popover, Checkbox } from "@heroui/react";
+import { Button, Card, Popover, Checkbox } from "@heroui/react";
 import { CircleDot, Plus, Filter, ArrowUpDown, Layers, Check, X, ChevronRight, List, Columns3, User, Search } from "lucide-react";
 import { KanbanBoard } from "./KanbanBoard";
 import type { Issue } from "@paperclipai/shared";
@@ -413,7 +413,7 @@ export function IssuesList({
       {/* Toolbar */}
       <div className="flex items-center justify-between gap-2 sm:gap-3">
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <Button size="sm" variant="outline" onPress={() => openNewIssue(newIssueDefaults())}>
+          <Button size="sm" color="accent" onPress={() => openNewIssue(newIssueDefaults())}>
             <Plus className="h-4 w-4 sm:mr-1" />
             <span className="hidden sm:inline">New Issue</span>
           </Button>
@@ -711,7 +711,9 @@ export function IssuesList({
           onUpdateIssue={onUpdateIssue}
         />
       ) : (
-        groupedContent.map((group) => (
+        <Card className="border-default-200/60">
+          <Card.Content className="p-0">
+        {groupedContent.map((group) => (
           <CollapsibleGroup
             key={group.key}
             groupKey={group.key}
@@ -909,7 +911,9 @@ export function IssuesList({
               />
             ))}
           </CollapsibleGroup>
-        ))
+        ))}
+          </Card.Content>
+        </Card>
       )}
     </div>
   );
