@@ -1963,7 +1963,7 @@ export function Inbox() {
         <>
           {showSeparatorBefore("alerts") && <Separator />}
           <div>
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            <h3 className="mb-3 text-sm font-semibold text-foreground/60">
               Alerts
             </h3>
             <div className="divide-y divide-border border border-border">
