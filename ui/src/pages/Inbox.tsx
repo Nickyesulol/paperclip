@@ -1642,8 +1642,7 @@ export function Inbox() {
               >
                 {markAllReadMutation.isPending ? "Marking…" : "Mark all as read"}
               </Button>
-              <Modal isOpen={showMarkAllReadConfirm} onOpenChange={setShowMarkAllReadConfirm}>
-                <Modal.Backdrop />
+              <Modal.Backdrop isOpen={showMarkAllReadConfirm} onOpenChange={setShowMarkAllReadConfirm}>
                 <Modal.Container>
                   <Modal.Dialog>
                     {({ close }) => (
@@ -1673,7 +1672,7 @@ export function Inbox() {
                     )}
                   </Modal.Dialog>
                 </Modal.Container>
-              </Modal>
+              </Modal.Backdrop>
             </>
           )}
         </div>

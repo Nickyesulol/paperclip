@@ -157,8 +157,7 @@ export function PluginManager() {
           <Plus className="h-4 w-4" />
           Install Plugin
         </Button>
-        <Modal isOpen={installDialogOpen} onOpenChange={setInstallDialogOpen}>
-          <Modal.Backdrop />
+        <Modal.Backdrop isOpen={installDialogOpen} onOpenChange={setInstallDialogOpen}>
           <Modal.Container>
             <Modal.Dialog>
               {({ close }) => (
@@ -195,7 +194,7 @@ export function PluginManager() {
               )}
             </Modal.Dialog>
           </Modal.Container>
-        </Modal>
+        </Modal.Backdrop>
       </div>
 
       <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3">
@@ -417,11 +416,10 @@ export function PluginManager() {
         )}
       </section>
 
-      <Modal
+      <Modal.Backdrop
         isOpen={uninstallPluginId !== null}
-        onOpenChange={(open) => { if (!open) setUninstallPluginId(null); }}
+        onOpenChange={(open: boolean) => { if (!open) setUninstallPluginId(null); }}
       >
-        <Modal.Backdrop />
         <Modal.Container>
           <Modal.Dialog>
             {({ close }) => (
@@ -452,13 +450,12 @@ export function PluginManager() {
             )}
           </Modal.Dialog>
         </Modal.Container>
-      </Modal>
+      </Modal.Backdrop>
 
-      <Modal
+      <Modal.Backdrop
         isOpen={errorDetailsPlugin !== null}
-        onOpenChange={(open) => { if (!open) setErrorDetailsPlugin(null); }}
+        onOpenChange={(open: boolean) => { if (!open) setErrorDetailsPlugin(null); }}
       >
-        <Modal.Backdrop />
         <Modal.Container className="sm:max-w-2xl">
           <Modal.Dialog>
             {({ close }) => (
@@ -501,7 +498,7 @@ export function PluginManager() {
             )}
           </Modal.Dialog>
         </Modal.Container>
-      </Modal>
+      </Modal.Backdrop>
     </div>
   );
 }

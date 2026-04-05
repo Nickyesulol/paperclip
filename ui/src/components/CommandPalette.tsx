@@ -298,14 +298,13 @@ export function CommandPalette() {
 
   return (
     <>
-      <Modal
+      <Modal.Backdrop
         isOpen={open}
-        onOpenChange={(v) => {
+        onOpenChange={(v: boolean) => {
           setOpen(v);
           if (v && isMobile) setSidebarOpen(false);
         }}
       >
-        <Modal.Backdrop />
         <Modal.Container placement="top" size="lg" className="mt-[10vh]">
           <Modal.Dialog>
             <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-background shadow-2xl">
@@ -367,7 +366,7 @@ export function CommandPalette() {
             </div>
           </Modal.Dialog>
         </Modal.Container>
-      </Modal>
+      </Modal.Backdrop>
     </>
   );
 }

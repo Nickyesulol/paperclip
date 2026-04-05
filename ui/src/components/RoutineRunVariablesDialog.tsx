@@ -174,8 +174,7 @@ export function RoutineRunVariablesDialog({
   }, []);
 
   return (
-    <Modal isOpen={open} onOpenChange={(next) => !isPending && onOpenChange(next)}>
-      <Modal.Backdrop />
+    <Modal.Backdrop isOpen={open} onOpenChange={(next: boolean) => !isPending && onOpenChange(next)}>
       <Modal.Container size="md">
         <Modal.Dialog>
           <div className="px-6 pt-6 pb-2">
@@ -304,6 +303,6 @@ export function RoutineRunVariablesDialog({
           </div>
         </Modal.Dialog>
       </Modal.Container>
-    </Modal>
+    </Modal.Backdrop>
   );
 }

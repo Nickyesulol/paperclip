@@ -60,8 +60,7 @@ export function PathInstructionsModal({
   const current = instructions[platform];
 
   return (
-    <Modal isOpen={open} onOpenChange={onOpenChange}>
-      <Modal.Backdrop />
+    <Modal.Backdrop isOpen={open} onOpenChange={onOpenChange}>
       <Modal.Container size="sm">
         <Modal.Dialog>
           <div className="px-6 pt-6 pb-2">
@@ -114,7 +113,7 @@ export function PathInstructionsModal({
           </div>
         </Modal.Dialog>
       </Modal.Container>
-    </Modal>
+    </Modal.Backdrop>
   );
 }
 

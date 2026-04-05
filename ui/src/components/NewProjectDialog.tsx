@@ -192,16 +192,15 @@ export function NewProjectDialog() {
   const availableGoals = (goals ?? []).filter((g) => !goalIds.includes(g.id));
 
   return (
-    <Modal
+    <Modal.Backdrop
       isOpen={newProjectOpen}
-      onOpenChange={(open) => {
+      onOpenChange={(open: boolean) => {
         if (!open) {
           reset();
           closeNewProject();
         }
       }}
     >
-      <Modal.Backdrop />
       <Modal.Container size={expanded ? "lg" : "md"}>
         <Modal.Dialog>
           <div
@@ -439,6 +438,6 @@ export function NewProjectDialog() {
           </div>
         </Modal.Dialog>
       </Modal.Container>
-    </Modal>
+    </Modal.Backdrop>
   );
 }

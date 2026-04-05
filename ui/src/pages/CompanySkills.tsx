@@ -991,8 +991,7 @@ export function CompanySkills() {
 
   return (
     <>
-      <Modal isOpen={emptySourceHelpOpen} onOpenChange={setEmptySourceHelpOpen}>
-        <Modal.Backdrop />
+      <Modal.Backdrop isOpen={emptySourceHelpOpen} onOpenChange={setEmptySourceHelpOpen}>
         <Modal.Container size="md">
           <Modal.Dialog>
             <div className="p-6 space-y-4 max-w-md">
@@ -1038,7 +1037,7 @@ export function CompanySkills() {
             </div>
           </Modal.Dialog>
         </Modal.Container>
-      </Modal>
+      </Modal.Backdrop>
 
       <div className="grid min-h-[calc(100vh-12rem)] gap-0 xl:grid-cols-[19rem_minmax(0,1fr)]">
         <aside className="border-r border-border">

@@ -77,10 +77,9 @@ export function ExecutionWorkspaceCloseDialog({
     readiness.state === "blocked";
 
   return (
-    <Modal isOpen={open} onOpenChange={(nextOpen: boolean) => {
+    <Modal.Backdrop isOpen={open} onOpenChange={(nextOpen: boolean) => {
       if (!closeWorkspace.isPending) onOpenChange(nextOpen);
     }}>
-      <Modal.Backdrop />
       <Modal.Container size="lg">
         <Modal.Dialog>
           <Modal.Header>
@@ -306,6 +305,6 @@ export function ExecutionWorkspaceCloseDialog({
           </Modal.Footer>
         </Modal.Dialog>
       </Modal.Container>
-    </Modal>
+    </Modal.Backdrop>
   );
 }

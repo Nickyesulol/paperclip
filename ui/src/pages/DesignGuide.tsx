@@ -789,8 +789,7 @@ export function DesignGuide() {
       {/* ============================================================ */}
       <Section title="Modal">
         <Button variant="outline" onPress={() => setDialogOpen(true)}>Open Modal</Button>
-        <Modal isOpen={dialogOpen} onOpenChange={setDialogOpen}>
-          <Modal.Backdrop />
+        <Modal.Backdrop isOpen={dialogOpen} onOpenChange={setDialogOpen}>
           <Modal.Container size="md">
             <Modal.Dialog>
               <div className="p-6 space-y-4 max-w-md">
@@ -821,7 +820,7 @@ export function DesignGuide() {
               </div>
             </Modal.Dialog>
           </Modal.Container>
-        </Modal>
+        </Modal.Backdrop>
       </Section>
 
       {/* ============================================================ */}

@@ -98,16 +98,15 @@ export function NewGoalDialog() {
   const currentParent = (goals ?? []).find((g) => g.id === appliedParentId);
 
   return (
-    <Modal
+    <Modal.Backdrop
       isOpen={newGoalOpen}
-      onOpenChange={(open) => {
+      onOpenChange={(open: boolean) => {
         if (!open) {
           reset();
           closeNewGoal();
         }
       }}
     >
-      <Modal.Backdrop />
       <Modal.Container size={expanded ? "lg" : "md"}>
         <Modal.Dialog>
           <div
@@ -276,6 +275,6 @@ export function NewGoalDialog() {
           </div>
         </Modal.Dialog>
       </Modal.Container>
-    </Modal>
+    </Modal.Backdrop>
   );
 }

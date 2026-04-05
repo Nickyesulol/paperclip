@@ -164,16 +164,15 @@ export function OutputFeedbackButtons({
         </div>
       ) : null}
 
-      <Modal
+      <Modal.Backdrop
         isOpen={Boolean(pendingVote)}
-        onOpenChange={(open) => {
+        onOpenChange={(open: boolean) => {
           if (!open && !isSaving) {
             setPendingVote(null);
             setOptimisticVote(null);
           }
         }}
       >
-        <Modal.Backdrop />
         <Modal.Container>
           <Modal.Dialog>
             <div className="p-6 space-y-4">
@@ -249,7 +248,7 @@ export function OutputFeedbackButtons({
             </div>
           </Modal.Dialog>
         </Modal.Container>
-      </Modal>
+      </Modal.Backdrop>
     </>
   );
 }

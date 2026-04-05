@@ -610,16 +610,15 @@ export function OnboardingWizard() {
   if (!effectiveOnboardingOpen) return null;
 
   return (
-    <Modal
+    <Modal.Backdrop
       isOpen={effectiveOnboardingOpen}
-      onOpenChange={(open) => {
+      onOpenChange={(open: boolean) => {
         if (!open) {
           setRouteDismissed(true);
           handleClose();
         }
       }}
     >
-      <Modal.Backdrop />
       <Modal.Container className="fixed inset-0 z-50 flex bg-background max-w-none w-full h-full rounded-none p-0">
         <Modal.Dialog>
         {() => (
@@ -1338,7 +1337,7 @@ export function OnboardingWizard() {
         )}
         </Modal.Dialog>
       </Modal.Container>
-    </Modal>
+    </Modal.Backdrop>
   );
 }
 

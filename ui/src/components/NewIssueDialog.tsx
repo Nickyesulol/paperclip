@@ -852,13 +852,12 @@ export function NewIssueDialog() {
   );
 
   return (
-    <Modal
+    <Modal.Backdrop
       isOpen={newIssueOpen}
-      onOpenChange={(open) => {
+      onOpenChange={(open: boolean) => {
         if (!open && !createIssue.isPending) closeNewIssue();
       }}
     >
-      <Modal.Backdrop />
       <Modal.Container size={expanded ? "lg" : "md"}>
         <Modal.Dialog>
       <div
@@ -1450,6 +1449,6 @@ export function NewIssueDialog() {
       </div>
         </Modal.Dialog>
       </Modal.Container>
-    </Modal>
+    </Modal.Backdrop>
   );
 }

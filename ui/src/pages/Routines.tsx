@@ -276,15 +276,14 @@ export function Routines() {
         </Button>
       </div>
 
-      <Modal
+      <Modal.Backdrop
         isOpen={composerOpen}
-        onOpenChange={(open) => {
+        onOpenChange={(open: boolean) => {
           if (!createRoutine.isPending) {
             setComposerOpen(open);
           }
         }}
       >
-        <Modal.Backdrop />
         <Modal.Container className="flex max-h-[calc(100dvh-2rem)] max-w-3xl flex-col gap-0 overflow-hidden p-0">
           <Modal.Dialog>
           {() => (<>
@@ -539,7 +538,7 @@ export function Routines() {
           </>)}
           </Modal.Dialog>
         </Modal.Container>
-      </Modal>
+      </Modal.Backdrop>
 
       {error ? (
         <Card>

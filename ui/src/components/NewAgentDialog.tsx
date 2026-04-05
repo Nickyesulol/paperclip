@@ -123,16 +123,15 @@ export function NewAgentDialog() {
   }
 
   return (
-    <Modal
+    <Modal.Backdrop
       isOpen={newAgentOpen}
-      onOpenChange={(open) => {
+      onOpenChange={(open: boolean) => {
         if (!open) {
           setShowAdvancedCards(false);
           closeNewAgent();
         }
       }}
     >
-      <Modal.Backdrop />
       <Modal.Container size="md">
         <Modal.Dialog>
           <div className="p-0 gap-0 overflow-hidden">
@@ -226,6 +225,6 @@ export function NewAgentDialog() {
           </div>
         </Modal.Dialog>
       </Modal.Container>
-    </Modal>
+    </Modal.Backdrop>
   );
 }
