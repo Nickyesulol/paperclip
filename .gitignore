@@ -53,3 +53,8 @@ tests/release-smoke/playwright-report/
 .claude/worktrees/
 .aidesigner/*
 !.aidesigner/.gitkeep
+.claude/agents/
+.claude/commands/
+.claude/skills/
+.mcp.json
+.superpowers/
