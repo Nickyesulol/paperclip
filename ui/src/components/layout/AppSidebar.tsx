@@ -77,8 +77,8 @@ function NavItem({
         cn(
           "flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium rounded-xl transition-colors",
           isActive
-            ? "bg-[color-mix(in_srgb,var(--color-primary)_12%,transparent)] text-primary font-semibold"
-            : "text-foreground/60 hover:bg-default/50 hover:text-foreground",
+            ? "bg-gradient-to-r from-accent/15 to-accent/5 border border-accent/10 text-accent font-semibold"
+            : "text-foreground/40 hover:bg-default/40 hover:text-foreground/70 transition-colors",
         )
       }
     >
@@ -117,7 +117,7 @@ function NavItem({
           className={cn(
             "ml-auto rounded-full px-1.5 py-0.5 text-xs leading-none",
             badgeTone === "danger"
-              ? "bg-danger/90 text-white"
+              ? "bg-gradient-to-r from-danger to-red-500 text-white shadow-sm shadow-danger/30"
               : "bg-default-200 text-default-700",
           )}
         >
@@ -146,8 +146,8 @@ function CompanyHeader({
     >
       {/* Company avatar */}
       <span
-        className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[11px] font-bold text-white"
-        style={{ backgroundColor: brandColor ?? "#6366f1" }}
+        className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[11px] font-bold text-white shadow-md shadow-accent/20"
+        style={{ background: brandColor ? brandColor : 'linear-gradient(135deg, var(--color-accent), var(--color-accent))' }}
       >
         {name.slice(0, 1).toUpperCase()}
       </span>
@@ -176,7 +176,7 @@ function SearchTrigger() {
       className="mx-3 flex items-center gap-2 rounded-xl border border-default-200/60 bg-default/30 px-3 py-2 text-[12px] text-foreground/40 transition-colors hover:bg-default/60 hover:text-foreground/60"
     >
       <span className="flex-1 text-left">Search...</span>
-      <kbd className="rounded-md border border-default-200 bg-background px-1.5 py-0.5 text-[10px] font-mono text-foreground/30">
+      <kbd className="rounded-md border border-default-200/50 bg-background px-1.5 py-0.5 text-[10px] font-mono text-foreground/25">
         ⌘K
       </kbd>
     </button>

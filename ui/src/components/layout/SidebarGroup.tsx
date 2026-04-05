@@ -74,7 +74,7 @@ export function SidebarGroup({
               <ChevronRight className="h-3 w-3 text-foreground/40" />
             </motion.span>
           )}
-          <span className="text-[10px] font-semibold uppercase tracking-widest font-mono text-foreground/40 truncate">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-accent/30 truncate">
             {label}
           </span>
         </button>
