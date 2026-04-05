@@ -870,8 +870,8 @@ export function NewIssueDialog() {
         onKeyDown={handleKeyDown}
       >
         {/* Header bar */}
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-border shrink-0">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-default-200/40 shrink-0">
+          <div className="flex items-center gap-2 text-sm text-foreground/40">
             <Popover isOpen={companyOpen} onOpenChange={setCompanyOpen}>
               <Popover.Trigger>
                 <button
@@ -925,7 +925,7 @@ export function NewIssueDialog() {
                 ))}
               </Popover.Content>
             </Popover>
-            <span className="text-muted-foreground/60">&rsaquo;</span>
+            <span className="text-foreground/40/60">&rsaquo;</span>
             <span>New issue</span>
           </div>
           <div className="flex items-center gap-1">
@@ -933,7 +933,7 @@ export function NewIssueDialog() {
               variant="ghost"
               isIconOnly
               size="sm"
-              className="text-muted-foreground"
+              className="text-foreground/40"
               onPress={() => setExpanded(!expanded)}
               isDisabled={createIssue.isPending}
             >
@@ -943,7 +943,7 @@ export function NewIssueDialog() {
               variant="ghost"
               isIconOnly
               size="sm"
-              className="text-muted-foreground"
+              className="text-foreground/40"
               onPress={() => closeNewIssue()}
               isDisabled={createIssue.isPending}
             >
@@ -955,7 +955,7 @@ export function NewIssueDialog() {
         {/* Title */}
         <div className="px-4 pt-4 pb-2 shrink-0">
           <textarea
-            className="w-full text-lg font-semibold bg-transparent outline-none resize-none overflow-hidden placeholder:text-muted-foreground/50"
+            className="w-full text-lg font-semibold bg-transparent outline-none resize-none overflow-hidden placeholder:text-foreground/40/50"
             placeholder="Issue title"
             rows={1}
             value={title}
@@ -995,7 +995,7 @@ export function NewIssueDialog() {
 
         <div className="px-4 pb-2 shrink-0">
           <div className="overflow-x-auto overscroll-x-contain">
-            <div className="inline-flex items-center gap-2 text-sm text-muted-foreground flex-wrap sm:flex-nowrap sm:min-w-max">
+            <div className="inline-flex items-center gap-2 text-sm text-foreground/40 flex-wrap sm:flex-nowrap sm:min-w-max">
               <span>For</span>
               <InlineEntitySelector
                 ref={assigneeSelectorRef}
@@ -1024,14 +1024,14 @@ export function NewIssueDialog() {
                   option ? (
                     currentAssignee ? (
                       <>
-                        <AgentIcon icon={currentAssignee.icon} className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                        <AgentIcon icon={currentAssignee.icon} className="h-3.5 w-3.5 shrink-0 text-foreground/40" />
                         <span className="truncate">{option.label}</span>
                       </>
                     ) : (
                       <span className="truncate">{option.label}</span>
                     )
                   ) : (
-                    <span className="text-muted-foreground">Assignee</span>
+                    <span className="text-foreground/40">Assignee</span>
                   )
                 }
                 renderOption={(option) => {
@@ -1041,7 +1041,7 @@ export function NewIssueDialog() {
                     : null;
                   return (
                     <>
-                      {assignee ? <AgentIcon icon={assignee.icon} className="h-3.5 w-3.5 shrink-0 text-muted-foreground" /> : null}
+                      {assignee ? <AgentIcon icon={assignee.icon} className="h-3.5 w-3.5 shrink-0 text-foreground/40" /> : null}
                       <span className="truncate">{option.label}</span>
                     </>
                   );
@@ -1071,7 +1071,7 @@ export function NewIssueDialog() {
                       <span className="truncate">{option.label}</span>
                     </>
                   ) : (
-                    <span className="text-muted-foreground">Project</span>
+                    <span className="text-foreground/40">Project</span>
                   )
                 }
                 renderOption={(option) => {
@@ -1096,11 +1096,11 @@ export function NewIssueDialog() {
           <div className="px-4 py-3 shrink-0 space-y-2">
             <div className="space-y-1.5">
               <div className="text-xs font-medium">Execution workspace</div>
-              <div className="text-[11px] text-muted-foreground">
+              <div className="text-[11px] text-foreground/40">
                 Control whether this issue runs in the shared workspace, a new isolated workspace, or an existing one.
               </div>
               <select
-                className="w-full rounded border border-border bg-transparent px-2 py-1.5 text-xs outline-none"
+                className="w-full rounded border border-default-200/40 bg-transparent px-2 py-1.5 text-xs outline-none"
                 value={executionWorkspaceMode}
                 onChange={(e) => {
                   setExecutionWorkspaceMode(e.target.value);
@@ -1117,7 +1117,7 @@ export function NewIssueDialog() {
               </select>
               {executionWorkspaceMode === "reuse_existing" && (
                 <select
-                  className="w-full rounded border border-border bg-transparent px-2 py-1.5 text-xs outline-none"
+                  className="w-full rounded border border-default-200/40 bg-transparent px-2 py-1.5 text-xs outline-none"
                   value={selectedExecutionWorkspaceId}
                   onChange={(e) => setSelectedExecutionWorkspaceId(e.target.value)}
                 >
@@ -1130,7 +1130,7 @@ export function NewIssueDialog() {
                 </select>
               )}
               {executionWorkspaceMode === "reuse_existing" && selectedReusableExecutionWorkspace && (
-                <div className="text-[11px] text-muted-foreground">
+                <div className="text-[11px] text-foreground/40">
                   Reusing {selectedReusableExecutionWorkspace.name} from {selectedReusableExecutionWorkspace.branchName ?? selectedReusableExecutionWorkspace.cwd ?? "existing execution workspace"}.
                 </div>
               )}
@@ -1141,16 +1141,16 @@ export function NewIssueDialog() {
         {supportsAssigneeOverrides && (
           <div className="px-4 pb-2 shrink-0">
             <button
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground/40 hover:text-foreground transition-colors"
               onClick={() => setAssigneeOptionsOpen((open) => !open)}
             >
               {assigneeOptionsOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
               {assigneeOptionsTitle}
             </button>
             {assigneeOptionsOpen && (
-              <div className="mt-2 rounded-md border border-border p-3 bg-muted/20 space-y-3">
+              <div className="mt-2 rounded-md border border-default-200/40 p-3 bg-muted/20 space-y-3">
                 <div className="space-y-1.5">
-                  <div className="text-xs text-muted-foreground">Model</div>
+                  <div className="text-xs text-foreground/40">Model</div>
                   <InlineEntitySelector
                     value={assigneeModelOverride}
                     options={modelOverrideOptions}
@@ -1163,13 +1163,13 @@ export function NewIssueDialog() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <div className="text-xs text-muted-foreground">Thinking effort</div>
+                  <div className="text-xs text-foreground/40">Thinking effort</div>
                   <div className="flex items-center gap-1.5 flex-wrap">
                     {thinkingEffortOptions.map((option) => (
                       <button
                         key={option.value || "default"}
                         className={cn(
-                          "px-2 py-1 rounded-md text-xs border border-border hover:bg-accent/50 transition-colors",
+                          "px-2 py-1 rounded-md text-xs border border-default-200/40 hover:bg-accent/50 transition-colors",
                           assigneeThinkingEffort === option.value && "bg-accent"
                         )}
                         onClick={() => setAssigneeThinkingEffort(option.value)}
@@ -1180,8 +1180,8 @@ export function NewIssueDialog() {
                   </div>
                 </div>
                 {assigneeAdapterType === "claude_local" && (
-                  <div className="flex items-center justify-between rounded-md border border-border px-2 py-1.5">
-                    <div className="text-xs text-muted-foreground">Enable Chrome (--chrome)</div>
+                  <div className="flex items-center justify-between rounded-md border border-default-200/40 px-2 py-1.5">
+                    <div className="text-xs text-foreground/40">Enable Chrome (--chrome)</div>
                     <button
                       data-slot="toggle"
                       className={cn(
@@ -1206,7 +1206,7 @@ export function NewIssueDialog() {
 
         {/* Description */}
         <div
-          className={cn("px-4 pb-2 overflow-y-auto min-h-0 border-t border-border/60 pt-3", expanded ? "flex-1" : "")}
+          className={cn("px-4 pb-2 overflow-y-auto min-h-0 border-t border-default-200/40/60 pt-3", expanded ? "flex-1" : "")}
           onDragEnter={handleFileDragEnter}
           onDragOver={handleFileDragOver}
           onDragLeave={handleFileDragLeave}
@@ -1225,7 +1225,7 @@ export function NewIssueDialog() {
               placeholder="Add description..."
               bordered={false}
               mentions={mentionOptions}
-              contentClassName={cn("text-sm text-muted-foreground pb-12", expanded ? "min-h-[220px]" : "min-h-[120px]")}
+              contentClassName={cn("text-sm text-foreground/40 pb-12", expanded ? "min-h-[220px]" : "min-h-[120px]")}
               imageUploadHandler={async (file) => {
                 const asset = await uploadDescriptionImage.mutateAsync(file);
                 return asset.contentPath;
@@ -1233,21 +1233,21 @@ export function NewIssueDialog() {
             />
           </div>
           {stagedFiles.length > 0 ? (
-            <div className="mt-4 space-y-3 rounded-lg border border-border/70 p-3">
+            <div className="mt-4 space-y-3 rounded-lg border border-default-200/40/70 p-3">
               {stagedDocuments.length > 0 ? (
                 <div className="space-y-2">
-                  <div className="text-xs font-medium text-muted-foreground">Documents</div>
+                  <div className="text-xs font-medium text-foreground/40">Documents</div>
                   <div className="space-y-2">
                     {stagedDocuments.map((file) => (
-                      <div key={file.id} className="flex items-start justify-between gap-3 rounded-md border border-border/70 px-3 py-2">
+                      <div key={file.id} className="flex items-start justify-between gap-3 rounded-md border border-default-200/40/70 px-3 py-2">
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
-                            <span className="rounded-full border border-border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                            <span className="rounded-full border border-default-200/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/40">
                               {file.documentKey}
                             </span>
                             <span className="truncate text-sm">{file.file.name}</span>
                           </div>
-                          <div className="mt-1 flex items-center gap-2 text-[11px] text-muted-foreground">
+                          <div className="mt-1 flex items-center gap-2 text-[11px] text-foreground/40">
                             <FileText className="h-3.5 w-3.5" />
                             <span>{file.title || file.file.name}</span>
                             <span>•</span>
@@ -1258,7 +1258,7 @@ export function NewIssueDialog() {
                           variant="ghost"
                           isIconOnly
                           size="sm"
-                          className="shrink-0 text-muted-foreground"
+                          className="shrink-0 text-foreground/40"
                           onPress={() => removeStagedFile(file.id)}
                           isDisabled={createIssue.isPending}
                           aria-label="Remove document"
@@ -1273,16 +1273,16 @@ export function NewIssueDialog() {
 
               {stagedAttachments.length > 0 ? (
                 <div className="space-y-2">
-                  <div className="text-xs font-medium text-muted-foreground">Attachments</div>
+                  <div className="text-xs font-medium text-foreground/40">Attachments</div>
                   <div className="space-y-2">
                     {stagedAttachments.map((file) => (
-                      <div key={file.id} className="flex items-start justify-between gap-3 rounded-md border border-border/70 px-3 py-2">
+                      <div key={file.id} className="flex items-start justify-between gap-3 rounded-md border border-default-200/40/70 px-3 py-2">
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
-                            <Paperclip className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                            <Paperclip className="h-3.5 w-3.5 shrink-0 text-foreground/40" />
                             <span className="truncate text-sm">{file.file.name}</span>
                           </div>
-                          <div className="mt-1 text-[11px] text-muted-foreground">
+                          <div className="mt-1 text-[11px] text-foreground/40">
                             {file.file.type || "application/octet-stream"} • {formatFileSize(file.file)}
                           </div>
                         </div>
@@ -1290,7 +1290,7 @@ export function NewIssueDialog() {
                           variant="ghost"
                           isIconOnly
                           size="sm"
-                          className="shrink-0 text-muted-foreground"
+                          className="shrink-0 text-foreground/40"
                           onPress={() => removeStagedFile(file.id)}
                           isDisabled={createIssue.isPending}
                           aria-label="Remove attachment"
@@ -1307,11 +1307,11 @@ export function NewIssueDialog() {
         </div>
 
         {/* Property chips bar */}
-        <div className="flex items-center gap-1.5 px-4 py-2 border-t border-border flex-wrap shrink-0">
+        <div className="flex items-center gap-1.5 px-4 py-2 border-t border-default-200/40 flex-wrap shrink-0">
           {/* Status chip */}
           <Popover isOpen={statusOpen} onOpenChange={setStatusOpen}>
             <Popover.Trigger>
-              <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs hover:bg-accent/50 transition-colors">
+              <button className="inline-flex items-center gap-1.5 rounded-md border border-default-200/40 px-2 py-1 text-xs hover:bg-accent/50 transition-colors">
                 <CircleDot className={cn("h-3 w-3", currentStatus.color)} />
                 {currentStatus.label}
               </button>
@@ -1336,7 +1336,7 @@ export function NewIssueDialog() {
           {/* Priority chip */}
           <Popover isOpen={priorityOpen} onOpenChange={setPriorityOpen}>
             <Popover.Trigger>
-              <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs hover:bg-accent/50 transition-colors">
+              <button className="inline-flex items-center gap-1.5 rounded-md border border-default-200/40 px-2 py-1 text-xs hover:bg-accent/50 transition-colors">
                 {currentPriority ? (
                   <>
                     <currentPriority.icon className={cn("h-3 w-3", currentPriority.color)} />
@@ -1344,7 +1344,7 @@ export function NewIssueDialog() {
                   </>
                 ) : (
                   <>
-                    <Minus className="h-3 w-3 text-muted-foreground" />
+                    <Minus className="h-3 w-3 text-foreground/40" />
                     Priority
                   </>
                 )}
@@ -1368,7 +1368,7 @@ export function NewIssueDialog() {
           </Popover>
 
           {/* Labels chip (placeholder) */}
-          <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs hover:bg-accent/50 transition-colors text-muted-foreground">
+          <button className="inline-flex items-center gap-1.5 rounded-md border border-default-200/40 px-2 py-1 text-xs hover:bg-accent/50 transition-colors text-foreground/40">
             <Tag className="h-3 w-3" />
             Labels
           </button>
@@ -1382,7 +1382,7 @@ export function NewIssueDialog() {
             multiple
           />
           <button
-            className="inline-flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs hover:bg-accent/50 transition-colors text-muted-foreground"
+            className="inline-flex items-center gap-1.5 rounded-md border border-default-200/40 px-2 py-1 text-xs hover:bg-accent/50 transition-colors text-foreground/40"
             onClick={() => stageFileInputRef.current?.click()}
             disabled={createIssue.isPending}
           >
@@ -1393,16 +1393,16 @@ export function NewIssueDialog() {
           {/* More (dates) */}
           <Popover isOpen={moreOpen} onOpenChange={setMoreOpen}>
             <Popover.Trigger>
-              <button className="inline-flex items-center justify-center rounded-md border border-border p-1 text-xs hover:bg-accent/50 transition-colors text-muted-foreground">
+              <button className="inline-flex items-center justify-center rounded-md border border-default-200/40 p-1 text-xs hover:bg-accent/50 transition-colors text-foreground/40">
                 <MoreHorizontal className="h-3 w-3" />
               </button>
             </Popover.Trigger>
             <Popover.Content className="w-44 p-1">
-              <button className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50 text-muted-foreground">
+              <button className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50 text-foreground/40">
                 <Calendar className="h-3 w-3" />
                 Start date
               </button>
-              <button className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50 text-muted-foreground">
+              <button className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50 text-foreground/40">
                 <Calendar className="h-3 w-3" />
                 Due date
               </button>
@@ -1411,11 +1411,11 @@ export function NewIssueDialog() {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between px-4 py-2.5 border-t border-border shrink-0">
+        <div className="flex items-center justify-between px-4 py-2.5 border-t border-default-200/40 shrink-0">
           <Button
             variant="ghost"
             size="sm"
-            className="text-muted-foreground"
+            className="text-foreground/40"
             onPress={discardDraft}
             isDisabled={createIssue.isPending || !canDiscardDraft}
           >
@@ -1424,12 +1424,12 @@ export function NewIssueDialog() {
           <div className="flex items-center gap-3">
             <div className="min-h-5 text-right">
               {createIssue.isPending ? (
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground/40">
                   <Loader2 className="h-3 w-3 animate-spin" />
                   Creating issue...
                 </span>
               ) : createIssue.isError ? (
-                <span className="text-xs text-destructive">{createIssueErrorMessage}</span>
+                <span className="text-xs text-danger">{createIssueErrorMessage}</span>
               ) : null}
             </div>
             <Button
