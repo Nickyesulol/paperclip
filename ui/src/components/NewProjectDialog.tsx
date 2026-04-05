@@ -215,7 +215,7 @@ export function NewProjectDialog() {
                     {selectedCompany.name.slice(0, 3).toUpperCase()}
                   </span>
                 )}
-                <span className="text-foreground/40/60">&rsaquo;</span>
+                <span className="text-foreground/60">&rsaquo;</span>
                 <span>New project</span>
               </div>
               <div className="flex items-center gap-1">
@@ -243,7 +243,7 @@ export function NewProjectDialog() {
             {/* Name */}
             <div className="px-4 pt-4 pb-2 shrink-0">
               <input
-                className="w-full text-lg font-semibold bg-transparent outline-none placeholder:text-foreground/40/50"
+                className="w-full text-lg font-semibold bg-transparent outline-none placeholder:text-foreground/50"
                 placeholder="Project name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -278,10 +278,10 @@ export function NewProjectDialog() {
               <div>
                 <div className="mb-1 flex items-center gap-1.5">
                   <label className="block text-xs text-foreground/40">Repo URL</label>
-                  <span className="text-xs text-foreground/40/50">optional</span>
+                  <span className="text-xs text-foreground/50">optional</span>
                   <Tooltip>
                     <Tooltip.Trigger>
-                      <HelpCircle className="h-3 w-3 text-foreground/40/50 cursor-help" />
+                      <HelpCircle className="h-3 w-3 text-foreground/50 cursor-help" />
                     </Tooltip.Trigger>
                     <Tooltip.Content className="max-w-[240px] text-xs">
                       Link a GitHub repository so agents can clone, read, and push code for this project.
@@ -299,10 +299,10 @@ export function NewProjectDialog() {
               <div>
                 <div className="mb-1 flex items-center gap-1.5">
                   <label className="block text-xs text-foreground/40">Local folder</label>
-                  <span className="text-xs text-foreground/40/50">optional</span>
+                  <span className="text-xs text-foreground/50">optional</span>
                   <Tooltip>
                     <Tooltip.Trigger>
-                      <HelpCircle className="h-3 w-3 text-foreground/40/50 cursor-help" />
+                      <HelpCircle className="h-3 w-3 text-foreground/50 cursor-help" />
                     </Tooltip.Trigger>
                     <Tooltip.Content className="max-w-[240px] text-xs">
                       Set an absolute path on this machine where local agents will read and write files for this project.
@@ -382,32 +382,34 @@ export function NewProjectDialog() {
                     {selectedGoals.length > 0 ? "+ Goal" : "Goal"}
                   </button>
                 </Popover.Trigger>
-                <Popover.Content className="w-56 p-1">
-                  {selectedGoals.length === 0 && (
-                    <button
-                      className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/[0.05] text-foreground/40"
-                      onClick={() => setGoalOpen(false)}
-                    >
-                      No goal
-                    </button>
-                  )}
-                  {availableGoals.map((g) => (
-                    <button
-                      key={g.id}
-                      className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/[0.05] truncate"
-                      onClick={() => {
-                        setGoalIds((prev) => [...prev, g.id]);
-                        setGoalOpen(false);
-                      }}
-                    >
-                      {g.title}
-                    </button>
-                  ))}
-                  {selectedGoals.length > 0 && availableGoals.length === 0 && (
-                    <div className="px-2 py-1.5 text-xs text-foreground/40">
-                      All goals already selected.
-                    </div>
-                  )}
+                <Popover.Content className="w-56 p-0">
+                  <Popover.Dialog className="overflow-hidden rounded-xl border border-default-200/60 bg-overlay shadow-lg p-1.5 max-h-56 overflow-y-auto">
+                    {selectedGoals.length === 0 && (
+                      <button
+                        className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded-lg hover:bg-default/40 text-foreground/40"
+                        onClick={() => setGoalOpen(false)}
+                      >
+                        No goal
+                      </button>
+                    )}
+                    {availableGoals.map((g) => (
+                      <button
+                        key={g.id}
+                        className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded-lg hover:bg-default/40 truncate"
+                        onClick={() => {
+                          setGoalIds((prev) => [...prev, g.id]);
+                          setGoalOpen(false);
+                        }}
+                      >
+                        {g.title}
+                      </button>
+                    ))}
+                    {selectedGoals.length > 0 && availableGoals.length === 0 && (
+                      <div className="px-2 py-1.5 text-xs text-foreground/40">
+                        All goals already selected.
+                      </div>
+                    )}
+                  </Popover.Dialog>
                 </Popover.Content>
               </Popover>
 

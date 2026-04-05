@@ -7,7 +7,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { PluginRecord } from "@paperclipai/shared";
-import { Link } from "@/lib/router";
+import { Link, useNavigate } from "@/lib/router";
 import { AlertTriangle, FlaskConical, Plus, Power, Puzzle, Settings, Trash } from "lucide-react";
 import { useCompany } from "@/context/CompanyContext";
 import { useBreadcrumbs } from "@/context/BreadcrumbContext";
@@ -52,6 +52,7 @@ export function PluginManager() {
   const { setBreadcrumbs } = useBreadcrumbs();
   const queryClient = useQueryClient();
   const { pushToast } = useToast();
+  const navigate = useNavigate();
 
   const [installPackage, setInstallPackage] = useState("");
   const [installDialogOpen, setInstallDialogOpen] = useState(false);
@@ -266,7 +267,7 @@ export function PluginManager() {
                               Enable
                             </Button>
                           )}
-                          <Button variant="outline" size="sm" onPress={() => window.location.href = `/instance/settings/plugins/${installedPlugin.id}`}>
+                          <Button variant="outline" size="sm" onPress={() => navigate(`/instance/settings/plugins/${installedPlugin.id}`)}>
                             {installedPlugin.status === "ready" ? "Open Settings" : "Review"}
                           </Button>
                         </>
@@ -403,7 +404,7 @@ export function PluginManager() {
                           <Trash className="h-4 w-4" />
                         </Button>
                       </div>
-                      <Button variant="outline" size="sm" className="mt-2 h-8" onPress={() => window.location.href = `/instance/settings/plugins/${plugin.id}`}>
+                      <Button variant="outline" size="sm" className="mt-2 h-8" onPress={() => navigate(`/instance/settings/plugins/${plugin.id}`)}>
                         <Settings className="h-4 w-4" />
                         Configure
                       </Button>

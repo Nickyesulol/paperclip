@@ -1,8 +1,7 @@
 import { ChevronsUpDown, Plus, Settings } from "lucide-react";
-import { Link } from "@/lib/router";
+import { useNavigate } from "@/lib/router";
 import { useCompany } from "../context/CompanyContext";
 import { Dropdown } from "@heroui/react";
-import { Separator } from "@heroui/react";
 
 function statusDotColor(status?: string): string {
   switch (status) {
@@ -19,6 +18,7 @@ function statusDotColor(status?: string): string {
 
 export function CompanySwitcher() {
   const { companies, selectedCompany, setSelectedCompanyId } = useCompany();
+  const navigate = useNavigate();
   const sidebarCompanies = companies.filter((company) => company.status !== "archived");
 
   return (
@@ -54,17 +54,13 @@ export function CompanySwitcher() {
           {sidebarCompanies.length === 0 && (
             <Dropdown.Item isDisabled>No companies</Dropdown.Item>
           )}
-          <Dropdown.Item onPress={() => {}}>
-            <Link to="/company/settings" className="no-underline text-inherit flex items-center">
-              <Settings className="h-4 w-4 mr-2" />
-              Company Settings
-            </Link>
+          <Dropdown.Item onPress={() => navigate("/company/settings")}>
+            <Settings className="h-4 w-4 mr-2" />
+            Company Settings
           </Dropdown.Item>
-          <Dropdown.Item onPress={() => {}}>
-            <Link to="/companies" className="no-underline text-inherit flex items-center">
-              <Plus className="h-4 w-4 mr-2" />
-              Manage Companies
-            </Link>
+          <Dropdown.Item onPress={() => navigate("/companies")}>
+            <Plus className="h-4 w-4 mr-2" />
+            Manage Companies
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown.Popover>

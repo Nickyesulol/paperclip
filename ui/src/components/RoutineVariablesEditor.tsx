@@ -102,7 +102,7 @@ export function RoutineVariablesEditor({
                     options: type === "select" ? current.options : [],
                   })))}
                 >
-                  <Select.Trigger><Select.Indicator /></Select.Trigger>
+                  <Select.Trigger><Select.Value /><Select.Indicator /></Select.Trigger>
                   <Select.Popover>
                     <ListBox>
                       {variableTypes.map((type) => (
@@ -147,7 +147,7 @@ export function RoutineVariablesEditor({
                       defaultValue: next === "__unset__" ? null : next === "true",
                     })))}
                   >
-                    <Select.Trigger><Select.Indicator /></Select.Trigger>
+                    <Select.Trigger><Select.Value /><Select.Indicator /></Select.Trigger>
                     <Select.Popover>
                       <ListBox>
                         <ListBox.Item id="__unset__">No default</ListBox.Item>
@@ -185,7 +185,7 @@ export function RoutineVariablesEditor({
                           defaultValue: next === "__unset__" ? null : next,
                         })))}
                       >
-                        <Select.Trigger><Select.Indicator /></Select.Trigger>
+                        <Select.Trigger><Select.Value /><Select.Indicator /></Select.Trigger>
                         <Select.Popover>
                           <ListBox>
                             <ListBox.Item id="__unset__">No default</ListBox.Item>

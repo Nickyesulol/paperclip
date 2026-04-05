@@ -48,8 +48,8 @@ function ProviderTabLabel({ provider, rows }: { provider: string; rows: CostByPr
   return (
     <span className="flex items-center gap-1.5">
       <span>{providerDisplayName(provider)}</span>
-      <span className="font-mono text-xs text-muted-foreground">{formatTokens(totalTokens)}</span>
-      <span className="text-xs text-muted-foreground">{formatCents(totalCost)}</span>
+      <span className="font-mono text-xs text-foreground/40">{formatTokens(totalTokens)}</span>
+      <span className="text-xs text-foreground/40">{formatCents(totalCost)}</span>
     </span>
   );
 }
@@ -60,8 +60,8 @@ function BillerTabLabel({ biller, rows }: { biller: string; rows: CostByBiller[]
   return (
     <span className="flex items-center gap-1.5">
       <span>{providerDisplayName(biller)}</span>
-      <span className="font-mono text-xs text-muted-foreground">{formatTokens(totalTokens)}</span>
-      <span className="text-xs text-muted-foreground">{formatCents(totalCost)}</span>
+      <span className="font-mono text-xs text-foreground/40">{formatTokens(totalTokens)}</span>
+      <span className="text-xs text-foreground/40">{formatCents(totalCost)}</span>
     </span>
   );
 }
@@ -78,18 +78,20 @@ function MetricTile({
   icon: ComponentType<{ className?: string }>;
 }) {
   return (
-    <div className="border border-default-200/60 p-4">
-      <div className="flex items-center justify-between gap-3">
-        <div className="min-w-0">
-          <div className="text-[11px] text-foreground/60">{label}</div>
-          <div className="mt-2 text-2xl font-semibold tabular-nums">{value}</div>
-          <div className="mt-1 text-xs leading-5 text-muted-foreground">{subtitle}</div>
+    <Card>
+      <Card.Content className="p-4">
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <div className="text-[11px] text-foreground/60">{label}</div>
+            <div className="mt-2 text-2xl font-bold tracking-tight tabular-nums">{value}</div>
+            <div className="mt-1 text-xs leading-5 text-foreground/40">{subtitle}</div>
+          </div>
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-default/40">
+            <Icon className="h-4 w-4 text-foreground/40" />
+          </div>
         </div>
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center border border-default-200/60">
-          <Icon className="h-4 w-4 text-muted-foreground" />
-        </div>
-      </div>
-    </div>
+      </Card.Content>
+    </Card>
   );
 }
 
@@ -110,7 +112,7 @@ function FinanceSummaryCard({
     <Card>
       <Card.Header className="px-5 pt-5 pb-2">
         <div className="text-base font-semibold">Finance ledger</div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-foreground/40">
           Account-level charges that do not map to a single inference request.
         </p>
       </Card.Header>
@@ -465,8 +467,8 @@ export function Costs() {
             <span>All providers</span>
             {providerKeys.length > 0 ? (
               <>
-                <span className="font-mono text-xs text-muted-foreground">{formatTokens(allTokens)}</span>
-                <span className="text-xs text-muted-foreground">{formatCents(allCents)}</span>
+                <span className="font-mono text-xs text-foreground/40">{formatTokens(allTokens)}</span>
+                <span className="text-xs text-foreground/40">{formatCents(allCents)}</span>
               </>
             ) : null}
           </span>
@@ -497,8 +499,8 @@ export function Costs() {
             <span>All billers</span>
             {billerKeys.length > 0 ? (
               <>
-                <span className="font-mono text-xs text-muted-foreground">{formatTokens(allTokens)}</span>
-                <span className="text-xs text-muted-foreground">{formatCents(allCents)}</span>
+                <span className="font-mono text-xs text-foreground/40">{formatTokens(allTokens)}</span>
+                <span className="text-xs text-foreground/40">{formatCents(allCents)}</span>
               </>
             ) : null}
           </span>
@@ -540,7 +542,7 @@ export function Costs() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div>
                 <h1 className="text-3xl font-semibold tracking-tight">Costs</h1>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-foreground/40">
                   Inference spend, platform fees, credits, and live quota windows.
                 </p>
             </div>
@@ -565,14 +567,14 @@ export function Costs() {
                 type="date"
                 value={customFrom}
                 onChange={(event) => setCustomFrom(event.target.value)}
-                className="h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground"
+                className="h-9 rounded-md border border-default-200/60 bg-background px-3 text-sm text-foreground"
               />
-              <span className="text-sm text-muted-foreground">to</span>
+              <span className="text-sm text-foreground/40">to</span>
               <input
                 type="date"
                 value={customTo}
                 onChange={(event) => setCustomTo(event.target.value)}
-                className="h-9 rounded-md border border-input bg-background px-3 text-sm text-foreground"
+                className="h-9 rounded-md border border-default-200/60 bg-background px-3 text-sm text-foreground"
               />
             </div>
           ) : null}
@@ -628,11 +630,11 @@ export function Costs() {
 
         <Tabs.Panel id="overview" className="mt-4 space-y-4">
           {showCustomPrompt ? (
-            <p className="text-sm text-muted-foreground">Select a start and end date to load data.</p>
+            <p className="text-sm text-foreground/40">Select a start and end date to load data.</p>
           ) : showOverviewLoading ? (
             <PageSkeleton variant="costs" />
           ) : overviewError ? (
-            <p className="text-sm text-destructive">{(overviewError as Error).message}</p>
+            <p className="text-sm text-danger">{(overviewError as Error).message}</p>
           ) : (
             <>
               {activeBudgetIncidents.length > 0 ? (
@@ -658,7 +660,7 @@ export function Costs() {
                 <Card>
                   <Card.Header className="px-5 pt-5 pb-2">
                     <div className="text-base font-semibold">Inference ledger</div>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-foreground/40">
                       Request-scoped inference spend for the selected period.
                     </p>
                   </Card.Header>
@@ -668,7 +670,7 @@ export function Costs() {
                         <div className="text-3xl font-semibold tabular-nums">
                           {formatCents(spendData?.summary.spendCents ?? 0)}
                         </div>
-                        <div className="mt-1 text-sm text-muted-foreground">
+                        <div className="mt-1 text-sm text-foreground/40">
                           {spendData?.summary.budgetCents && spendData.summary.budgetCents > 0
                             ? `Budget ${formatCents(spendData.summary.budgetCents)}`
                             : "Unlimited budget"}
@@ -683,7 +685,7 @@ export function Costs() {
                     </div>
                     {spendData?.summary.budgetCents && spendData.summary.budgetCents > 0 ? (
                       <div className="space-y-2">
-                        <div className="h-2 overflow-hidden bg-muted">
+                        <div className="h-2 overflow-hidden bg-default-100">
                           <div
                             className={cn(
                               "h-full transition-[width,background-color] duration-150",
@@ -696,7 +698,7 @@ export function Costs() {
                             style={{ width: `${Math.min(100, spendData.summary.utilizationPercent)}%` }}
                           />
                         </div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-xs text-foreground/40">
                           {spendData.summary.utilizationPercent}% of monthly budget consumed in this range.
                         </div>
                       </div>
@@ -717,11 +719,11 @@ export function Costs() {
                 <Card>
                   <Card.Header className="px-5 pt-5 pb-2">
                     <div className="text-base font-semibold">By agent</div>
-                    <p className="text-sm text-muted-foreground">What each agent consumed in the selected period.</p>
+                    <p className="text-sm text-foreground/40">What each agent consumed in the selected period.</p>
                   </Card.Header>
                   <Card.Content className="space-y-2 px-5 pb-5 pt-2">
                     {(spendData?.byAgent.length ?? 0) === 0 ? (
-                      <p className="text-sm text-muted-foreground">No cost events yet.</p>
+                      <p className="text-sm text-foreground/40">No cost events yet.</p>
                     ) : (
                       spendData?.byAgent.map((row) => {
                         const modelRows = agentModelRows.get(row.agentId) ?? [];
@@ -736,8 +738,8 @@ export function Costs() {
                               <div className="flex min-w-0 items-center gap-2">
                                 {hasBreakdown ? (
                                   isExpanded
-                                    ? <ChevronDown className="h-3 w-3 shrink-0 text-muted-foreground" />
-                                    : <ChevronRight className="h-3 w-3 shrink-0 text-muted-foreground" />
+                                    ? <ChevronDown className="h-3 w-3 shrink-0 text-foreground/40" />
+                                    : <ChevronRight className="h-3 w-3 shrink-0 text-foreground/40" />
                                 ) : (
                                   <span className="h-3 w-3 shrink-0" />
                                 )}
@@ -746,11 +748,11 @@ export function Costs() {
                               </div>
                               <div className="text-right text-sm tabular-nums">
                                 <div className="font-medium">{formatCents(row.costCents)}</div>
-                                <div className="text-xs text-muted-foreground">
+                                <div className="text-xs text-foreground/40">
                                   in {formatTokens(row.inputTokens + row.cachedInputTokens)} · out {formatTokens(row.outputTokens)}
                                 </div>
                                 {(row.apiRunCount > 0 || row.subscriptionRunCount > 0) ? (
-                                  <div className="text-xs text-muted-foreground">
+                                  <div className="text-xs text-foreground/40">
                                     {row.apiRunCount > 0 ? `${row.apiRunCount} api` : "0 api"}
                                     {" · "}
                                     {row.subscriptionRunCount > 0
@@ -773,19 +775,19 @@ export function Costs() {
                                       <div className="min-w-0">
                                         <div className="truncate font-medium text-foreground">
                                           {providerDisplayName(modelRow.provider)}
-                                          <span className="mx-1 text-border">/</span>
+                                          <span className="mx-1 text-default-200/60">/</span>
                                           <span className="font-mono">{modelRow.model}</span>
                                         </div>
-                                        <div className="truncate text-muted-foreground">
+                                        <div className="truncate text-foreground/40">
                                           {providerDisplayName(modelRow.biller)} · {billingTypeDisplayName(modelRow.billingType)}
                                         </div>
                                       </div>
                                       <div className="text-right tabular-nums">
                                         <div className="font-medium">
                                           {formatCents(modelRow.costCents)}
-                                          <span className="ml-1 font-normal text-muted-foreground">({sharePct}%)</span>
+                                          <span className="ml-1 font-normal text-foreground/40">({sharePct}%)</span>
                                         </div>
-                                        <div className="text-muted-foreground">
+                                        <div className="text-foreground/40">
                                           {formatTokens(modelRow.inputTokens + modelRow.cachedInputTokens + modelRow.outputTokens)} tok
                                         </div>
                                       </div>
@@ -805,11 +807,11 @@ export function Costs() {
                   <Card>
                     <Card.Header className="px-5 pt-5 pb-2">
                       <div className="text-base font-semibold">By project</div>
-                      <p className="text-sm text-muted-foreground">Run costs attributed through project-linked issues.</p>
+                      <p className="text-sm text-foreground/40">Run costs attributed through project-linked issues.</p>
                     </Card.Header>
                     <Card.Content className="space-y-2 px-5 pb-5 pt-2">
                       {(spendData?.byProject.length ?? 0) === 0 ? (
-                        <p className="text-sm text-muted-foreground">No project-attributed run costs yet.</p>
+                        <p className="text-sm text-foreground/40">No project-attributed run costs yet.</p>
                       ) : (
                         spendData?.byProject.map((row, index) => (
                           <div
@@ -835,13 +837,13 @@ export function Costs() {
           {budgetLoading ? (
             <PageSkeleton variant="costs" />
           ) : budgetError ? (
-            <p className="text-sm text-destructive">{(budgetError as Error).message}</p>
+            <p className="text-sm text-danger">{(budgetError as Error).message}</p>
           ) : (
             <>
               <Card className="border-default-200/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))]">
                 <Card.Header className="px-5 pt-5 pb-3">
                   <div className="text-base font-semibold">Budget control plane</div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-foreground/40">
                     Hard-stop spend limits for agents and projects. Provider subscription quota stays separate and appears under Providers.
                   </p>
                 </Card.Header>
@@ -877,7 +879,7 @@ export function Costs() {
                 <div className="space-y-3">
                   <div>
                     <h2 className="text-lg font-semibold">Active incidents</h2>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-foreground/40">
                       Resolve hard stops here by raising the budget or explicitly keeping the scope paused.
                     </p>
                   </div>
@@ -908,7 +910,7 @@ export function Costs() {
                     <section key={scopeType} className="space-y-3">
                       <div>
                         <h2 className="text-lg font-semibold capitalize">{scopeType} budgets</h2>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-foreground/40">
                           {scopeType === "company"
                             ? "Company-wide monthly policy."
                             : scopeType === "agent"
@@ -938,7 +940,7 @@ export function Costs() {
 
                 {budgetPolicies.length === 0 ? (
                   <Card>
-                    <Card.Content className="px-5 py-8 text-sm text-muted-foreground">
+                    <Card.Content className="px-5 py-8 text-sm text-foreground/40">
                       No budget policies yet. Set agent and project budgets from their detail pages, or use the existing company monthly budget control.
                     </Card.Content>
                   </Card>
@@ -950,119 +952,119 @@ export function Costs() {
 
         <Tabs.Panel id="providers" className="mt-4 space-y-4">
           {showCustomPrompt ? (
-            <p className="text-sm text-muted-foreground">Select a start and end date to load data.</p>
+            <p className="text-sm text-foreground/40">Select a start and end date to load data.</p>
           ) : (
             <>
-              <Tabs selectedKey={effectiveProvider} onSelectionChange={(key) => setActiveProvider(String(key))}>
-                <PageTabBar items={providerTabItems} value={effectiveProvider} />
+              <PageTabBar items={providerTabItems} value={effectiveProvider} onValueChange={setActiveProvider} />
 
-                <Tabs.Panel id="all" className="mt-4">
-                  {providers.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No cost events in this period.</p>
-                  ) : (
-                    <div className="grid gap-4 md:grid-cols-2">
-                      {providers.map((provider) => (
-                        <ProviderQuotaCard
-                          key={provider}
-                          provider={provider}
-                          rows={byProvider.get(provider) ?? []}
-                          budgetMonthlyCents={spendData?.summary.budgetCents ?? 0}
-                          totalCompanySpendCents={spendData?.summary.spendCents ?? 0}
-                          weekSpendCents={weekSpendByProvider.get(provider) ?? 0}
-                          windowRows={windowSpendByProvider.get(provider) ?? []}
-                          showDeficitNotch={deficitNotchByProvider.get(provider) ?? false}
-                          quotaWindows={quotaWindowsByProvider.get(provider) ?? []}
-                          quotaError={quotaErrorsByProvider.get(provider) ?? null}
-                          quotaSource={quotaSourcesByProvider.get(provider) ?? null}
-                          quotaLoading={quotaLoading}
-                        />
-                      ))}
+                {effectiveProvider === "all" ? (
+                  <div className="mt-4">
+                    {providers.length === 0 ? (
+                      <p className="text-sm text-foreground/40">No cost events in this period.</p>
+                    ) : (
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {providers.map((provider) => (
+                          <ProviderQuotaCard
+                            key={provider}
+                            provider={provider}
+                            rows={byProvider.get(provider) ?? []}
+                            budgetMonthlyCents={spendData?.summary.budgetCents ?? 0}
+                            totalCompanySpendCents={spendData?.summary.spendCents ?? 0}
+                            weekSpendCents={weekSpendByProvider.get(provider) ?? 0}
+                            windowRows={windowSpendByProvider.get(provider) ?? []}
+                            showDeficitNotch={deficitNotchByProvider.get(provider) ?? false}
+                            quotaWindows={quotaWindowsByProvider.get(provider) ?? []}
+                            quotaError={quotaErrorsByProvider.get(provider) ?? null}
+                            quotaSource={quotaSourcesByProvider.get(provider) ?? null}
+                            quotaLoading={quotaLoading}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  providers.filter((p) => p === effectiveProvider).map((provider) => (
+                    <div key={provider} className="mt-4">
+                      <ProviderQuotaCard
+                        provider={provider}
+                        rows={byProvider.get(provider) ?? []}
+                        budgetMonthlyCents={spendData?.summary.budgetCents ?? 0}
+                        totalCompanySpendCents={spendData?.summary.spendCents ?? 0}
+                        weekSpendCents={weekSpendByProvider.get(provider) ?? 0}
+                        windowRows={windowSpendByProvider.get(provider) ?? []}
+                        showDeficitNotch={deficitNotchByProvider.get(provider) ?? false}
+                        quotaWindows={quotaWindowsByProvider.get(provider) ?? []}
+                        quotaError={quotaErrorsByProvider.get(provider) ?? null}
+                        quotaSource={quotaSourcesByProvider.get(provider) ?? null}
+                        quotaLoading={quotaLoading}
+                      />
                     </div>
-                  )}
-                </Tabs.Panel>
-
-                {providers.map((provider) => (
-                  <Tabs.Panel key={provider} id={provider} className="mt-4">
-                    <ProviderQuotaCard
-                      provider={provider}
-                      rows={byProvider.get(provider) ?? []}
-                      budgetMonthlyCents={spendData?.summary.budgetCents ?? 0}
-                      totalCompanySpendCents={spendData?.summary.spendCents ?? 0}
-                      weekSpendCents={weekSpendByProvider.get(provider) ?? 0}
-                      windowRows={windowSpendByProvider.get(provider) ?? []}
-                      showDeficitNotch={deficitNotchByProvider.get(provider) ?? false}
-                      quotaWindows={quotaWindowsByProvider.get(provider) ?? []}
-                      quotaError={quotaErrorsByProvider.get(provider) ?? null}
-                      quotaSource={quotaSourcesByProvider.get(provider) ?? null}
-                      quotaLoading={quotaLoading}
-                    />
-                  </Tabs.Panel>
-                ))}
-              </Tabs>
+                  ))
+                )}
             </>
           )}
         </Tabs.Panel>
 
         <Tabs.Panel id="billers" className="mt-4 space-y-4">
           {showCustomPrompt ? (
-            <p className="text-sm text-muted-foreground">Select a start and end date to load data.</p>
+            <p className="text-sm text-foreground/40">Select a start and end date to load data.</p>
           ) : (
             <>
-              <Tabs selectedKey={effectiveBiller} onSelectionChange={(key) => setActiveBiller(String(key))}>
-                <PageTabBar items={billerTabItems} value={effectiveBiller} />
+              <PageTabBar items={billerTabItems} value={effectiveBiller} onValueChange={setActiveBiller} />
 
-                <Tabs.Panel id="all" className="mt-4">
-                  {billers.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No billable events in this period.</p>
-                  ) : (
-                    <div className="grid gap-4 md:grid-cols-2">
-                      {billers.map((biller) => {
-                        const row = (byBiller.get(biller) ?? [])[0];
-                        if (!row) return null;
-                        const providerRows = (providerData ?? []).filter((entry) => entry.biller === biller);
-                        return (
-                          <BillerSpendCard
-                            key={biller}
-                            row={row}
-                            weekSpendCents={weekSpendByBiller.get(biller) ?? 0}
-                            budgetMonthlyCents={spendData?.summary.budgetCents ?? 0}
-                            totalCompanySpendCents={spendData?.summary.spendCents ?? 0}
-                            providerRows={providerRows}
-                          />
-                        );
-                      })}
-                    </div>
-                  )}
-                </Tabs.Panel>
-
-                {billers.map((biller) => {
-                  const row = (byBiller.get(biller) ?? [])[0];
-                  if (!row) return null;
-                  const providerRows = (providerData ?? []).filter((entry) => entry.biller === biller);
-                  return (
-                    <Tabs.Panel key={biller} id={biller} className="mt-4">
-                      <BillerSpendCard
-                        row={row}
-                        weekSpendCents={weekSpendByBiller.get(biller) ?? 0}
-                        budgetMonthlyCents={spendData?.summary.budgetCents ?? 0}
-                        totalCompanySpendCents={spendData?.summary.spendCents ?? 0}
-                        providerRows={providerRows}
-                      />
-                    </Tabs.Panel>
-                  );
-                })}
-              </Tabs>
+                {effectiveBiller === "all" ? (
+                  <div className="mt-4">
+                    {billers.length === 0 ? (
+                      <p className="text-sm text-foreground/40">No billable events in this period.</p>
+                    ) : (
+                      <div className="grid gap-4 md:grid-cols-2">
+                        {billers.map((biller) => {
+                          const row = (byBiller.get(biller) ?? [])[0];
+                          if (!row) return null;
+                          const providerRows = (providerData ?? []).filter((entry) => entry.biller === biller);
+                          return (
+                            <BillerSpendCard
+                              key={biller}
+                              row={row}
+                              weekSpendCents={weekSpendByBiller.get(biller) ?? 0}
+                              budgetMonthlyCents={spendData?.summary.budgetCents ?? 0}
+                              totalCompanySpendCents={spendData?.summary.spendCents ?? 0}
+                              providerRows={providerRows}
+                            />
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  billers.filter((b) => b === effectiveBiller).map((biller) => {
+                    const row = (byBiller.get(biller) ?? [])[0];
+                    if (!row) return null;
+                    const providerRows = (providerData ?? []).filter((entry) => entry.biller === biller);
+                    return (
+                      <div key={biller} className="mt-4">
+                        <BillerSpendCard
+                          row={row}
+                          weekSpendCents={weekSpendByBiller.get(biller) ?? 0}
+                          budgetMonthlyCents={spendData?.summary.budgetCents ?? 0}
+                          totalCompanySpendCents={spendData?.summary.spendCents ?? 0}
+                          providerRows={providerRows}
+                        />
+                      </div>
+                    );
+                  })
+                )}
             </>
           )}
         </Tabs.Panel>
 
         <Tabs.Panel id="finance" className="mt-4 space-y-4">
           {showCustomPrompt ? (
-            <p className="text-sm text-muted-foreground">Select a start and end date to load data.</p>
+            <p className="text-sm text-foreground/40">Select a start and end date to load data.</p>
           ) : financeLoading ? (
             <PageSkeleton variant="costs" />
           ) : financeError ? (
-            <p className="text-sm text-destructive">{(financeError as Error).message}</p>
+            <p className="text-sm text-danger">{(financeError as Error).message}</p>
           ) : (
             <>
               <FinanceSummaryCard
@@ -1078,11 +1080,11 @@ export function Costs() {
                   <Card>
                     <Card.Header className="px-5 pt-5 pb-2">
                       <div className="text-base font-semibold">By biller</div>
-                      <p className="text-sm text-muted-foreground">Account-level financial events grouped by who charged or credited them.</p>
+                      <p className="text-sm text-foreground/40">Account-level financial events grouped by who charged or credited them.</p>
                     </Card.Header>
                     <Card.Content className="grid gap-4 px-5 pb-5 pt-2 md:grid-cols-2">
                       {(financeData?.byBiller.length ?? 0) === 0 ? (
-                        <p className="text-sm text-muted-foreground">No finance events yet.</p>
+                        <p className="text-sm text-foreground/40">No finance events yet.</p>
                       ) : (
                         financeData?.byBiller.map((row) => <FinanceBillerCard key={row.biller} row={row} />)
                       )}

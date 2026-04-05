@@ -597,7 +597,10 @@ export function OnboardingWizard() {
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {
-    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      if (!loading) handleClose();
+    } else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       if (step === 1 && companyName.trim()) handleStep1Next();
       else if (step === 2 && agentName.trim()) handleStep2Next();
@@ -929,9 +932,10 @@ export function OnboardingWizard() {
                               <ChevronDown className="h-3 w-3 text-foreground/40" />
                             </button>
                           </Popover.Trigger>
-                          <Popover.Content className="p-1">
+                          <Popover.Content className="w-72 p-0">
+                            <Popover.Dialog className="overflow-hidden rounded-xl border border-default-200/60 bg-overlay shadow-lg p-1.5">
                             <input
-                              className="w-full px-2 py-1.5 text-xs bg-transparent outline-none border-b border-default-200/40 mb-1 placeholder:text-foreground/40/50"
+                              className="w-full px-2 py-1.5 text-xs bg-transparent outline-none border-b border-default-200/40 mb-1 placeholder:text-foreground/25"
                               placeholder="Search models..."
                               value={modelSearch}
                               onChange={(e) => setModelSearch(e.target.value)}
@@ -940,8 +944,8 @@ export function OnboardingWizard() {
                             {adapterType !== "opencode_local" && (
                               <button
                                 className={cn(
-                                  "flex items-center gap-2 w-full px-2 py-1.5 text-sm rounded hover:bg-accent/[0.05]",
-                                  !model && "bg-accent"
+                                  "flex items-center gap-2 w-full px-2.5 py-2 text-sm rounded-lg hover:bg-default/40",
+                                  !model && "bg-accent/[0.08] text-accent font-medium"
                                 )}
                                 onClick={() => {
                                   setModel("");
@@ -966,8 +970,8 @@ export function OnboardingWizard() {
                                     <button
                                       key={m.id}
                                       className={cn(
-                                        "flex items-center w-full px-2 py-1.5 text-sm rounded hover:bg-accent/[0.05]",
-                                        m.id === model && "bg-accent"
+                                        "flex items-center w-full px-2.5 py-2 text-sm rounded-lg hover:bg-default/40",
+                                        m.id === model && "bg-accent/[0.08] text-accent font-medium"
                                       )}
                                       onClick={() => {
                                         setModel(m.id);
@@ -992,6 +996,7 @@ export function OnboardingWizard() {
                                 No models discovered.
                               </p>
                             )}
+                            </Popover.Dialog>
                           </Popover.Content>
                         </Popover>
                       </div>
@@ -1062,7 +1067,7 @@ export function OnboardingWizard() {
                       )}
 
                       {adapterEnvResult && adapterEnvResult.status === "fail" && (
-                        <div className="rounded-xl border border-default-200/40/70 bg-muted/20 px-2.5 py-2 text-[11px] space-y-1.5">
+                        <div className="rounded-xl border border-default-200/70 bg-muted/20 px-2.5 py-2 text-[11px] space-y-1.5">
                           <p className="font-medium">Manual debug</p>
                           <p className="text-foreground/40 font-mono break-all">
                             {adapterType === "cursor"
@@ -1125,7 +1130,7 @@ export function OnboardingWizard() {
                           : "Webhook URL"}
                       </label>
                       <input
-                        className="w-full rounded-xl border border-default-200/40 bg-transparent px-3 py-2 text-sm font-mono outline-none focus:ring-1 focus:ring-accent/10 placeholder:text-foreground/40/50"
+                        className="w-full rounded-xl border border-default-200/40 bg-transparent px-3 py-2 text-sm font-mono outline-none focus:ring-1 focus:ring-accent/10 placeholder:text-foreground/50"
                         placeholder={
                           adapterType === "openclaw_gateway"
                             ? "ws://127.0.0.1:18789"

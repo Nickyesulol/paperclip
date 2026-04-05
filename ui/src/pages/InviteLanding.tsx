@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useParams } from "@/lib/router";
+import { useNavigate, useParams } from "@/lib/router";
 import { accessApi } from "../api/access";
 import { authApi } from "../api/auth";
 import { healthApi } from "../api/health";
@@ -42,6 +42,7 @@ function readNestedString(value: unknown, path: string[]): string | null {
 
 export function InviteLandingPage() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const params = useParams();
   const token = (params.token ?? "").trim();
   const [joinType, setJoinType] = useState<JoinType>("human");
@@ -146,7 +147,7 @@ export function InviteLandingPage() {
           <p className="mt-2 text-sm text-muted-foreground">
             The first instance admin is now configured. You can continue to the board.
           </p>
-          <Button className="mt-4" onPress={() => window.location.href = "/"}>Open board</Button>
+          <Button className="mt-4" onPress={() => navigate("/")}>Open board</Button>
         </div>
       </div>
     );
@@ -298,7 +299,7 @@ export function InviteLandingPage() {
           <div className="mt-4 rounded-md border border-border bg-muted/30 p-3 text-sm">
             Sign in or create an account before submitting a human join request.
             <div className="mt-2">
-              <Button size="sm" variant="outline" onPress={() => window.location.href = `/auth?next=${encodeURIComponent(`/invite/${token}`)}`}>Sign in / Create account</Button>
+              <Button size="sm" variant="outline" onPress={() => navigate(`/auth?next=${encodeURIComponent(`/invite/${token}`)}`)}>Sign in / Create account</Button>
             </div>
           </div>
         )}

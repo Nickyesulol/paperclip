@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Puzzle, ArrowLeft, ShieldAlert, ActivitySquare, CheckCircle, XCircle, Loader2, Clock, Cpu, Webhook, CalendarClock, AlertTriangle } from "lucide-react";
 import { useCompany } from "@/context/CompanyContext";
 import { useBreadcrumbs } from "@/context/BreadcrumbContext";
-import { Navigate, useParams } from "@/lib/router";
+import { Navigate, useNavigate, useParams } from "@/lib/router";
 import { PluginSlotMount, usePluginSlots } from "@/plugins/slots";
 import { pluginsApi } from "@/api/plugins";
 import { queryKeys } from "@/lib/queryKeys";
@@ -51,6 +51,7 @@ export function PluginSettings() {
   const { selectedCompany, selectedCompanyId } = useCompany();
   const { setBreadcrumbs } = useBreadcrumbs();
   const { companyPrefix, pluginId } = useParams<{ companyPrefix?: string; pluginId: string }>();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"configuration" | "status">("configuration");
 
   const { data: plugin, isLoading: pluginLoading } = useQuery({
@@ -124,19 +125,25 @@ export function PluginSettings() {
   }
 
   const displayStatus = plugin.status;
+  const statusColor =
+    plugin.status === "error"
+      ? "danger"
+      : plugin.status === "ready"
+        ? "success"
+        : "default";
   const pluginDescription = plugin.manifestJson.description || "No description provided.";
   const pluginCapabilities = plugin.manifestJson.capabilities ?? [];
 
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="flex items-center gap-4">
-        <Button variant="outline" size="sm" className="h-8 w-8" onPress={() => window.location.href = "/instance/settings/plugins"}>
+        <Button variant="outline" size="sm" className="h-8 w-8" onPress={() => navigate("/instance/settings/plugins")}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div className="flex items-center gap-2">
           <Puzzle className="h-6 w-6 text-muted-foreground" />
           <h1 className="text-xl font-semibold">{plugin.manifestJson.displayName ?? plugin.packageName}</h1>
-          <Badge className="ml-2">
+          <Badge color={statusColor} className="ml-2">
             {displayStatus}
           </Badge>
           <Badge className="ml-1">
@@ -251,7 +258,7 @@ export function PluginSettings() {
                           <div className="grid grid-cols-2 gap-3 text-sm">
                             <div className="flex justify-between">
                               <span className="text-muted-foreground">Status</span>
-                              <Badge className="text-xs">
+                              <Badge color={dashboardData.worker.status === "running" ? "success" : "default"} className="text-xs">
                                 {dashboardData.worker.status}
                               </Badge>
                             </div>
@@ -422,7 +429,7 @@ export function PluginSettings() {
                     <div className="space-y-4 text-sm">
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground">Overall</span>
-                        <Badge >
+                        <Badge color={healthData.healthy ? "success" : "danger"}>
                           {healthData.status}
                         </Badge>
                       </div>
@@ -454,7 +461,7 @@ export function PluginSettings() {
                     <div className="space-y-3 text-sm text-muted-foreground">
                       <div className="flex items-center justify-between">
                         <span>Lifecycle</span>
-                        <Badge >{displayStatus}</Badge>
+                        <Badge color={statusColor}>{displayStatus}</Badge>
                       </div>
                       <p>Health checks run once the plugin is ready.</p>
                       {plugin.lastError ? (

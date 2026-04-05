@@ -929,7 +929,7 @@ export function NewIssueDialog() {
                 </Popover.Dialog>
               </Popover.Content>
             </Popover>
-            <span className="text-foreground/40/60">&rsaquo;</span>
+            <span className="text-foreground/60">&rsaquo;</span>
             <span>New issue</span>
           </div>
           <div className="flex items-center gap-1">
@@ -959,7 +959,7 @@ export function NewIssueDialog() {
         {/* Title */}
         <div className="px-4 pt-4 pb-2 shrink-0">
           <textarea
-            className="w-full text-lg font-semibold bg-transparent outline-none resize-none overflow-hidden placeholder:text-foreground/40/50"
+            className="w-full text-lg font-semibold bg-transparent outline-none resize-none overflow-hidden placeholder:text-foreground/50"
             placeholder="Issue title"
             rows={1}
             value={title}
@@ -1210,7 +1210,7 @@ export function NewIssueDialog() {
 
         {/* Description */}
         <div
-          className={cn("px-4 pb-2 overflow-y-auto min-h-0 border-t border-default-200/40/60 pt-3", expanded ? "flex-1" : "")}
+          className={cn("px-4 pb-2 overflow-y-auto min-h-0 border-t border-default-200/60 pt-3", expanded ? "flex-1" : "")}
           onDragEnter={handleFileDragEnter}
           onDragOver={handleFileDragOver}
           onDragLeave={handleFileDragLeave}
@@ -1237,13 +1237,13 @@ export function NewIssueDialog() {
             />
           </div>
           {stagedFiles.length > 0 ? (
-            <div className="mt-4 space-y-3 rounded-lg border border-default-200/40/70 p-3">
+            <div className="mt-4 space-y-3 rounded-lg border border-default-200/70 p-3">
               {stagedDocuments.length > 0 ? (
                 <div className="space-y-2">
                   <div className="text-xs font-medium text-foreground/40">Documents</div>
                   <div className="space-y-2">
                     {stagedDocuments.map((file) => (
-                      <div key={file.id} className="flex items-start justify-between gap-3 rounded-md border border-default-200/40/70 px-3 py-2">
+                      <div key={file.id} className="flex items-start justify-between gap-3 rounded-md border border-default-200/70 px-3 py-2">
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
                             <span className="rounded-full border border-default-200/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/40">
@@ -1280,7 +1280,7 @@ export function NewIssueDialog() {
                   <div className="text-xs font-medium text-foreground/40">Attachments</div>
                   <div className="space-y-2">
                     {stagedAttachments.map((file) => (
-                      <div key={file.id} className="flex items-start justify-between gap-3 rounded-md border border-default-200/40/70 px-3 py-2">
+                      <div key={file.id} className="flex items-start justify-between gap-3 rounded-md border border-default-200/70 px-3 py-2">
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
                             <Paperclip className="h-3.5 w-3.5 shrink-0 text-foreground/40" />

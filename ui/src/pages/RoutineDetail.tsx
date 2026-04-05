@@ -175,7 +175,7 @@ function TriggerEditor({
                 selectedKey={draft.signingMode}
                 onSelectionChange={(key) => setDraft((current) => ({ ...current, signingMode: key as string }))}
               >
-                <Select.Trigger><Select.Indicator /></Select.Trigger>
+                <Select.Trigger><Select.Value /><Select.Indicator /></Select.Trigger>
                 <Select.Popover>
                   <ListBox>
                     {signingModes.map((mode) => (
@@ -877,7 +877,7 @@ export function RoutineDetail() {
                   selectedKey={editDraft.concurrencyPolicy}
                   onSelectionChange={(key) => setEditDraft((current) => ({ ...current, concurrencyPolicy: key as string }))}
                 >
-                  <Select.Trigger><Select.Indicator /></Select.Trigger>
+                  <Select.Trigger><Select.Value /><Select.Indicator /></Select.Trigger>
                   <Select.Popover>
                     <ListBox>
                       {concurrencyPolicies.map((value) => (
@@ -894,7 +894,7 @@ export function RoutineDetail() {
                   selectedKey={editDraft.catchUpPolicy}
                   onSelectionChange={(key) => setEditDraft((current) => ({ ...current, catchUpPolicy: key as string }))}
                 >
-                  <Select.Trigger><Select.Indicator /></Select.Trigger>
+                  <Select.Trigger><Select.Value /><Select.Indicator /></Select.Trigger>
                   <Select.Popover>
                     <ListBox>
                       {catchUpPolicies.map((value) => (
@@ -952,7 +952,7 @@ export function RoutineDetail() {
                   selectedKey={newTrigger.kind}
                   onSelectionChange={(key) => setNewTrigger((current) => ({ ...current, kind: key as string }))}
                 >
-                  <Select.Trigger><Select.Indicator /></Select.Trigger>
+                  <Select.Trigger><Select.Value /><Select.Indicator /></Select.Trigger>
                   <Select.Popover>
                     <ListBox>
                       {triggerKinds.map((kind) => (
@@ -981,7 +981,7 @@ export function RoutineDetail() {
                       selectedKey={newTrigger.signingMode}
                       onSelectionChange={(key) => setNewTrigger((current) => ({ ...current, signingMode: key as string }))}
                     >
-                      <Select.Trigger><Select.Indicator /></Select.Trigger>
+                      <Select.Trigger><Select.Value /><Select.Indicator /></Select.Trigger>
                       <Select.Popover>
                         <ListBox>
                           {signingModes.map((mode) => (

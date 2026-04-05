@@ -19,7 +19,7 @@ interface GoalPropertiesProps {
 function PropertyRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3 py-1.5">
-      <span className="text-xs text-muted-foreground shrink-0 w-20">{label}</span>
+      <span className="text-xs text-foreground/40 shrink-0 w-20">{label}</span>
       <div className="flex items-center gap-1.5 min-w-0">{children}</div>
     </div>
   );
@@ -48,19 +48,21 @@ function PickerButton({
           {children}
         </button>
       </Popover.Trigger>
-      <Popover.Content className="w-40 p-1">
-        {options.map((opt) => (
-          <button
-            key={opt}
-            className={cn("w-full justify-start text-xs px-2 py-1.5 text-left rounded hover:bg-accent/50", opt === current && "bg-accent")}
-            onClick={() => {
-              onChange(opt);
-              setOpen(false);
-            }}
-          >
-            {label(opt)}
-          </button>
-        ))}
+      <Popover.Content className="w-40 p-0">
+        <Popover.Dialog className="overflow-hidden rounded-xl border border-default-200/60 bg-overlay shadow-lg p-1.5">
+          {options.map((opt) => (
+            <button
+              key={opt}
+              className={cn("w-full justify-start text-xs px-2 py-1.5 text-left rounded-lg hover:bg-default/40", opt === current && "bg-accent/[0.08] text-accent font-medium")}
+              onClick={() => {
+                onChange(opt);
+                setOpen(false);
+              }}
+            >
+              {label(opt)}
+            </button>
+          ))}
+        </Popover.Dialog>
       </Popover.Content>
     </Popover>
   );
@@ -129,7 +131,7 @@ export function GoalProperties({ goal, onUpdate }: GoalPropertiesProps) {
               {ownerAgent.name}
             </Link>
           ) : (
-            <span className="text-sm text-muted-foreground">None</span>
+            <span className="text-sm text-foreground/40">None</span>
           )}
         </PropertyRow>
 

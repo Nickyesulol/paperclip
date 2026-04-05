@@ -8,8 +8,19 @@
 @import "./theme/paperclip-light.css" layer(theme);
 @import "./theme/paperclip-dark.css" layer(theme);
 
-/* ── Chart colors (available via Tailwind) ──────────────────────────────── */
+/* ── Theme color bridges (raw CSS vars → Tailwind utility namespace) ───── */
 @theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted);
+  --color-border: var(--border);
+  --color-destructive: var(--danger);
+  --color-destructive-foreground: var(--danger-foreground);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--overlay);
+  --color-popover-foreground: var(--foreground);
+  --color-ring: var(--focus);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);

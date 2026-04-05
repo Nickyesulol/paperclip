@@ -42,10 +42,10 @@ export function Projects() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-end">
-        <Button size="sm" variant="outline" onPress={openNewProject}>
-          <Plus className="h-4 w-4 mr-1" />
-          Add Project
+      <div className="flex items-center justify-start">
+        <Button size="sm" variant="primary" onPress={openNewProject}>
+          <Plus className="h-3.5 w-3.5 mr-1.5" />
+          New Project
         </Button>
       </div>
 

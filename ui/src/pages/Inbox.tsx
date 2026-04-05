@@ -588,7 +588,7 @@ function ApprovalInboxRow({
             <Button
               size="sm"
               className="h-8 bg-green-700 px-3 text-white hover:bg-green-600"
-              onClick={onApprove}
+              onPress={onApprove}
               isDisabled={isPending}
             >
               Approve
@@ -597,7 +597,7 @@ function ApprovalInboxRow({
               variant="danger"
               size="sm"
               className="h-8 px-3"
-              onClick={onReject}
+              onPress={onReject}
               isDisabled={isPending}
             >
               Reject
@@ -610,7 +610,7 @@ function ApprovalInboxRow({
           <Button
             size="sm"
             className="h-8 bg-green-700 px-3 text-white hover:bg-green-600"
-            onClick={onApprove}
+            onPress={onApprove}
             isDisabled={isPending}
           >
             Approve
@@ -619,7 +619,7 @@ function ApprovalInboxRow({
             variant="danger"
             size="sm"
             className="h-8 px-3"
-            onClick={onReject}
+            onPress={onReject}
             isDisabled={isPending}
           >
             Reject
@@ -719,7 +719,7 @@ function JoinRequestInboxRow({
           <Button
             size="sm"
             className="h-8 bg-green-700 px-3 text-white hover:bg-green-600"
-            onClick={onApprove}
+            onPress={onApprove}
             isDisabled={isPending}
           >
             Approve
@@ -728,7 +728,7 @@ function JoinRequestInboxRow({
             variant="danger"
             size="sm"
             className="h-8 px-3"
-            onClick={onReject}
+            onPress={onReject}
             isDisabled={isPending}
           >
             Reject
@@ -739,7 +739,7 @@ function JoinRequestInboxRow({
         <Button
           size="sm"
           className="h-8 bg-green-700 px-3 text-white hover:bg-green-600"
-          onClick={onApprove}
+          onPress={onApprove}
           isDisabled={isPending}
         >
           Approve
@@ -748,7 +748,7 @@ function JoinRequestInboxRow({
           variant="danger"
           size="sm"
           className="h-8 px-3"
-          onClick={onReject}
+          onPress={onReject}
           isDisabled={isPending}
         >
           Reject
@@ -1536,7 +1536,18 @@ export function Inbox() {
     .filter((issue) => issue.isUnreadForMe && !fadingOutIssues.has(issue.id) && !archivingIssueIds.has(issue.id));
   const unreadIssueIds = markAllReadIssues
     .map((issue) => issue.id);
-  const canMarkAllRead = unreadIssueIds.length > 0;
+  const unreadNonIssueKeys = useMemo(() => {
+    if (!canArchiveFromTab) return [];
+    return filteredWorkItems
+      .filter((item) => item.kind !== "issue")
+      .map((item) => {
+        if (item.kind === "approval") return `approval:${item.approval.id}`;
+        if (item.kind === "failed_run") return `run:${item.run.id}`;
+        return `join:${item.joinRequest.id}`;
+      })
+      .filter((key) => !readItems.has(key) && !fadingNonIssueItems.has(key));
+  }, [canArchiveFromTab, filteredWorkItems, readItems, fadingNonIssueItems]);
+  const canMarkAllRead = unreadIssueIds.length > 0 || unreadNonIssueKeys.length > 0;
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-2">
@@ -1652,7 +1663,7 @@ export function Inbox() {
                         </Modal.Header>
                         <Modal.Body>
                           <p className="text-sm text-foreground/40">
-                            This will mark {unreadIssueIds.length} unread {unreadIssueIds.length === 1 ? "item" : "items"} as read.
+                            This will mark {unreadIssueIds.length + unreadNonIssueKeys.length} unread {(unreadIssueIds.length + unreadNonIssueKeys.length) === 1 ? "item" : "items"} as read.
                           </p>
                         </Modal.Body>
                         <Modal.Footer>
@@ -1662,7 +1673,14 @@ export function Inbox() {
                           <Button
                             onPress={() => {
                               close();
-                              markAllReadMutation.mutate(unreadIssueIds);
+                              // Mark non-issue items as read locally
+                              for (const key of unreadNonIssueKeys) {
+                                markItemRead(key);
+                              }
+                              // Mark issues as read via API
+                              if (unreadIssueIds.length > 0) {
+                                markAllReadMutation.mutate(unreadIssueIds);
+                              }
                             }}
                           >
                             Mark all as read

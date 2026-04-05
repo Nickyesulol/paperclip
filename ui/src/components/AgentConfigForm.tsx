@@ -1049,7 +1049,7 @@ function AdapterTypeDropdown({
           <ChevronDown className="h-3 w-3 text-muted-foreground" />
         </button>
       </Popover.Trigger>
-      <Popover.Content className="w-[var(--radix-popover-trigger-width)] p-1">
+      <Popover.Content className="w-full min-w-[180px] p-1">
         {ADAPTER_DISPLAY_LIST.map((item) => (
           <button
             key={item.value}
@@ -1448,7 +1448,7 @@ function ModelDropdown({
             <ChevronDown className="h-3 w-3 text-muted-foreground" />
           </button>
         </Popover.Trigger>
-        <Popover.Content className="w-[var(--radix-popover-trigger-width)] p-1">
+        <Popover.Content className="w-full min-w-[180px] p-1">
           <div className="relative mb-1">
             <input
               className="w-full px-2 py-1.5 pr-6 text-xs bg-transparent outline-none border-b border-border placeholder:text-muted-foreground/50"
@@ -1620,7 +1620,7 @@ function ThinkingEffortDropdown({
             <ChevronDown className="h-3 w-3 text-muted-foreground" />
           </button>
         </Popover.Trigger>
-        <Popover.Content className="w-[var(--radix-popover-trigger-width)] p-1">
+        <Popover.Content className="w-full min-w-[180px] p-1">
           {options.map((option) => (
             <button
               key={option.id || "auto"}

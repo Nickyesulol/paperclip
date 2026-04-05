@@ -96,8 +96,8 @@ export function Activity() {
     <div className="space-y-4">
       <div className="flex items-center justify-end">
         <Select
-          value={filter}
-          onChange={(key) => setFilter(String(key))}
+          selectedKey={filter}
+          onSelectionChange={(key) => setFilter(String(key))}
           className="w-[160px]"
           aria-label="Filter by type"
           placeholder="All types"

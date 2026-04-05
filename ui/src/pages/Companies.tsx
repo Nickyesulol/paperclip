@@ -82,7 +82,7 @@ export function Companies() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-end">
-        <Button size="sm" onPress={() => openOnboarding()}>
+        <Button size="sm" variant="primary" onPress={() => openOnboarding()}>
           <Plus className="h-3.5 w-3.5 mr-1.5" />
           New Company
         </Button>
@@ -171,15 +171,17 @@ export function Companies() {
                       >
                         {company.status}
                       </span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        isIconOnly
-                        className="text-muted-foreground opacity-0 group-hover:opacity-100"
-                        onPress={() => startEdit(company.id, company.name)}
-                      >
-                        <Pencil className="h-3 w-3" />
-                      </Button>
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          isIconOnly
+                          className="text-muted-foreground opacity-0 group-hover:opacity-100"
+                          onPress={() => startEdit(company.id, company.name)}
+                        >
+                          <Pencil className="h-3 w-3" />
+                        </Button>
+                      </div>
                     </div>
                   )}
                   {company.description && !isEditing && (

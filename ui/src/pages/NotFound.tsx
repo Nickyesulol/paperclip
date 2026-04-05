@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation } from "@/lib/router";
+import { useLocation, useNavigate } from "@/lib/router";
 import { AlertTriangle, Compass } from "lucide-react";
 import { Button } from "@heroui/react";
 import { useBreadcrumbs } from "../context/BreadcrumbContext";
@@ -14,6 +14,7 @@ interface NotFoundPageProps {
 
 export function NotFoundPage({ scope = "global", requestedPrefix }: NotFoundPageProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const { setBreadcrumbs } = useBreadcrumbs();
   const { companies, selectedCompany } = useCompany();
 
@@ -50,11 +51,11 @@ export function NotFoundPage({ scope = "global", requestedPrefix }: NotFoundPage
         </div>
 
         <div className="mt-5 flex flex-wrap gap-2">
-          <Button onPress={() => window.location.href = dashboardHref}>
+          <Button onPress={() => navigate(dashboardHref)}>
             <Compass className="mr-1.5 h-4 w-4" />
             Open dashboard
           </Button>
-          <Button variant="outline" onPress={() => window.location.href = "/"}>Go home</Button>
+          <Button variant="outline" onPress={() => navigate("/")}>Go home</Button>
         </div>
       </div>
     </div>

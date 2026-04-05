@@ -42,6 +42,20 @@ export function ImageGalleryModal({
     return () => window.removeEventListener("keydown", handler);
   }, [open, goNext, goPrev, onOpenChange]);
 
+  // Lock body scroll while modal is open
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [open]);
+
+  // Auto-focus the modal container for keyboard accessibility
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (open) containerRef.current?.focus();
+  }, [open]);
+
   /** Close when clicking empty curtain space (not interactive elements or the image) */
   const handleBackdropClick = useCallback(
     (e: React.MouseEvent) => {
@@ -67,6 +81,11 @@ export function ImageGalleryModal({
       {/* Full-screen curtain */}
       <div className="fixed inset-0 z-50 bg-black/90 animate-in fade-in-0 duration-200" />
       <div
+        ref={containerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={current.originalFilename ?? "Image gallery"}
+        tabIndex={-1}
         className="fixed inset-0 z-50 flex flex-col outline-none animate-in fade-in-0 duration-200"
         onClick={handleBackdropClick}
       >

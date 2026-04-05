@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { Navigate, useParams } from "@/lib/router";
+import { Navigate, useNavigate, useParams } from "@/lib/router";
 import { useQuery } from "@tanstack/react-query";
 import { useCompany } from "@/context/CompanyContext";
 import { useBreadcrumbs } from "@/context/BreadcrumbContext";
@@ -25,6 +25,7 @@ export function PluginPage() {
     pluginRoutePath?: string;
   }>();
   const { companies, selectedCompanyId } = useCompany();
+  const navigate = useNavigate();
   const { setBreadcrumbs } = useBreadcrumbs();
   const routeCompany = useMemo(() => {
     if (!routeCompanyPrefix) return null;
@@ -138,7 +139,7 @@ export function PluginPage() {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="sm" onPress={() => window.location.href = companyPrefix ? `/${companyPrefix}/dashboard` : "/dashboard"}>
+        <Button variant="ghost" size="sm" onPress={() => navigate(companyPrefix ? `/${companyPrefix}/dashboard` : "/dashboard")}>
           <ArrowLeft className="h-4 w-4 mr-1" />
           Back
         </Button>
