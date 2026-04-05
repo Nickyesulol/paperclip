@@ -106,7 +106,7 @@ export const InlineEntitySelector = forwardRef<HTMLButtonElement, InlineEntitySe
               "inline-flex min-w-0 items-center gap-1.5 rounded-lg border border-default-200/40 bg-default/30 px-2.5 py-1 text-sm font-medium text-foreground transition-colors hover:bg-default/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30",
               className,
             )}
-            onClick={() => setOpen(true)}}
+            onClick={() => setOpen(true)}
           >
             {renderTriggerValue
               ? renderTriggerValue(currentOption)
