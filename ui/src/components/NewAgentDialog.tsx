@@ -132,9 +132,10 @@ export function NewAgentDialog() {
         }
       }}
     >
-      <Modal.Content>
-        {() => (
-          <div className="sm:max-w-md p-0 gap-0 overflow-hidden">
+      <Modal.Backdrop />
+      <Modal.Container size="md">
+        <Modal.Dialog>
+          <div className="p-0 gap-0 overflow-hidden">
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-2.5 border-b border-border">
               <span className="text-sm text-muted-foreground">Add a new agent</span>
@@ -223,8 +224,8 @@ export function NewAgentDialog() {
               )}
             </div>
           </div>
-        )}
-      </Modal.Content>
+        </Modal.Dialog>
+      </Modal.Container>
     </Modal>
   );
 }

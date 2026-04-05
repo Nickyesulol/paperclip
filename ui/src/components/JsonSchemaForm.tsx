@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@heroui/react";
 import { Label } from "@heroui/react";
 import { Checkbox } from "@heroui/react";
-import { Select } from "@heroui/react";
+import { Select, ListBox } from "@heroui/react";
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -442,16 +442,16 @@ const EnumField = React.memo(({
       onSelectionChange={onChange}
       isDisabled={disabled}
     >
-      <Select.Trigger className="w-full">
-        <Select.Value placeholder="Select an option" />
-      </Select.Trigger>
-      <Select.Content>
-        {options.map((option) => (
-          <Select.Item key={String(option)} id={String(option)}>
-            {String(option)}
-          </Select.Item>
-        ))}
-      </Select.Content>
+      <Select.Trigger className="w-full" />
+      <Select.Popover>
+        <ListBox>
+          {options.map((option) => (
+            <ListBox.Item key={String(option)} id={String(option)}>
+              {String(option)}
+            </ListBox.Item>
+          ))}
+        </ListBox>
+      </Select.Popover>
     </Select>
   </FieldWrapper>
 ));

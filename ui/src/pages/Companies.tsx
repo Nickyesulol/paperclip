@@ -146,14 +146,14 @@ export function Companies() {
                       />
                       <Button
                         variant="ghost"
-                        size="icon-xs"
+                        size="sm"
+                        isIconOnly
                         onPress={saveEdit}
                         isDisabled={editMutation.isPending}
-                        isIconOnly
                       >
                         <Check className="h-3.5 w-3.5 text-green-500" />
                       </Button>
-                      <Button variant="ghost" size="icon-xs" onPress={cancelEdit} isIconOnly>
+                      <Button variant="ghost" size="sm" isIconOnly onPress={cancelEdit}>
                         <X className="h-3.5 w-3.5 text-muted-foreground" />
                       </Button>
                     </div>
@@ -173,10 +173,10 @@ export function Companies() {
                       </span>
                       <Button
                         variant="ghost"
-                        size="icon-xs"
+                        size="sm"
+                        isIconOnly
                         className="text-muted-foreground opacity-0 group-hover:opacity-100"
                         onPress={() => startEdit(company.id, company.name)}
-                        isIconOnly
                       >
                         <Pencil className="h-3 w-3" />
                       </Button>
@@ -195,23 +195,25 @@ export function Companies() {
                     <Dropdown.Trigger>
                       <Button
                         variant="ghost"
-                        size="icon-xs"
-                        className="text-muted-foreground opacity-0 group-hover:opacity-100 data-[state=open]:opacity-100"
+                        size="sm"
                         isIconOnly
+                        className="text-muted-foreground opacity-0 group-hover:opacity-100 data-[state=open]:opacity-100"
                       >
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </Dropdown.Trigger>
-                    <Dropdown.Content align="end">
-                      <Dropdown.Item onAction={() => startEdit(company.id, company.name)}>
-                        <Pencil className="h-3.5 w-3.5" />
-                        Rename
-                      </Dropdown.Item>
-                      <Dropdown.Item onAction={() => setConfirmDeleteId(company.id)} className="text-destructive">
-                        <Trash2 className="h-3.5 w-3.5" />
-                        Delete Company
-                      </Dropdown.Item>
-                    </Dropdown.Content>
+                    <Dropdown.Popover>
+                      <Dropdown.Menu>
+                        <Dropdown.Item onAction={() => startEdit(company.id, company.name)}>
+                          <Pencil className="h-3.5 w-3.5" />
+                          Rename
+                        </Dropdown.Item>
+                        <Dropdown.Item onAction={() => setConfirmDeleteId(company.id)} className="text-destructive">
+                          <Trash2 className="h-3.5 w-3.5" />
+                          Delete Company
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown.Popover>
                   </Dropdown>
                 </div>
               </div>

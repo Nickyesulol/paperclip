@@ -885,10 +885,11 @@ export function CommentThread({
               />
               <Button
                 variant="ghost"
-                size="icon-sm"
+                size="sm"
+                isIconOnly
                 onPress={() => attachInputRef.current?.click()}
                 isDisabled={attaching}
-                title="Attach image"
+                aria-label="Attach image"
               >
                 <Paperclip className="h-4 w-4" />
               </Button>

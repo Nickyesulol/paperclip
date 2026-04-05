@@ -833,8 +833,8 @@ export function IssueDocumentsSection({
                           <ChevronDown className="h-3 w-3" />
                         </Button>
                       </Dropdown.Trigger>
-                      <Dropdown.Content className="w-72">
-                        <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">Revision history</div>
+                      <Dropdown.Popover>
+                        <Dropdown.Menu>
                         {revisionMenuOpenKey === doc.key && isFetchingDocumentRevisions && revisionHistory.length === 0 ? (
                           <Dropdown.Item isDisabled>Loading revisions...</Dropdown.Item>
                         ) : revisionHistory.length > 0 ? (
@@ -868,7 +868,8 @@ export function IssueDocumentsSection({
                         ) : (
                           <Dropdown.Item isDisabled>No revisions yet</Dropdown.Item>
                         )}
-                      </Dropdown.Content>
+                        </Dropdown.Menu>
+                      </Dropdown.Popover>
                     </Dropdown>
                     <a
                       href={`#document-${encodeURIComponent(doc.key)}`}
@@ -882,12 +883,13 @@ export function IssueDocumentsSection({
                 <div className="flex items-center gap-1 shrink-0">
                   <Button
                     variant="ghost"
-                    size="icon-xs"
+                    size="sm"
+                    isIconOnly
                     className={cn(
                       "text-muted-foreground transition-colors",
                       copiedDocumentKey === doc.key && "text-foreground",
                     )}
-                    title={copiedDocumentKey === doc.key ? "Copied" : "Copy document"}
+                    aria-label={copiedDocumentKey === doc.key ? "Copied" : "Copy document"}
                     onPress={() => void copyDocumentBody(doc.key, displayedBody)}
                   >
                     {copiedDocumentKey === doc.key ? (
@@ -908,7 +910,8 @@ export function IssueDocumentsSection({
                         <MoreHorizontal className="h-3.5 w-3.5" />
                       </Button>
                     </Dropdown.Trigger>
-                    <Dropdown.Content>
+                    <Dropdown.Popover>
+                      <Dropdown.Menu>
                       {!isHistoricalPreview ? (
                         <Dropdown.Item id="edit" onAction={() => beginEdit(doc.key)}>
                           <FilePenLine className="h-3.5 w-3.5" />
@@ -925,7 +928,8 @@ export function IssueDocumentsSection({
                           Delete document
                         </Dropdown.Item>
                       ) : null}
-                    </Dropdown.Content>
+                      </Dropdown.Menu>
+                    </Dropdown.Popover>
                   </Dropdown>
                 </div>
               </div>

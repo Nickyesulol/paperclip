@@ -858,14 +858,15 @@ export function NewIssueDialog() {
         if (!open && !createIssue.isPending) closeNewIssue();
       }}
     >
-      <Modal.Content>
-        {() => (
+      <Modal.Backdrop />
+      <Modal.Container size={expanded ? "lg" : "md"}>
+        <Modal.Dialog>
       <div
         className={cn(
           "p-0 gap-0 flex flex-col max-h-[calc(100dvh-2rem)]",
           expanded
-            ? "sm:max-w-2xl h-[calc(100dvh-2rem)]"
-            : "sm:max-w-lg"
+            ? "h-[calc(100dvh-2rem)]"
+            : ""
         )}
         onKeyDown={handleKeyDown}
       >
@@ -1447,8 +1448,8 @@ export function NewIssueDialog() {
           </div>
         </div>
       </div>
-        )}
-      </Modal.Content>
+        </Modal.Dialog>
+      </Modal.Container>
     </Modal>
   );
 }

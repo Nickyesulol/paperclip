@@ -48,13 +48,13 @@ export function PriorityIcon({ priority, onChange, className, showLabel }: Prior
   ) : icon;
 
   return (
-    <Popover isOpen={open} onOpenChange={setOpen} placement="bottom-start">
+    <Popover isOpen={open} onOpenChange={setOpen}>
       <Popover.Trigger>
         <button type="button" className="inline-flex items-center" onClick={(e) => e.stopPropagation()}>
           {triggerContent}
         </button>
       </Popover.Trigger>
-      <Popover.Content className="w-36 p-1">
+      <Popover.Content placement="bottom start" className="w-36 p-1">
         {allPriorities.map((p) => {
           const c = priorityConfig[p]!;
           const PIcon = c.icon;

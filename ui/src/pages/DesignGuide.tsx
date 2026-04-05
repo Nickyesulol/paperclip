@@ -33,6 +33,7 @@ import {
   Modal,
   Tooltip,
   Select,
+  ListBox,
   Dropdown,
   Popover,
   Drawer,
@@ -139,7 +140,7 @@ export function DesignGuide() {
                 "badge", "button", "card", "checkbox", "drawer", "input", "modal",
                 "popover", "select", "separator", "skeleton", "tabs", "tooltip",
               ].map((name) => (
-                <Badge key={name} variant="outline" className="font-mono text-[10px]">
+                <Badge key={name} variant="secondary" className="font-mono text-[10px]">
                   {name}
                 </Badge>
               ))}
@@ -152,7 +153,7 @@ export function DesignGuide() {
                 "FilterBar", "InlineEditor", "PageSkeleton", "Identity", "CommentThread", "MarkdownEditor",
                 "PropertiesPanel", "Sidebar", "CommandPalette",
               ].map((name) => (
-                <Badge key={name} variant="ghost" className="font-mono text-[10px]">
+                <Badge key={name} variant="soft" className="font-mono text-[10px]">
                   {name}
                 </Badge>
               ))}
@@ -304,8 +305,8 @@ export function DesignGuide() {
           <div className="flex items-center gap-2 flex-wrap">
             <Badge>Default</Badge>
             <Badge variant="secondary">Secondary</Badge>
-            <Badge variant="outline">Outline</Badge>
-            <Badge variant="ghost">Ghost</Badge>
+            <Badge variant="secondary">Secondary (was outline)</Badge>
+            <Badge variant="soft">Soft (was ghost)</Badge>
           </div>
         </SubSection>
       </Section>
@@ -396,7 +397,7 @@ export function DesignGuide() {
         <div className="grid gap-6 md:grid-cols-2">
           <SubSection title="Input">
             <Input placeholder="Default input" />
-            <Input placeholder="Disabled input" isDisabled className="mt-2" />
+            <Input placeholder="Disabled input" disabled className="mt-2" />
           </SubSection>
 
           <SubSection title="Textarea">
@@ -472,25 +473,29 @@ export function DesignGuide() {
               aria-label="Select status"
             >
               <Select.Trigger className="w-full" />
-              <Select.Content>
-                <Select.Item id="backlog">Backlog</Select.Item>
-                <Select.Item id="todo">Todo</Select.Item>
-                <Select.Item id="in_progress">In Progress</Select.Item>
-                <Select.Item id="in_review">In Review</Select.Item>
-                <Select.Item id="done">Done</Select.Item>
-              </Select.Content>
+              <Select.Popover>
+                <ListBox>
+                  <ListBox.Item id="backlog">Backlog</ListBox.Item>
+                  <ListBox.Item id="todo">Todo</ListBox.Item>
+                  <ListBox.Item id="in_progress">In Progress</ListBox.Item>
+                  <ListBox.Item id="in_review">In Review</ListBox.Item>
+                  <ListBox.Item id="done">Done</ListBox.Item>
+                </ListBox>
+              </Select.Popover>
             </Select>
             <p className="text-xs text-muted-foreground">Current value: {selectValue}</p>
           </SubSection>
           <SubSection title="Small trigger">
             <Select defaultSelectedKey="high" aria-label="Select priority">
               <Select.Trigger className="w-full" />
-              <Select.Content>
-                <Select.Item id="critical">Critical</Select.Item>
-                <Select.Item id="high">High</Select.Item>
-                <Select.Item id="medium">Medium</Select.Item>
-                <Select.Item id="low">Low</Select.Item>
-              </Select.Content>
+              <Select.Popover>
+                <ListBox>
+                  <ListBox.Item id="critical">Critical</ListBox.Item>
+                  <ListBox.Item id="high">High</ListBox.Item>
+                  <ListBox.Item id="medium">Medium</ListBox.Item>
+                  <ListBox.Item id="low">Low</ListBox.Item>
+                </ListBox>
+              </Select.Popover>
             </Select>
           </SubSection>
         </div>
@@ -507,20 +512,22 @@ export function DesignGuide() {
               <ChevronDown className="h-4 w-4 ml-1" />
             </Button>
           </Dropdown.Trigger>
-          <Dropdown.Content className="w-56">
-            <Dropdown.Item>
-              <Check className="h-4 w-4 mr-2" />
-              Mark as done
-            </Dropdown.Item>
-            <Dropdown.Item>
-              <BookOpen className="h-4 w-4 mr-2" />
-              Open docs
-            </Dropdown.Item>
-            <Dropdown.Item className="text-destructive">
-              <Trash2 className="h-4 w-4 mr-2" />
-              Delete issue
-            </Dropdown.Item>
-          </Dropdown.Content>
+          <Dropdown.Popover>
+            <Dropdown.Menu className="w-56">
+              <Dropdown.Item>
+                <Check className="h-4 w-4 mr-2" />
+                Mark as done
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <BookOpen className="h-4 w-4 mr-2" />
+                Open docs
+              </Dropdown.Item>
+              <Dropdown.Item className="text-destructive">
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete issue
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown.Popover>
         </Dropdown>
       </Section>
 
@@ -549,30 +556,28 @@ export function DesignGuide() {
         <Button variant="outline" size="sm" onPress={() => setDrawerOpen(true)}>Open Side Panel</Button>
         <Drawer isOpen={drawerOpen} onOpenChange={setDrawerOpen}>
           <Drawer.Content>
-            {(close) => (
-              <div className="space-y-4 p-4">
-                <div>
-                  <h2 className="text-base font-semibold">Issue Properties</h2>
-                  <p className="text-sm text-muted-foreground mt-0.5">Edit metadata without leaving the current page.</p>
-                </div>
-                <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground">Title</label>
-                  <Input defaultValue="Improve onboarding docs" />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground">Description</label>
-                  <textarea
-                    className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm outline-none resize-none"
-                    defaultValue="Capture setup pitfalls and screenshots."
-                    rows={3}
-                  />
-                </div>
-                <div className="flex justify-end gap-2">
-                  <Button variant="outline" onPress={close}>Cancel</Button>
-                  <Button onPress={close}>Save</Button>
-                </div>
+            <div className="space-y-4 p-4">
+              <div>
+                <h2 className="text-base font-semibold">Issue Properties</h2>
+                <p className="text-sm text-muted-foreground mt-0.5">Edit metadata without leaving the current page.</p>
               </div>
-            )}
+              <div className="space-y-1">
+                <label className="text-xs text-muted-foreground">Title</label>
+                <Input defaultValue="Improve onboarding docs" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs text-muted-foreground">Description</label>
+                <textarea
+                  className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm outline-none resize-none"
+                  defaultValue="Capture setup pitfalls and screenshots."
+                  rows={3}
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onPress={() => setDrawerOpen(false)}>Cancel</Button>
+                <Button onPress={() => setDrawerOpen(false)}>Save</Button>
+              </div>
+            </div>
           </Drawer.Content>
         </Drawer>
       </Section>
@@ -602,9 +607,9 @@ export function DesignGuide() {
               <div className="font-semibold">Card Title</div>
               <p className="text-sm text-muted-foreground">Card description with supporting text.</p>
             </Card.Header>
-            <Card.Body>
+            <Card.Content>
               <p className="text-sm">Card content goes here. This is the main body area.</p>
-            </Card.Body>
+            </Card.Content>
             <Card.Footer className="gap-2">
               <Button size="sm">Action</Button>
               <Button variant="outline" size="sm">Cancel</Button>
@@ -785,8 +790,9 @@ export function DesignGuide() {
       <Section title="Modal">
         <Button variant="outline" onPress={() => setDialogOpen(true)}>Open Modal</Button>
         <Modal isOpen={dialogOpen} onOpenChange={setDialogOpen}>
-          <Modal.Content>
-            {(close) => (
+          <Modal.Backdrop />
+          <Modal.Container size="md">
+            <Modal.Dialog>
               <div className="p-6 space-y-4 max-w-md">
                 <div>
                   <h2 className="text-base font-semibold">Modal Title</h2>
@@ -809,12 +815,12 @@ export function DesignGuide() {
                   </div>
                 </div>
                 <div className="flex justify-end gap-2">
-                  <Button variant="outline" onPress={close}>Cancel</Button>
-                  <Button onPress={close}>Save</Button>
+                  <Button variant="outline" onPress={() => setDialogOpen(false)}>Cancel</Button>
+                  <Button onPress={() => setDialogOpen(false)}>Save</Button>
                 </div>
               </div>
-            )}
-          </Modal.Content>
+            </Modal.Dialog>
+          </Modal.Container>
         </Modal>
       </Section>
 

@@ -36,36 +36,38 @@ export function CompanySwitcher() {
           <ChevronsUpDown className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
         </button>
       </Dropdown.Trigger>
-      <Dropdown.Content>
-        <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">Companies</div>
-        <Separator />
-        {sidebarCompanies.map((company) => (
-          <Dropdown.Item
-            key={company.id}
-            onPress={() => setSelectedCompanyId(company.id)}
-            className={company.id === selectedCompany?.id ? "bg-accent" : ""}
-          >
-            <span className={`h-2 w-2 rounded-full shrink-0 mr-2 ${statusDotColor(company.status)}`} />
-            <span className="truncate">{company.name}</span>
+      <Dropdown.Popover>
+        <Dropdown.Menu>
+          <Dropdown.Item isDisabled>
+            <span className="text-xs font-semibold text-muted-foreground">Companies</span>
           </Dropdown.Item>
-        ))}
-        {sidebarCompanies.length === 0 && (
-          <Dropdown.Item isDisabled>No companies</Dropdown.Item>
-        )}
-        <Separator />
-        <Dropdown.Item>
-          <Link to="/company/settings" className="no-underline text-inherit flex items-center">
-            <Settings className="h-4 w-4 mr-2" />
-            Company Settings
-          </Link>
-        </Dropdown.Item>
-        <Dropdown.Item>
-          <Link to="/companies" className="no-underline text-inherit flex items-center">
-            <Plus className="h-4 w-4 mr-2" />
-            Manage Companies
-          </Link>
-        </Dropdown.Item>
-      </Dropdown.Content>
+          {sidebarCompanies.map((company) => (
+            <Dropdown.Item
+              key={company.id}
+              onPress={() => setSelectedCompanyId(company.id)}
+              className={company.id === selectedCompany?.id ? "bg-accent" : ""}
+            >
+              <span className={`h-2 w-2 rounded-full shrink-0 mr-2 ${statusDotColor(company.status)}`} />
+              <span className="truncate">{company.name}</span>
+            </Dropdown.Item>
+          ))}
+          {sidebarCompanies.length === 0 && (
+            <Dropdown.Item isDisabled>No companies</Dropdown.Item>
+          )}
+          <Dropdown.Item onPress={() => {}}>
+            <Link to="/company/settings" className="no-underline text-inherit flex items-center">
+              <Settings className="h-4 w-4 mr-2" />
+              Company Settings
+            </Link>
+          </Dropdown.Item>
+          <Dropdown.Item onPress={() => {}}>
+            <Link to="/companies" className="no-underline text-inherit flex items-center">
+              <Plus className="h-4 w-4 mr-2" />
+              Manage Companies
+            </Link>
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown.Popover>
     </Dropdown>
   );
 }

@@ -603,7 +603,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                   ?
                 </button>
               </Tooltip.Trigger>
-              <Tooltip.Content side="top">
+              <Tooltip.Content placement="top">
                 Repo identifies the source of truth. Local folder is the default place agents write code.
               </Tooltip.Content>
             </Tooltip>
@@ -633,7 +633,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                   <div className="flex items-center gap-1">
                     <Button
                       variant="outline"
-                      size="xs"
+                      size="sm"
                       className="h-6 px-2"
                       onPress={() => {
                         setWorkspaceMode("repo");
@@ -645,7 +645,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                     </Button>
                     <Button
                       variant="ghost"
-                      size="icon-xs"
+                      size="sm" isIconOnly
                       onPress={clearRepoWorkspace}
                       aria-label="Clear repo"
                     >
@@ -658,7 +658,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                   <div className="text-xs text-muted-foreground">Not set.</div>
                   <Button
                     variant="outline"
-                    size="xs"
+                    size="sm"
                     className="h-6 px-2"
                     onPress={() => {
                       setWorkspaceMode("repo");
@@ -686,7 +686,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                 <div className="flex items-center gap-1">
                   <Button
                     variant="outline"
-                    size="xs"
+                    size="sm"
                     className="h-6 px-2"
                     onPress={() => {
                       setWorkspaceMode("local");
@@ -699,7 +699,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                   {codebase.localFolder ? (
                     <Button
                       variant="ghost"
-                      size="icon-xs"
+                      size="sm" isIconOnly
                       onPress={clearLocalWorkspace}
                       aria-label="Clear local folder"
                     >
@@ -776,7 +776,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
-                  size="xs"
+                  size="sm"
                   className="h-6 px-2"
                   isDisabled={(!workspaceCwd.trim() && !primaryCodebaseWorkspace) || createWorkspace.isPending || updateWorkspace.isPending}
                   onPress={submitLocalWorkspace}
@@ -785,7 +785,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                 </Button>
                 <Button
                   variant="ghost"
-                  size="xs"
+                  size="sm"
                   className="h-6 px-2"
                   onPress={() => {
                     setWorkspaceMode(null);
@@ -809,7 +809,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
-                  size="xs"
+                  size="sm"
                   className="h-6 px-2"
                   isDisabled={(!workspaceRepoUrl.trim() && !primaryCodebaseWorkspace) || createWorkspace.isPending || updateWorkspace.isPending}
                   onPress={submitRepoWorkspace}
@@ -818,7 +818,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                 </Button>
                 <Button
                   variant="ghost"
-                  size="xs"
+                  size="sm"
                   className="h-6 px-2"
                   onPress={() => {
                     setWorkspaceMode(null);
@@ -862,7 +862,7 @@ export function ProjectProperties({ project, onUpdate, onFieldUpdate, getFieldSa
                       ?
                     </button>
                   </Tooltip.Trigger>
-                  <Tooltip.Content side="top">
+                  <Tooltip.Content placement="top">
                     Project-owned defaults for isolated issue checkouts and execution workspace behavior.
                   </Tooltip.Content>
                 </Tooltip>

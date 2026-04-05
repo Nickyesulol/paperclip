@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Button, Select, Input } from "@heroui/react";
+import { Button, Select, Input, ListBox } from "@heroui/react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 
 type SchedulePreset = "every_minute" | "every_hour" | "every_day" | "weekdays" | "weekly" | "monthly" | "custom";
@@ -198,13 +198,15 @@ export function ScheduleEditor({
         className="w-full"
       >
         <Select.Trigger />
-        <Select.Content>
-          {PRESETS.map((p) => (
-            <Select.Item key={p.value} id={p.value}>
-              {p.label}
-            </Select.Item>
-          ))}
-        </Select.Content>
+        <Select.Popover>
+          <ListBox>
+            {PRESETS.map((p) => (
+              <ListBox.Item key={p.value} id={p.value}>
+                {p.label}
+              </ListBox.Item>
+            ))}
+          </ListBox>
+        </Select.Popover>
       </Select>
 
       {preset === "custom" ? (
@@ -236,13 +238,15 @@ export function ScheduleEditor({
                 className="w-[120px]"
               >
                 <Select.Trigger />
-                <Select.Content>
-                  {HOURS.map((h) => (
-                    <Select.Item key={h.value} id={h.value}>
-                      {h.label}
-                    </Select.Item>
-                  ))}
-                </Select.Content>
+                <Select.Popover>
+                  <ListBox>
+                    {HOURS.map((h) => (
+                      <ListBox.Item key={h.value} id={h.value}>
+                        {h.label}
+                      </ListBox.Item>
+                    ))}
+                  </ListBox>
+                </Select.Popover>
               </Select>
               <span className="text-sm text-muted-foreground">:</span>
               <Select
@@ -254,13 +258,15 @@ export function ScheduleEditor({
                 className="w-[80px]"
               >
                 <Select.Trigger />
-                <Select.Content>
-                  {MINUTES.map((m) => (
-                    <Select.Item key={m.value} id={m.value}>
-                      {m.label}
-                    </Select.Item>
-                  ))}
-                </Select.Content>
+                <Select.Popover>
+                  <ListBox>
+                    {MINUTES.map((m) => (
+                      <ListBox.Item key={m.value} id={m.value}>
+                        {m.label}
+                      </ListBox.Item>
+                    ))}
+                  </ListBox>
+                </Select.Popover>
               </Select>
             </>
           )}
@@ -277,13 +283,15 @@ export function ScheduleEditor({
                 className="w-[80px]"
               >
                 <Select.Trigger />
-                <Select.Content>
-                  {MINUTES.map((m) => (
-                    <Select.Item key={m.value} id={m.value}>
-                      :{m.label}
-                    </Select.Item>
-                  ))}
-                </Select.Content>
+                <Select.Popover>
+                  <ListBox>
+                    {MINUTES.map((m) => (
+                      <ListBox.Item key={m.value} id={m.value}>
+                        :{m.label}
+                      </ListBox.Item>
+                    ))}
+                  </ListBox>
+                </Select.Popover>
               </Select>
             </>
           )}
@@ -323,13 +331,15 @@ export function ScheduleEditor({
                 className="w-[80px]"
               >
                 <Select.Trigger />
-                <Select.Content>
-                  {DAYS_OF_MONTH.map((d) => (
-                    <Select.Item key={d.value} id={d.value}>
-                      {d.label}
-                    </Select.Item>
-                  ))}
-                </Select.Content>
+                <Select.Popover>
+                  <ListBox>
+                    {DAYS_OF_MONTH.map((d) => (
+                      <ListBox.Item key={d.value} id={d.value}>
+                        {d.label}
+                      </ListBox.Item>
+                    ))}
+                  </ListBox>
+                </Select.Popover>
               </Select>
             </>
           )}

@@ -192,7 +192,8 @@ function ArtifactRow({
                 <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
               </button>
             </Dropdown.Trigger>
-            <Dropdown.Content>
+            <Dropdown.Popover>
+              <Dropdown.Menu>
               <Dropdown.Item onPress={() => window.open(contentUrl, "_blank")}>
                 <Download className="w-4 h-4 mr-2" />
                 <a href={contentUrl} download={artifact.title}>Download</a>
@@ -230,7 +231,8 @@ function ArtifactRow({
                 <Trash2 className="w-4 h-4 mr-2" />
                 Delete
               </Dropdown.Item>
-            </Dropdown.Content>
+              </Dropdown.Menu>
+            </Dropdown.Popover>
           </Dropdown>
         </td>
       </tr>

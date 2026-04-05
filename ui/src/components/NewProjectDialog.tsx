@@ -201,10 +201,11 @@ export function NewProjectDialog() {
         }
       }}
     >
-      <Modal.Content>
-        {() => (
+      <Modal.Backdrop />
+      <Modal.Container size={expanded ? "lg" : "md"}>
+        <Modal.Dialog>
           <div
-            className={cn("p-0 gap-0", expanded ? "sm:max-w-2xl" : "sm:max-w-lg")}
+            className="p-0 gap-0"
             onKeyDown={handleKeyDown}
           >
             {/* Header */}
@@ -436,8 +437,8 @@ export function NewProjectDialog() {
               </Button>
             </div>
           </div>
-        )}
-      </Modal.Content>
+        </Modal.Dialog>
+      </Modal.Container>
     </Modal>
   );
 }

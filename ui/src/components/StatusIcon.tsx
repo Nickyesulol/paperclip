@@ -46,13 +46,13 @@ export function StatusIcon({ status, onChange, className, showLabel }: StatusIco
   ) : circle;
 
   return (
-    <Popover isOpen={open} onOpenChange={setOpen} placement="bottom-start">
+    <Popover isOpen={open} onOpenChange={setOpen}>
       <Popover.Trigger>
         <button type="button" className="inline-flex items-center" onClick={(e) => e.stopPropagation()}>
           {triggerContent}
         </button>
       </Popover.Trigger>
-      <Popover.Content className="w-40 p-1">
+      <Popover.Content placement="bottom start" className="w-40 p-1">
         {allStatuses.map((s) => (
           <Button
             key={s}

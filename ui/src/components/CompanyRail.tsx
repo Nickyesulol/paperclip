@@ -152,7 +152,7 @@ function SortableCompanyItem({
             </div>
           </div>
         </Tooltip.Trigger>
-        <Tooltip.Content side="right" sideOffset={8}>
+        <Tooltip.Content placement="right" offset={8}>
           <p>{company.name}</p>
         </Tooltip.Content>
       </Tooltip>
@@ -336,7 +336,7 @@ export function CompanyRail() {
               <Plus className="h-5 w-5" />
             </button>
           </Tooltip.Trigger>
-          <Tooltip.Content side="right" sideOffset={8}>
+          <Tooltip.Content placement="right" offset={8}>
             <p>Add company</p>
           </Tooltip.Content>
         </Tooltip>
@@ -359,7 +359,7 @@ export function CompanyRail() {
                 )}
               </button>
             </Tooltip.Trigger>
-            <Tooltip.Content side="right" sideOffset={8}>
+            <Tooltip.Content placement="right" offset={8}>
               <p>{sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}</p>
             </Tooltip.Content>
           </Tooltip>

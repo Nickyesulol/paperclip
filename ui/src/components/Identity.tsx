@@ -38,10 +38,11 @@ export function Identity({ name, avatarUrl, initials, size = "default", classNam
     <span className={cn("inline-flex gap-1.5", size === "xs" ? "items-baseline gap-1" : "items-center", size === "lg" && "gap-2", className)}>
       <Avatar
         size={avatarSize[size]}
-        src={avatarUrl ?? undefined}
-        name={displayInitials}
         className={size === "xs" ? "relative -top-px" : undefined}
-      />
+      >
+        {avatarUrl && <Avatar.Image src={avatarUrl} />}
+        <Avatar.Fallback>{displayInitials}</Avatar.Fallback>
+      </Avatar>
       <span className={cn("truncate", textSize[size])}>{name}</span>
     </span>
   );

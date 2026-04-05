@@ -11,7 +11,7 @@ import { queryKeys } from "../lib/queryKeys";
 import { EmptyState } from "../components/EmptyState";
 import { ActivityRow } from "../components/ActivityRow";
 import { PageSkeleton } from "../components/PageSkeleton";
-import { Select } from "@heroui/react";
+import { Select, ListBox } from "@heroui/react";
 import { History } from "lucide-react";
 import type { Agent } from "@paperclipai/shared";
 
@@ -102,14 +102,16 @@ export function Activity() {
           aria-label="Filter by type"
         >
           <Select.Trigger className="h-8 text-xs" />
-          <Select.Content>
-            <Select.Item id="all">All types</Select.Item>
-            {entityTypes.map((type) => (
-              <Select.Item key={type} id={type}>
-                {type.charAt(0).toUpperCase() + type.slice(1)}
-              </Select.Item>
-            ))}
-          </Select.Content>
+          <Select.Popover>
+            <ListBox>
+              <ListBox.Item id="all">All types</ListBox.Item>
+              {entityTypes.map((type) => (
+                <ListBox.Item key={type} id={type}>
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </ListBox.Item>
+              ))}
+            </ListBox>
+          </Select.Popover>
         </Select>
       </div>
 

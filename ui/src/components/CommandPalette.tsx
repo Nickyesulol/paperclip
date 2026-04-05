@@ -304,12 +304,10 @@ export function CommandPalette() {
           setOpen(v);
           if (v && isMobile) setSidebarOpen(false);
         }}
-        placement="top"
-        size="lg"
-        className="mt-[10vh]"
       >
-        <Modal.Content>
-          {(close) => (
+        <Modal.Backdrop />
+        <Modal.Container placement="top" size="lg" className="mt-[10vh]">
+          <Modal.Dialog>
             <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-background shadow-2xl">
               {/* Search input */}
               <div className="flex items-center gap-2 border-b border-border px-3 py-2.5">
@@ -367,8 +365,8 @@ export function CommandPalette() {
                 <span><kbd className="font-mono">esc</kbd> close</span>
               </div>
             </div>
-          )}
-        </Modal.Content>
+          </Modal.Dialog>
+        </Modal.Container>
       </Modal>
     </>
   );

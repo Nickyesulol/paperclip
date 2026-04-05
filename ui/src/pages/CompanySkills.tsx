@@ -992,8 +992,9 @@ export function CompanySkills() {
   return (
     <>
       <Modal isOpen={emptySourceHelpOpen} onOpenChange={setEmptySourceHelpOpen}>
-        <Modal.Content>
-          {(close) => (
+        <Modal.Backdrop />
+        <Modal.Container size="md">
+          <Modal.Dialog>
             <div className="p-6 space-y-4 max-w-md">
               <div>
                 <h2 className="text-base font-semibold">Add a skill source</h2>
@@ -1032,11 +1033,11 @@ export function CompanySkills() {
                 </a>
               </div>
               <div className="flex justify-end">
-                <Button size="sm" variant="outline" onPress={close}>Close</Button>
+                <Button size="sm" variant="outline" onPress={() => setEmptySourceHelpOpen(false)}>Close</Button>
               </div>
             </div>
-          )}
-        </Modal.Content>
+          </Modal.Dialog>
+        </Modal.Container>
       </Modal>
 
       <div className="grid min-h-[calc(100vh-12rem)] gap-0 xl:grid-cols-[19rem_minmax(0,1fr)]">
@@ -1052,15 +1053,15 @@ export function CompanySkills() {
               <div className="flex items-center gap-1">
                 <Button
                   variant="ghost"
-                  size="icon-sm"
+                  size="sm"
+                  isIconOnly
                   onPress={() => scanProjects.mutate()}
                   isDisabled={scanProjects.isPending}
-                  title="Scan project workspaces for skills"
-                  isIconOnly
+                  aria-label="Scan project workspaces for skills"
                 >
                   <RefreshCw className={cn("h-4 w-4", scanProjects.isPending && "animate-spin")} />
                 </Button>
-                <Button variant="ghost" size="icon-sm" onPress={() => setCreateOpen((value) => !value)} isIconOnly>
+                <Button variant="ghost" size="sm" isIconOnly onPress={() => setCreateOpen((value) => !value)}>
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>

@@ -689,14 +689,14 @@ export function RoutineDetail() {
         />
         <div className="flex shrink-0 items-center gap-3 pt-1">
           <RunButton
-            onClick={() => {
+            onPress={() => {
               if (needsRunConfiguration) {
                 setRunVariablesOpen(true);
                 return;
               }
               runRoutine.mutate({});
             }}
-            disabled={runRoutine.isPending}
+            isDisabled={runRoutine.isPending}
           />
           <button
             type="button"

@@ -550,7 +550,7 @@ export function ExecutionWorkspaceDetail() {
                     className="min-h-48 w-full rounded-lg border border-border bg-background px-3 py-2 font-mono text-sm outline-none disabled:cursor-not-allowed disabled:opacity-60"
                     value={form.workspaceRuntime}
                     onChange={(event) => setForm((current) => current ? { ...current, workspaceRuntime: event.target.value } : current)}
-                    isDisabled={form.inheritRuntime}
+                    disabled={form.inheritRuntime}
                     placeholder={'{\n  "services": [\n    {\n      "name": "web",\n      "command": "pnpm dev",\n      "port": 3100\n    }\n  ]\n}'}
                   />
                 </Field>

@@ -133,7 +133,7 @@ export function OutputFeedbackButtons({
             onChange={(event) => setDownvoteReason(event.target.value)}
             placeholder="Add a short note"
             className="min-h-20 resize-y bg-background"
-            isDisabled={disabled || isSaving}
+            disabled={disabled || isSaving}
           />
           <div className="mt-3 flex items-center justify-end gap-2">
             <Button
@@ -173,8 +173,9 @@ export function OutputFeedbackButtons({
           }
         }}
       >
-        <Modal.Content>
-          {() => (
+        <Modal.Backdrop />
+        <Modal.Container>
+          <Modal.Dialog>
             <div className="p-6 space-y-4">
               <div className="space-y-1">
                 <h2 className="text-base font-semibold">Save your feedback sharing preference</h2>
@@ -246,8 +247,8 @@ export function OutputFeedbackButtons({
                 </Button>
               </div>
             </div>
-          )}
-        </Modal.Content>
+          </Modal.Dialog>
+        </Modal.Container>
       </Modal>
     </>
   );

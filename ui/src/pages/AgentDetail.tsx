@@ -363,7 +363,7 @@ function WorkspaceOperationLogViewer({
       <button
         type="button"
         className="text-[11px] text-muted-foreground underline underline-offset-2 hover:text-foreground"
-        onPress={() => setOpen((value) => !value)}
+        onClick={() => setOpen((value) => !value)}
       >
         {open ? "Hide full log" : "Show full log"}
       </button>
@@ -851,7 +851,7 @@ export function AgentDetail() {
           {/* Overflow menu */}
           <Popover isOpen={moreOpen} onOpenChange={setMoreOpen}>
             <Popover.Trigger>
-              <Button variant="ghost" size="icon-xs">
+              <Button variant="ghost" size="sm" isIconOnly>
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </Popover.Trigger>
@@ -1353,7 +1353,7 @@ function AgentConfigurePage({
       <div>
         <button
           className="flex items-center gap-2 text-sm font-medium hover:text-foreground transition-colors"
-          onPress={() => setRevisionsOpen((v) => !v)}
+          onClick={() => setRevisionsOpen((v) => !v)}
         >
           {revisionsOpen
             ? <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
@@ -1524,13 +1524,13 @@ function ConfigurationTab({
                 "relative inline-flex h-5 w-9 items-center rounded-full transition-colors shrink-0 disabled:cursor-not-allowed disabled:opacity-50",
                 canCreateAgents ? "bg-green-600" : "bg-muted",
               )}
-              onPress={() =>
+              onClick={() =>
                 updatePermissions.mutate({
                   canCreateAgents: !canCreateAgents,
                   canAssignTasks: !canCreateAgents ? true : canAssignTasks,
                 })
               }
-              isDisabled={updatePermissions.isPending}
+              disabled={updatePermissions.isPending}
             >
               <span
                 className={cn(
@@ -1556,13 +1556,13 @@ function ConfigurationTab({
                 "relative inline-flex h-5 w-9 items-center rounded-full transition-colors shrink-0 disabled:cursor-not-allowed disabled:opacity-50",
                 canAssignTasks ? "bg-green-600" : "bg-muted",
               )}
-              onPress={() =>
+              onClick={() =>
                 updatePermissions.mutate({
                   canCreateAgents,
                   canAssignTasks: !canAssignTasks,
                 })
               }
-              isDisabled={updatePermissions.isPending || taskAssignLocked}
+              disabled={updatePermissions.isPending || taskAssignLocked}
             >
               <span
                 className={cn(
@@ -1933,7 +1933,7 @@ function PromptsTab({
                     <Tooltip.Trigger>
                       <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
                     </Tooltip.Trigger>
-                    <Tooltip.Content side="right" sideOffset={4}>
+                    <Tooltip.Content placement="right" offset={4}>
                       Managed: Paperclip stores and serves the instructions bundle. External: you provide a path on disk where the instructions live.
                     </Tooltip.Content>
                   </Tooltip>
@@ -1942,7 +1942,7 @@ function PromptsTab({
                   <Button
                     type="button"
                     size="sm"
-                    variant={currentMode === "managed" ? "default" : "outline"}
+                    variant={currentMode === "managed" ? "primary" : "outline"}
                     onPress={() => {
                       if (currentMode === "external") {
                         externalBundleRef.current = {
@@ -1965,7 +1965,7 @@ function PromptsTab({
                   <Button
                     type="button"
                     size="sm"
-                    variant={currentMode === "external" ? "default" : "outline"}
+                    variant={currentMode === "external" ? "primary" : "outline"}
                     onPress={() => {
                       const externalBundle = externalBundleRef.current;
                       const nextEntryFile = externalBundle?.entryFile ?? currentEntryFile ?? "AGENTS.md";
@@ -1988,7 +1988,7 @@ function PromptsTab({
                     <Tooltip.Trigger>
                       <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
                     </Tooltip.Trigger>
-                    <Tooltip.Content side="right" sideOffset={4}>
+                    <Tooltip.Content placement="right" offset={4}>
                       The absolute directory on disk where the instructions bundle lives. In managed mode this is set by Paperclip automatically.
                     </Tooltip.Content>
                   </Tooltip>
@@ -2037,7 +2037,7 @@ function PromptsTab({
                     <Tooltip.Trigger>
                       <HelpCircle className="h-3 w-3 text-muted-foreground cursor-help" />
                     </Tooltip.Trigger>
-                    <Tooltip.Content side="right" sideOffset={4}>
+                    <Tooltip.Content placement="right" offset={4}>
                       The main file the agent reads first when loading instructions. Defaults to AGENTS.md.
                     </Tooltip.Content>
                   </Tooltip>
@@ -2084,7 +2084,8 @@ function PromptsTab({
               {!showNewFileInput && (
                 <Button
                   type="button"
-                  size="icon"
+                  size="sm"
+                  isIconOnly
                   variant="outline"
                   className="h-7 w-7"
                   onPress={() => setShowNewFileInput(true)}
@@ -2095,7 +2096,8 @@ function PromptsTab({
               {isMobile && (
                 <Button
                   type="button"
-                  size="icon"
+                  size="sm"
+                  isIconOnly
                   variant="ghost"
                   className="h-7 w-7"
                   onPress={() => setShowFilePanel(false)}
@@ -2124,7 +2126,7 @@ function PromptsTab({
                 <Button
                   type="button"
                   size="sm"
-                  variant="default"
+                  variant="primary"
                   className="flex-1"
                   isDisabled={!newFilePath.trim() || newFilePath.includes("..")}
                   onPress={() => {
@@ -2183,7 +2185,7 @@ function PromptsTab({
                         virtual file
                       </span>
                     </Tooltip.Trigger>
-                    <Tooltip.Content side="right" sideOffset={4}>
+                    <Tooltip.Content placement="right" offset={4}>
                       Legacy inline prompt — this deprecated virtual file preserves the old promptTemplate content
                     </Tooltip.Content>
                   </Tooltip>
@@ -2212,7 +2214,8 @@ function PromptsTab({
               {isMobile && (
                 <Button
                   type="button"
-                  size="icon"
+                  size="sm"
+                  isIconOnly
                   variant="outline"
                   className="h-7 w-7 shrink-0"
                   onPress={() => setShowFilePanel(true)}
@@ -2622,7 +2625,7 @@ function AgentSkillsTab({
                 <input
                   type="checkbox"
                   checked={checked}
-                  isDisabled={disabled}
+                  disabled={disabled}
                   onChange={(event) => {
                     const next = event.target.checked
                       ? Array.from(new Set([...skillDraft, skill.key]))
@@ -2640,14 +2643,14 @@ function AgentSkillsTab({
                       <Tooltip.Trigger>
                         <span>{checkbox}</span>
                       </Tooltip.Trigger>
-                      <Tooltip.Content side="top">{adapterEntry.requiredReason}</Tooltip.Content>
+                      <Tooltip.Content placement="top">{adapterEntry.requiredReason}</Tooltip.Content>
                     </Tooltip>
                   ) : skillSnapshot?.mode === "unsupported" ? (
                     <Tooltip>
                       <Tooltip.Trigger>
                         <span>{checkbox}</span>
                       </Tooltip.Trigger>
-                      <Tooltip.Content side="top">
+                      <Tooltip.Content placement="top">
                         {unsupportedSkillMessage ?? "Manage skills in the adapter directly."}
                       </Tooltip.Content>
                     </Tooltip>
@@ -2694,7 +2697,7 @@ function AgentSkillsTab({
                       role="button"
                       tabIndex={0}
                       className="flex cursor-pointer items-center gap-2 border-b border-border bg-muted/40 px-3 py-2 select-none"
-                      onPress={() => setUnmanagedOpen((v) => !v)}
+                      onClick={() => setUnmanagedOpen((v) => !v)}
                       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setUnmanagedOpen((v) => !v); } }}
                     >
                       <span className="text-xs font-medium text-muted-foreground">
@@ -3190,7 +3193,7 @@ function RunDetail({ run: initialRun, agentRouteId, adapterType }: { run: Heartb
           <div className="border-t border-border">
             <button
               className="flex items-center gap-1.5 w-full px-4 py-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
-              onPress={() => setSessionOpen((v) => !v)}
+              onClick={() => setSessionOpen((v) => !v)}
             >
               <ChevronRight className={cn("h-3 w-3 transition-transform", sessionOpen && "rotate-90")} />
               Session
@@ -3215,8 +3218,8 @@ function RunDetail({ run: initialRun, agentRouteId, adapterType }: { run: Heartb
                     <button
                       type="button"
                       className="text-[11px] text-muted-foreground underline underline-offset-2 hover:text-foreground disabled:opacity-60"
-                      isDisabled={clearSessionsForTouchedIssues.isPending}
-                      onPress={() => {
+                      disabled={clearSessionsForTouchedIssues.isPending}
+                      onClick={() => {
                         const issueCount = touchedIssueIds.length;
                         const confirmed = window.confirm(
                           `Clear session for ${issueCount} issue${issueCount === 1 ? "" : "s"} touched by this run?`,
@@ -3778,7 +3781,7 @@ function LogViewer({ run, adapterType }: { run: HeartbeatRun; adapterType: strin
                     ? "bg-accent text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground",
                 )}
-                onPress={() => setTranscriptMode(mode)}
+                onClick={() => setTranscriptMode(mode)}
               >
                 {mode}
               </button>
@@ -3787,7 +3790,7 @@ function LogViewer({ run, adapterType }: { run: HeartbeatRun; adapterType: strin
           {isLive && !isFollowing && (
             <Button
               variant="ghost"
-              size="xs"
+              size="sm"
               onPress={() => {
                 const container = getScrollContainer();
                 isFollowingRef.current = true;
@@ -3951,17 +3954,17 @@ function KeysTab({ agentId, companyId }: { agentId: string; companyId?: string }
             </code>
             <Button
               variant="ghost"
-              size="icon-sm"
+              size="sm" isIconOnly
               onPress={() => setTokenVisible((v) => !v)}
-              title={tokenVisible ? "Hide" : "Show"}
+              aria-label={tokenVisible ? "Hide" : "Show"}
             >
               {tokenVisible ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
             </Button>
             <Button
               variant="ghost"
-              size="icon-sm"
+              size="sm" isIconOnly
               onPress={copyToken}
-              title="Copy"
+              aria-label="Copy"
             >
               <Copy className="h-3.5 w-3.5" />
             </Button>

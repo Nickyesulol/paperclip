@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { instanceSettingsApi } from "../api/instanceSettings";
 import { queryKeys } from "../lib/queryKeys";
 import { IssueWorkspaceCard } from "./IssueWorkspaceCard";
-import { Button, Modal, Input, Select } from "@heroui/react";
+import { Button, Modal, Input, Select, ListBox } from "@heroui/react";
 
 function buildInitialValues(variables: RoutineVariable[]) {
   return Object.fromEntries(variables.map((variable) => [variable.name, variable.defaultValue ?? ""]));
@@ -175,15 +175,17 @@ export function RoutineRunVariablesDialog({
 
   return (
     <Modal isOpen={open} onOpenChange={(next) => !isPending && onOpenChange(next)}>
-      <Modal.Content className="max-w-xl">
-        <div className="px-6 pt-6 pb-2">
-          <h2 className="text-base font-semibold">Run routine</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Fill in the routine variables before starting the execution issue.
-          </p>
-        </div>
+      <Modal.Backdrop />
+      <Modal.Container size="md">
+        <Modal.Dialog>
+          <div className="px-6 pt-6 pb-2">
+            <h2 className="text-base font-semibold">Run routine</h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              Fill in the routine variables before starting the execution issue.
+            </p>
+          </div>
 
-        <div className="px-6 pb-2 space-y-4">
+          <div className="px-6 pb-2 space-y-4">
           {variables.map((variable) => (
             <div key={variable.name} className="space-y-1.5">
               <label className="text-xs text-muted-foreground">
@@ -206,11 +208,13 @@ export function RoutineRunVariablesDialog({
                   }))}
                 >
                   <Select.Trigger />
-                  <Select.Content>
-                    <Select.Item key="__unset__" id="__unset__">No value</Select.Item>
-                    <Select.Item key="true" id="true">True</Select.Item>
-                    <Select.Item key="false" id="false">False</Select.Item>
-                  </Select.Content>
+                  <Select.Popover>
+                    <ListBox>
+                      <ListBox.Item id="__unset__">No value</ListBox.Item>
+                      <ListBox.Item id="true">True</ListBox.Item>
+                      <ListBox.Item id="false">False</ListBox.Item>
+                    </ListBox>
+                  </Select.Popover>
                 </Select>
               ) : variable.type === "select" ? (
                 <Select
@@ -221,12 +225,14 @@ export function RoutineRunVariablesDialog({
                   }))}
                 >
                   <Select.Trigger />
-                  <Select.Content>
-                    <Select.Item key="__unset__" id="__unset__">No value</Select.Item>
-                    {variable.options.map((option) => (
-                      <Select.Item key={option} id={option}>{option}</Select.Item>
-                    ))}
-                  </Select.Content>
+                  <Select.Popover>
+                    <ListBox>
+                      <ListBox.Item id="__unset__">No value</ListBox.Item>
+                      {variable.options.map((option) => (
+                        <ListBox.Item key={option} id={option}>{option}</ListBox.Item>
+                      ))}
+                    </ListBox>
+                  </Select.Popover>
                 </Select>
               ) : (
                 <Input
@@ -295,8 +301,9 @@ export function RoutineRunVariablesDialog({
           >
             {isPending ? "Running..." : "Run routine"}
           </Button>
-        </div>
-      </Modal.Content>
+          </div>
+        </Modal.Dialog>
+      </Modal.Container>
     </Modal>
   );
 }

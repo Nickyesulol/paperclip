@@ -79,7 +79,8 @@ function FolderNode({
               <MoreHorizontal className="w-3.5 h-3.5 text-muted-foreground" />
             </button>
           </Dropdown.Trigger>
-          <Dropdown.Content>
+          <Dropdown.Popover>
+            <Dropdown.Menu>
             <Dropdown.Item onPress={() => onCreateFolder(node.id)}>New subfolder</Dropdown.Item>
             <Dropdown.Item onPress={() => onRenameFolder(node)}>Rename</Dropdown.Item>
             <Dropdown.Item
@@ -88,7 +89,8 @@ function FolderNode({
             >
               Delete
             </Dropdown.Item>
-          </Dropdown.Content>
+            </Dropdown.Menu>
+          </Dropdown.Popover>
         </Dropdown>
       </div>
       {expanded &&

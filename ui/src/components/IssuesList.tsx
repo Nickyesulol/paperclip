@@ -443,7 +443,7 @@ export function IssuesList({
           </div>
 
           {/* Filter */}
-          <Popover placement="bottom-end">
+          <Popover>
             <Popover.Trigger>
               <Button variant="ghost" size="sm" className={`text-xs ${activeFilterCount > 0 ? "text-blue-600 dark:text-blue-400" : ""}`}>
                 <Filter className="h-3.5 w-3.5 sm:h-3 sm:w-3 sm:mr-1" />
@@ -462,7 +462,7 @@ export function IssuesList({
                 )}
               </Button>
             </Popover.Trigger>
-            <Popover.Content className="w-[min(480px,calc(100vw-2rem))] p-0">
+            <Popover.Content placement="bottom end" className="w-[min(480px,calc(100vw-2rem))] p-0">
               <div className="p-3 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">Filters</span>
@@ -614,14 +614,14 @@ export function IssuesList({
 
           {/* Sort (list view only) */}
           {viewState.viewMode === "list" && (
-            <Popover placement="bottom-end">
+            <Popover>
               <Popover.Trigger>
                 <Button variant="ghost" size="sm" className="text-xs">
                   <ArrowUpDown className="h-3.5 w-3.5 sm:h-3 sm:w-3 sm:mr-1" />
                   <span className="hidden sm:inline">Sort</span>
                 </Button>
               </Popover.Trigger>
-              <Popover.Content className="w-48 p-0">
+              <Popover.Content placement="bottom end" className="w-48 p-0">
                 <div className="p-2 space-y-0.5">
                   {([
                     ["status", "Status"],
@@ -658,14 +658,14 @@ export function IssuesList({
 
           {/* Group (list view only) */}
           {viewState.viewMode === "list" && (
-            <Popover placement="bottom-end">
+            <Popover>
               <Popover.Trigger>
                 <Button variant="ghost" size="sm" className="text-xs">
                   <Layers className="h-3.5 w-3.5 sm:h-3 sm:w-3 sm:mr-1" />
                   <span className="hidden sm:inline">Group</span>
                 </Button>
               </Popover.Trigger>
-              <Popover.Content className="w-44 p-0">
+              <Popover.Content placement="bottom end" className="w-44 p-0">
                 <div className="p-2 space-y-0.5">
                   {([
                     ["status", "Status"],
@@ -807,7 +807,6 @@ export function IssuesList({
                         setAssigneePickerIssueId(open ? issue.id : null);
                         if (!open) setAssigneeSearch("");
                       }}
-                      placement="bottom-end"
                     >
                       <Popover.Trigger>
                         <button
@@ -837,6 +836,7 @@ export function IssuesList({
                         </button>
                       </Popover.Trigger>
                       <Popover.Content
+                        placement="bottom end"
                         className="w-56 p-1"
                         onClick={(e: React.MouseEvent) => e.stopPropagation()}
                       >

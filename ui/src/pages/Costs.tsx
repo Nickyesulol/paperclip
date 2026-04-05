@@ -114,7 +114,7 @@ function FinanceSummaryCard({
           Account-level charges that do not map to a single inference request.
         </p>
       </Card.Header>
-      <Card.Body className="grid gap-3 px-5 pb-5 pt-2 sm:grid-cols-2 xl:grid-cols-4">
+      <Card.Content className="grid gap-3 px-5 pb-5 pt-2 sm:grid-cols-2 xl:grid-cols-4">
         <MetricTile
           label="Debits"
           value={formatCents(debitCents)}
@@ -139,7 +139,7 @@ function FinanceSummaryCard({
           subtitle="Estimated debits that are not yet invoice-authoritative"
           icon={Coins}
         />
-      </Card.Body>
+      </Card.Content>
     </Card>
   );
 }
@@ -655,12 +655,12 @@ export function Costs() {
               <div className="grid gap-4 xl:grid-cols-[1.3fr,1fr]">
                 <Card>
                   <Card.Header className="px-5 pt-5 pb-2">
-                    <div className="text-base" className="text-base font-semibold">Inference ledger</div>
+                    <div className="text-base font-semibold">Inference ledger</div>
                     <p className="text-sm text-muted-foreground">
                       Request-scoped inference spend for the selected period.
                     </p>
                   </Card.Header>
-                  <Card.Body className="space-y-4 px-5 pb-5 pt-2">
+                  <Card.Content className="space-y-4 px-5 pb-5 pt-2">
                     <div className="flex flex-wrap items-end justify-between gap-3">
                       <div>
                         <div className="text-3xl font-semibold tabular-nums">
@@ -699,7 +699,7 @@ export function Costs() {
                         </div>
                       </div>
                     ) : null}
-                  </Card.Body>
+                  </Card.Content>
                 </Card>
 
                 <FinanceSummaryCard
@@ -714,10 +714,10 @@ export function Costs() {
               <div className="grid gap-4 xl:grid-cols-[1.25fr,0.95fr]">
                 <Card>
                   <Card.Header className="px-5 pt-5 pb-2">
-                    <div className="text-base" className="text-base font-semibold">By agent</div>
+                    <div className="text-base font-semibold">By agent</div>
                     <p className="text-sm text-muted-foreground">What each agent consumed in the selected period.</p>
                   </Card.Header>
-                  <Card.Body className="space-y-2 px-5 pb-5 pt-2">
+                  <Card.Content className="space-y-2 px-5 pb-5 pt-2">
                     {(spendData?.byAgent.length ?? 0) === 0 ? (
                       <p className="text-sm text-muted-foreground">No cost events yet.</p>
                     ) : (
@@ -796,16 +796,16 @@ export function Costs() {
                         );
                       })
                     )}
-                  </Card.Body>
+                  </Card.Content>
                 </Card>
 
                 <div className="space-y-4">
                   <Card>
                     <Card.Header className="px-5 pt-5 pb-2">
-                      <div className="text-base" className="text-base font-semibold">By project</div>
+                      <div className="text-base font-semibold">By project</div>
                       <p className="text-sm text-muted-foreground">Run costs attributed through project-linked issues.</p>
                     </Card.Header>
-                    <Card.Body className="space-y-2 px-5 pb-5 pt-2">
+                    <Card.Content className="space-y-2 px-5 pb-5 pt-2">
                       {(spendData?.byProject.length ?? 0) === 0 ? (
                         <p className="text-sm text-muted-foreground">No project-attributed run costs yet.</p>
                       ) : (
@@ -819,7 +819,7 @@ export function Costs() {
                           </div>
                         ))
                       )}
-                    </Card.Body>
+                    </Card.Content>
                   </Card>
 
                   <FinanceTimelineCard rows={topFinanceEvents.slice(0, 6)} emptyMessage="No finance events yet. Add account-level charges once biller invoices or credits land." />
@@ -838,12 +838,12 @@ export function Costs() {
             <>
               <Card className="border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))]">
                 <Card.Header className="px-5 pt-5 pb-3">
-                  <div className="text-base" className="text-base font-semibold">Budget control plane</div>
+                  <div className="text-base font-semibold">Budget control plane</div>
                   <p className="text-sm text-muted-foreground">
                     Hard-stop spend limits for agents and projects. Provider subscription quota stays separate and appears under Providers.
                   </p>
                 </Card.Header>
-                <Card.Body className="grid gap-3 px-5 pb-5 pt-0 md:grid-cols-4">
+                <Card.Content className="grid gap-3 px-5 pb-5 pt-0 md:grid-cols-4">
                   <MetricTile
                     label="Active incidents"
                     value={String(activeBudgetIncidents.length)}
@@ -868,7 +868,7 @@ export function Costs() {
                     subtitle="Project execution blocked by budget"
                     icon={DollarSign}
                   />
-                </Card.Body>
+                </Card.Content>
               </Card>
 
               {activeBudgetIncidents.length > 0 ? (
@@ -936,9 +936,9 @@ export function Costs() {
 
                 {budgetPolicies.length === 0 ? (
                   <Card>
-                    <Card.Body className="px-5 py-8 text-sm text-muted-foreground">
+                    <Card.Content className="px-5 py-8 text-sm text-muted-foreground">
                       No budget policies yet. Set agent and project budgets from their detail pages, or use the existing company monthly budget control.
-                    </Card.Body>
+                    </Card.Content>
                   </Card>
                 ) : null}
               </div>
@@ -1075,16 +1075,16 @@ export function Costs() {
                 <div className="space-y-4">
                   <Card>
                     <Card.Header className="px-5 pt-5 pb-2">
-                      <div className="text-base" className="text-base font-semibold">By biller</div>
+                      <div className="text-base font-semibold">By biller</div>
                       <p className="text-sm text-muted-foreground">Account-level financial events grouped by who charged or credited them.</p>
                     </Card.Header>
-                    <Card.Body className="grid gap-4 px-5 pb-5 pt-2 md:grid-cols-2">
+                    <Card.Content className="grid gap-4 px-5 pb-5 pt-2 md:grid-cols-2">
                       {(financeData?.byBiller.length ?? 0) === 0 ? (
                         <p className="text-sm text-muted-foreground">No finance events yet.</p>
                       ) : (
                         financeData?.byBiller.map((row) => <FinanceBillerCard key={row.biller} row={row} />)
                       )}
-                    </Card.Body>
+                    </Card.Content>
                   </Card>
                   <FinanceTimelineCard rows={topFinanceEvents} />
                 </div>
