@@ -367,7 +367,7 @@ export function FailedRunInboxRow({
 
   return (
     <div className={cn(
-      "group border-b border-border px-2 py-2.5 last:border-b-0 sm:px-1 sm:pr-3 sm:py-2",
+      "group border-b border-default-200/30 px-2 py-2.5 last:border-b-0 sm:px-1 sm:pr-3 sm:py-2",
       className,
     )}>
       <div className="flex items-start gap-2 sm:items-center">
@@ -523,7 +523,7 @@ function ApprovalInboxRow({
 
   return (
     <div className={cn(
-      "group border-b border-border px-2 py-2.5 last:border-b-0 sm:px-1 sm:pr-3 sm:py-2",
+      "group border-b border-default-200/30 px-2 py-2.5 last:border-b-0 sm:px-1 sm:pr-3 sm:py-2",
       className,
     )}>
       <div className="flex items-start gap-2 sm:items-center">
@@ -662,7 +662,7 @@ function JoinRequestInboxRow({
 
   return (
     <div className={cn(
-      "group border-b border-border px-2 py-2.5 last:border-b-0 sm:px-1 sm:pr-3 sm:py-2",
+      "group border-b border-default-200/30 px-2 py-2.5 last:border-b-0 sm:px-1 sm:pr-3 sm:py-2",
       className,
     )}>
       <div className="flex items-start gap-2 sm:items-center">
@@ -1574,7 +1574,7 @@ export function Inbox() {
                 Show / hide columns
               </Button>
             </Dropdown.Trigger>
-            <Dropdown.Popover className="w-[300px] rounded-xl border-border/70 p-1.5 shadow-xl shadow-black/10">
+            <Dropdown.Popover className="w-[300px] rounded-xl border-default-200/60 p-1.5 shadow-xl shadow-black/10">
               <Dropdown.Menu>
                 <Dropdown.Section aria-label="Column visibility">
                   <Dropdown.Item id="__header__" className="pointer-events-none">
@@ -1747,7 +1747,7 @@ export function Inbox() {
         <>
           {showSeparatorBefore("work_items") && <Separator />}
           <div>
-            <div ref={listRef} className="overflow-hidden rounded-xl border border-border bg-card">
+            <div ref={listRef} className="overflow-hidden rounded-xl border border-default-200/60 bg-card">
               {filteredWorkItems.flatMap((item, index) => {
                 const wrapItem = (key: string, isSelected: boolean, child: ReactNode) => (
                   <div
@@ -1966,9 +1966,9 @@ export function Inbox() {
             <h3 className="mb-3 text-sm font-semibold text-foreground/60">
               Alerts
             </h3>
-            <div className="divide-y divide-border border border-border">
+            <div className="divide-y divide-default-200/30 border border-default-200/60">
               {showAggregateAgentError && (
-                <div className="group/alert relative flex items-center gap-3 px-4 py-3 transition-colors hover:bg-accent/50">
+                <div className="group/alert relative flex items-center gap-3 px-4 py-3 transition-colors hover:bg-accent/[0.03]">
                   <Link
                     to="/agents"
                     className="flex flex-1 cursor-pointer items-center gap-3 no-underline text-inherit"
@@ -1990,7 +1990,7 @@ export function Inbox() {
                 </div>
               )}
               {showBudgetAlert && (
-                <div className="group/alert relative flex items-center gap-3 px-4 py-3 transition-colors hover:bg-accent/50">
+                <div className="group/alert relative flex items-center gap-3 px-4 py-3 transition-colors hover:bg-accent/[0.03]">
                   <Link
                     to="/costs"
                     className="flex flex-1 cursor-pointer items-center gap-3 no-underline text-inherit"

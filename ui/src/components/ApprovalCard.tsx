@@ -38,7 +38,7 @@ export function ApprovalCard({
     (approval.status === "pending" || approval.status === "revision_requested");
 
   return (
-    <div className="border border-border rounded-lg p-4 space-y-0">
+    <div className="border border-default-200/60 rounded-lg p-4 space-y-0">
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2">
@@ -64,14 +64,14 @@ export function ApprovalCard({
 
       {/* Decision note */}
       {approval.decisionNote && (
-        <div className="mt-3 text-xs text-muted-foreground italic border-t border-border pt-2">
+        <div className="mt-3 text-xs text-muted-foreground italic border-t border-default-200/30 pt-2">
           Note: {approval.decisionNote}
         </div>
       )}
 
       {/* Actions */}
       {showResolutionButtons && (
-        <div className="flex gap-2 mt-4 pt-3 border-t border-border">
+        <div className="flex gap-2 mt-4 pt-3 border-t border-default-200/30">
           <Button
             size="sm"
             className="bg-green-700 hover:bg-green-600 text-white"

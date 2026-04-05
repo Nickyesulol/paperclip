@@ -50,7 +50,7 @@ function GoalNode({ goal, children, allGoals, depth, goalLink, onSelect }: GoalN
   );
 
   const classes = cn(
-    "flex items-center gap-2 px-3 py-1.5 text-sm transition-colors cursor-pointer hover:bg-accent/50",
+    "flex items-center gap-2 px-3 py-1.5 text-sm transition-colors cursor-pointer hover:bg-accent/[0.03]",
   );
 
   return (
@@ -100,7 +100,7 @@ export function GoalTree({ goals, goalLink, onSelect }: GoalTreeProps) {
   }
 
   return (
-    <div className="border border-border py-1">
+    <div className="border border-default-200/60 py-1">
       {roots.map((goal) => (
         <GoalNode
           key={goal.id}

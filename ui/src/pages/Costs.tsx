@@ -78,14 +78,14 @@ function MetricTile({
   icon: ComponentType<{ className?: string }>;
 }) {
   return (
-    <div className="border border-border p-4">
+    <div className="border border-default-200/60 p-4">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">{label}</div>
+          <div className="text-[11px] text-foreground/60">{label}</div>
           <div className="mt-2 text-2xl font-semibold tabular-nums">{value}</div>
           <div className="mt-1 text-xs leading-5 text-muted-foreground">{subtitle}</div>
         </div>
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center border border-border">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center border border-default-200/60">
           <Icon className="h-4 w-4 text-muted-foreground" />
         </div>
       </div>
@@ -560,7 +560,7 @@ export function Costs() {
           </div>
 
           {preset === "custom" ? (
-            <div className="flex flex-wrap items-center gap-2 border border-border p-3">
+            <div className="flex flex-wrap items-center gap-2 border border-default-200/60 p-3">
               <input
                 type="date"
                 value={customFrom}
@@ -672,8 +672,8 @@ export function Costs() {
                             : "Unlimited budget"}
                         </div>
                       </div>
-                      <div className="border border-border px-4 py-3 text-right">
-                        <div className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">usage</div>
+                      <div className="border border-default-200/60 px-4 py-3 text-right">
+                        <div className="text-[11px] text-foreground/60">usage</div>
                         <div className="mt-1 text-lg font-medium tabular-nums">
                           {formatTokens(inferenceTokenTotal)}
                         </div>
@@ -726,7 +726,7 @@ export function Costs() {
                         const isExpanded = expandedAgents.has(row.agentId);
                         const hasBreakdown = modelRows.length > 0;
                         return (
-                          <div key={row.agentId} className="border border-border px-4 py-3">
+                          <div key={row.agentId} className="border border-default-200/60 px-4 py-3">
                             <div
                               className={cn("flex items-start justify-between gap-3", hasBreakdown ? "cursor-pointer select-none" : "")}
                               onClick={() => hasBreakdown && toggleAgent(row.agentId)}
@@ -760,7 +760,7 @@ export function Costs() {
                             </div>
 
                             {isExpanded && modelRows.length > 0 ? (
-                              <div className="mt-3 space-y-2 border-l border-border pl-4">
+                              <div className="mt-3 space-y-2 border-l border-default-200/30 pl-4">
                                 {modelRows.map((modelRow) => {
                                   const sharePct = row.costCents > 0 ? Math.round((modelRow.costCents / row.costCents) * 100) : 0;
                                   return (
@@ -812,7 +812,7 @@ export function Costs() {
                         spendData?.byProject.map((row, index) => (
                           <div
                             key={row.projectId ?? `unattributed-${index}`}
-                            className="flex items-center justify-between gap-3 border border-border px-3 py-2 text-sm"
+                            className="flex items-center justify-between gap-3 border border-default-200/60 px-3 py-2 text-sm"
                           >
                             <span className="truncate">{row.projectName ?? row.projectId ?? "Unattributed"}</span>
                             <span className="font-medium tabular-nums">{formatCents(row.costCents)}</span>
@@ -836,7 +836,7 @@ export function Costs() {
             <p className="text-sm text-destructive">{(budgetError as Error).message}</p>
           ) : (
             <>
-              <Card className="border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))]">
+              <Card className="border-default-200/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))]">
                 <Card.Header className="px-5 pt-5 pb-3">
                   <div className="text-base font-semibold">Budget control plane</div>
                   <p className="text-sm text-muted-foreground">
