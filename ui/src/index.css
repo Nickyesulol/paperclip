@@ -62,9 +62,90 @@
   }
 }
 
-/* ── HeroUI component radius overrides ──────────────────────────────────── */
+/* ── HeroUI component overrides ────────────────────────────────────────── */
 .card {
   border-radius: var(--radius);
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      color-mix(in oklab, var(--foreground) 4%, var(--surface)) 0%,
+      var(--surface) 100%
+    );
+  border-color: color-mix(in oklab, var(--foreground) 6%, transparent);
+  box-shadow:
+    0 1px 2px 0 rgba(0, 0, 0, 0.04),
+    0 0 0 0.5px color-mix(in oklab, var(--foreground) 4%, transparent),
+    inset 0 1px 0 0 color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+
+[data-theme="paperclip-dark"] .card {
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      color-mix(in oklab, var(--foreground) 5%, var(--surface)) 0%,
+      var(--surface) 100%
+    );
+  border-color: color-mix(in oklab, var(--foreground) 8%, transparent);
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 0 0 0.5px color-mix(in oklab, var(--foreground) 5%, transparent),
+    inset 0 1px 0 0 color-mix(in oklab, var(--foreground) 7%, transparent);
+}
+
+/* Fix HeroUI tabs: text-muted resolves to --color-muted (a surface color),
+   making unselected tab labels invisible against the tab list background.
+   Override to use the actual muted text color. */
+.tabs__tab {
+  color: var(--muted);
+}
+.tabs__tab[data-selected="true"] {
+  color: var(--segment-foreground);
+}
+
+/* ── Premium card surface — Apple-style subtle gradient glow ────────────── */
+.card-premium {
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      color-mix(in oklab, var(--foreground) 4%, var(--surface)) 0%,
+      var(--surface) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--foreground) 6%, transparent);
+  box-shadow:
+    0 1px 2px 0 rgba(0, 0, 0, 0.04),
+    0 0 0 0.5px color-mix(in oklab, var(--foreground) 4%, transparent),
+    inset 0 1px 0 0 color-mix(in oklab, var(--foreground) 5%, transparent);
+  transition: box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.card-premium:hover {
+  border-color: color-mix(in oklab, var(--foreground) 10%, transparent);
+  box-shadow:
+    0 2px 8px 0 rgba(0, 0, 0, 0.06),
+    0 0 0 0.5px color-mix(in oklab, var(--foreground) 6%, transparent),
+    inset 0 1px 0 0 color-mix(in oklab, var(--foreground) 6%, transparent);
+}
+
+[data-theme="paperclip-dark"] .card-premium {
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      color-mix(in oklab, var(--foreground) 5%, var(--surface)) 0%,
+      var(--surface) 100%
+    );
+  border-color: color-mix(in oklab, var(--foreground) 8%, transparent);
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 0 0 0.5px color-mix(in oklab, var(--foreground) 5%, transparent),
+    inset 0 1px 0 0 color-mix(in oklab, var(--foreground) 7%, transparent);
+}
+
+[data-theme="paperclip-dark"] .card-premium:hover {
+  border-color: color-mix(in oklab, var(--foreground) 12%, transparent);
+  box-shadow:
+    0 4px 16px 0 rgba(0, 0, 0, 0.25),
+    0 0 0 0.5px color-mix(in oklab, var(--foreground) 8%, transparent),
+    inset 0 1px 0 0 color-mix(in oklab, var(--foreground) 8%, transparent);
 }
 
 /* ── Touch target sizing ────────────────────────────────────────────────── */
@@ -131,13 +212,13 @@
 
 /* Subtle breathing glow for accent elements */
 @keyframes accent-breathe {
-  0%, 100% { box-shadow: 0 0 8px 0 rgba(99, 102, 241, 0.05), 0 0 20px 0 rgba(99, 102, 241, 0.03); }
-  50% { box-shadow: 0 0 12px 2px rgba(99, 102, 241, 0.1), 0 0 28px 4px rgba(99, 102, 241, 0.05); }
+  0%, 100% { box-shadow: 0 0 8px 0 rgba(0, 113, 227, 0.05), 0 0 20px 0 rgba(0, 113, 227, 0.03); }
+  50% { box-shadow: 0 0 12px 2px rgba(0, 113, 227, 0.1), 0 0 28px 4px rgba(0, 113, 227, 0.05); }
 }
 
 @keyframes accent-breathe-text {
-  0%, 100% { text-shadow: 0 0 8px rgba(99, 102, 241, 0.15); }
-  50% { text-shadow: 0 0 14px rgba(99, 102, 241, 0.25); }
+  0%, 100% { text-shadow: 0 0 8px rgba(0, 113, 227, 0.15); }
+  50% { text-shadow: 0 0 14px rgba(0, 113, 227, 0.25); }
 }
 
 @keyframes success-breathe {

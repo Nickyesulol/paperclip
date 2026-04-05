@@ -344,7 +344,7 @@ export function CompanySettings() {
                 <div className="flex items-center gap-2">
                   <input
                     type="color"
-                    value={brandColor || "#6366f1"}
+                    value={brandColor || "#0071e3"}
                     onChange={(e) => setBrandColor(e.target.value)}
                     className="h-8 w-8 cursor-pointer rounded border border-border bg-transparent p-0"
                   />

@@ -40,8 +40,8 @@
     --default: oklch(0.955 0.003 260);
     --default-foreground: var(--eclipse);
 
-    /* Accent — Indigo */
-    --accent: oklch(0.585 0.233 264);
+    /* Accent — Apple Blue (#0071e3) */
+    --accent: oklch(0.546 0.195 258);
     --accent-foreground: var(--snow);
 
     /* Form Field Defaults */
@@ -93,7 +93,7 @@
     --skeleton-animation: shimmer;
 
     /* Chart Colors */
-    --chart-1: oklch(0.585 0.233 264);
+    --chart-1: oklch(0.546 0.195 258);
     --chart-2: oklch(0.696 0.17 162.48);
     --chart-3: oklch(0.769 0.188 70.08);
     --chart-4: oklch(0.627 0.265 303.9);
