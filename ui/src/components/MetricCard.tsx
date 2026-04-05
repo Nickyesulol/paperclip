@@ -23,7 +23,7 @@ const toneStyles: Record<MetricTone, { card: string; value: string; icon: string
     icon: "text-accent/50",
     iconBg: "bg-accent/10",
     sub: "text-accent/40",
-    shadow: { boxShadow: "0 2px 16px rgba(99,102,241,0.06)" },
+    shadow: { boxShadow: "0 2px 16px rgba(0,113,227,0.06)" },
   },
   success: {
     card: "bg-gradient-to-br from-success/[0.05] to-transparent border-success/[0.08] glow-success",

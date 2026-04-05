@@ -162,7 +162,7 @@ export function PriorityChart({ issues }: { issues: { priority: string; createdA
 
 const statusColors: Record<string, string> = {
   todo: "#3b82f6",
-  in_progress: "#8b5cf6",
+  in_progress: "#0071e3",
   in_review: "#a855f7",
   done: "#10b981",
   blocked: "#ef4444",

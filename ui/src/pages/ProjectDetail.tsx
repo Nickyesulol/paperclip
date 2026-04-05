@@ -831,7 +831,7 @@ export function ProjectDetail() {
       <div className="flex items-start gap-3">
         <div className="h-7 flex items-center">
           <ColorPicker
-            currentColor={project.color ?? "#6366f1"}
+            currentColor={project.color ?? "#0071e3"}
             onSelect={(color) => updateProject.mutate({ color })}
           />
         </div>

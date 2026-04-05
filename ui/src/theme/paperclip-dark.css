@@ -40,8 +40,8 @@
     --default: oklch(0.270 0.008 270);
     --default-foreground: var(--snow);
 
-    /* Accent — Indigo (brighter for dark mode) */
-    --accent: oklch(0.730 0.180 264);
+    /* Accent — Bright Blue (#2997ff for dark backgrounds) */
+    --accent: oklch(0.658 0.170 250);
     --accent-foreground: var(--eclipse);
 
     /* Form Field Defaults */
@@ -88,7 +88,7 @@
     --skeleton-animation: shimmer;
 
     /* Chart Colors */
-    --chart-1: oklch(0.730 0.180 264);
+    --chart-1: oklch(0.658 0.170 250);
     --chart-2: oklch(0.696 0.17 162.48);
     --chart-3: oklch(0.769 0.188 70.08);
     --chart-4: oklch(0.627 0.265 303.9);
