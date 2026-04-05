@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Card } from "@heroui/react";
 import { Link } from "@/lib/router";
 import { useQuery } from "@tanstack/react-query";
 import { dashboardApi } from "../api/dashboard";
@@ -313,74 +314,81 @@ export function Dashboard() {
             {/* Recent Activity */}
             {recentActivity.length > 0 && (
               <div className="min-w-0">
-                <h3 className="text-sm font-semibold text-foreground/60 mb-3">
-                  Recent Activity
-                </h3>
-                <div className="border border-border divide-y divide-border overflow-hidden">
-                  {recentActivity.map((event) => (
-                    <ActivityRow
-                      key={event.id}
-                      event={event}
-                      agentMap={agentMap}
-                      entityNameMap={entityNameMap}
-                      entityTitleMap={entityTitleMap}
-                      className={animatedActivityIds.has(event.id) ? "activity-row-enter" : undefined}
-                    />
-                  ))}
-                </div>
+                <Card className="border-default-200/60">
+                  <Card.Header className="px-4 py-3 border-b border-default-200/40">
+                    <Card.Title className="text-sm font-semibold text-foreground/60">Recent Activity</Card.Title>
+                  </Card.Header>
+                  <Card.Content className="p-0">
+                    {recentActivity.map((event) => (
+                      <ActivityRow
+                        key={event.id}
+                        event={event}
+                        agentMap={agentMap}
+                        entityNameMap={entityNameMap}
+                        entityTitleMap={entityTitleMap}
+                        className={cn(
+                          "border-b border-default-200/30 last:border-0",
+                          animatedActivityIds.has(event.id) ? "activity-row-enter" : undefined,
+                        )}
+                      />
+                    ))}
+                  </Card.Content>
+                </Card>
               </div>
             )}
 
             {/* Recent Tasks */}
             <div className="min-w-0">
-              <h3 className="text-sm font-semibold text-foreground/60 mb-3">
-                Recent Tasks
-              </h3>
-              {recentIssues.length === 0 ? (
-                <div className="border border-border p-4">
-                  <p className="text-sm text-muted-foreground">No tasks yet.</p>
-                </div>
-              ) : (
-                <div className="border border-border divide-y divide-border overflow-hidden">
-                  {recentIssues.slice(0, 10).map((issue) => (
-                    <Link
-                      key={issue.id}
-                      to={`/issues/${issue.identifier ?? issue.id}`}
-                      className="px-4 py-3 text-sm cursor-pointer hover:bg-accent/50 transition-colors no-underline text-inherit block"
-                    >
-                      <div className="flex items-start gap-2 sm:items-center sm:gap-3">
-                        {/* Status icon - left column on mobile */}
-                        <span className="shrink-0 sm:hidden">
-                          <StatusIcon status={issue.status} />
-                        </span>
+              <Card className="border-default-200/60">
+                <Card.Header className="px-4 py-3 border-b border-default-200/40">
+                  <Card.Title className="text-sm font-semibold text-foreground/60">Recent Tasks</Card.Title>
+                </Card.Header>
+                <Card.Content className="p-0">
+                  {recentIssues.length === 0 ? (
+                    <div className="p-4">
+                      <p className="text-sm text-foreground/40">No tasks yet.</p>
+                    </div>
+                  ) : (
+                    recentIssues.slice(0, 10).map((issue) => (
+                      <Link
+                        key={issue.id}
+                        to={`/issues/${issue.identifier ?? issue.id}`}
+                        className="px-4 py-3 text-sm cursor-pointer hover:bg-accent/[0.03] transition-colors no-underline text-inherit block border-b border-default-200/30 last:border-0"
+                      >
+                        <div className="flex items-start gap-2 sm:items-center sm:gap-3">
+                          {/* Status icon - left column on mobile */}
+                          <span className="shrink-0 sm:hidden">
+                            <StatusIcon status={issue.status} />
+                          </span>
 
-                        {/* Right column on mobile: title + metadata stacked */}
-                        <span className="flex min-w-0 flex-1 flex-col gap-1 sm:contents">
-                          <span className="line-clamp-2 text-sm sm:order-2 sm:flex-1 sm:min-w-0 sm:line-clamp-none sm:truncate">
-                            {issue.title}
-                          </span>
-                          <span className="flex items-center gap-2 sm:order-1 sm:shrink-0">
-                            <span className="hidden sm:inline-flex"><StatusIcon status={issue.status} /></span>
-                            <span className="text-xs font-mono text-muted-foreground">
-                              {issue.identifier ?? issue.id.slice(0, 8)}
+                          {/* Right column on mobile: title + metadata stacked */}
+                          <span className="flex min-w-0 flex-1 flex-col gap-1 sm:contents">
+                            <span className="line-clamp-2 text-sm sm:order-2 sm:flex-1 sm:min-w-0 sm:line-clamp-none sm:truncate">
+                              {issue.title}
                             </span>
-                            {issue.assigneeAgentId && (() => {
-                              const name = agentName(issue.assigneeAgentId);
-                              return name
-                                ? <span className="hidden sm:inline-flex"><Identity name={name} size="sm" /></span>
-                                : null;
-                            })()}
-                            <span className="text-xs text-muted-foreground sm:hidden">&middot;</span>
-                            <span className="text-xs text-muted-foreground shrink-0 sm:order-last">
-                              {timeAgo(issue.updatedAt)}
+                            <span className="flex items-center gap-2 sm:order-1 sm:shrink-0">
+                              <span className="hidden sm:inline-flex"><StatusIcon status={issue.status} /></span>
+                              <span className="text-xs font-mono text-muted-foreground">
+                                {issue.identifier ?? issue.id.slice(0, 8)}
+                              </span>
+                              {issue.assigneeAgentId && (() => {
+                                const name = agentName(issue.assigneeAgentId);
+                                return name
+                                  ? <span className="hidden sm:inline-flex"><Identity name={name} size="sm" /></span>
+                                  : null;
+                              })()}
+                              <span className="text-xs text-muted-foreground sm:hidden">&middot;</span>
+                              <span className="text-xs text-muted-foreground shrink-0 sm:order-last">
+                                {timeAgo(issue.updatedAt)}
+                              </span>
                             </span>
                           </span>
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
+                        </div>
+                      </Link>
+                    ))
+                  )}
+                </Card.Content>
+              </Card>
             </div>
           </div>
 
