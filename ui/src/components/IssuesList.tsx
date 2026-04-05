@@ -413,7 +413,7 @@ export function IssuesList({
       {/* Toolbar */}
       <div className="flex items-center justify-between gap-2 sm:gap-3">
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
-          <Button size="sm" color="accent" onPress={() => openNewIssue(newIssueDefaults())}>
+          <Button size="sm" variant="primary" onPress={() => openNewIssue(newIssueDefaults())}>
             <Plus className="h-4 w-4 sm:mr-1" />
             <span className="hidden sm:inline">New Issue</span>
           </Button>

@@ -198,7 +198,7 @@ export function Agents() {
               </button>
             </div>
           )}
-          <Button size="sm" color="accent" onPress={openNewAgent}>
+          <Button size="sm" variant="primary" onPress={openNewAgent}>
             <Plus className="h-3.5 w-3.5 mr-1.5" />
             New Agent
           </Button>
