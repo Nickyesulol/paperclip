@@ -633,12 +633,14 @@ export function DesignGuide() {
       <Section title="Tabs">
         <SubSection title="Default variant">
           <Tabs defaultSelectedKey="overview">
-            <Tabs.List>
-              <Tabs.Tab id="overview">Overview</Tabs.Tab>
-              <Tabs.Tab id="runs">Runs</Tabs.Tab>
-              <Tabs.Tab id="config">Config</Tabs.Tab>
-              <Tabs.Tab id="costs">Costs</Tabs.Tab>
-            </Tabs.List>
+            <Tabs.ListContainer>
+              <Tabs.List>
+                <Tabs.Tab id="overview">Overview<Tabs.Indicator /></Tabs.Tab>
+                <Tabs.Tab id="runs">Runs<Tabs.Indicator /></Tabs.Tab>
+                <Tabs.Tab id="config">Config<Tabs.Indicator /></Tabs.Tab>
+                <Tabs.Tab id="costs">Costs<Tabs.Indicator /></Tabs.Tab>
+              </Tabs.List>
+            </Tabs.ListContainer>
             <Tabs.Panel id="overview">
               <p className="text-sm text-muted-foreground py-4">Overview tab content.</p>
             </Tabs.Panel>

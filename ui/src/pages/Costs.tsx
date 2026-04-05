@@ -616,13 +616,15 @@ export function Costs() {
       </div>
 
       <Tabs selectedKey={mainTab} onSelectionChange={(key) => setMainTab(key as typeof mainTab)}>
-        <Tabs.List className="justify-start">
-          <Tabs.Tab id="overview">Overview</Tabs.Tab>
-          <Tabs.Tab id="budgets">Budgets</Tabs.Tab>
-          <Tabs.Tab id="providers">Providers</Tabs.Tab>
-          <Tabs.Tab id="billers">Billers</Tabs.Tab>
-          <Tabs.Tab id="finance">Finance</Tabs.Tab>
-        </Tabs.List>
+        <Tabs.ListContainer>
+          <Tabs.List className="justify-start">
+            <Tabs.Tab id="overview">Overview<Tabs.Indicator /></Tabs.Tab>
+            <Tabs.Tab id="budgets">Budgets<Tabs.Indicator /></Tabs.Tab>
+            <Tabs.Tab id="providers">Providers<Tabs.Indicator /></Tabs.Tab>
+            <Tabs.Tab id="billers">Billers<Tabs.Indicator /></Tabs.Tab>
+            <Tabs.Tab id="finance">Finance<Tabs.Indicator /></Tabs.Tab>
+          </Tabs.List>
+        </Tabs.ListContainer>
 
         <Tabs.Panel id="overview" className="mt-4 space-y-4">
           {showCustomPrompt ? (

@@ -1482,25 +1482,27 @@ export function IssueDetail() {
       <Separator />
 
       <Tabs selectedKey={detailTab} onSelectionChange={(key) => setDetailTab(String(key))} className="space-y-3">
-        <Tabs.List className="w-full justify-start gap-1">
-          <Tabs.Tab id="comments" className="gap-1.5">
-            <MessageSquare className="h-3.5 w-3.5" />
-            Comments
-          </Tabs.Tab>
-          <Tabs.Tab id="subissues" className="gap-1.5">
-            <ListTree className="h-3.5 w-3.5" />
-            Sub-issues
-          </Tabs.Tab>
-          <Tabs.Tab id="activity" className="gap-1.5">
-            <ActivityIcon className="h-3.5 w-3.5" />
-            Activity
-          </Tabs.Tab>
-          {issuePluginTabItems.map((item) => (
-            <Tabs.Tab key={item.value} id={item.value}>
-              {item.label}
+        <Tabs.ListContainer>
+          <Tabs.List className="w-full justify-start gap-1">
+            <Tabs.Tab id="comments" className="gap-1.5">
+              <MessageSquare className="h-3.5 w-3.5" />
+              Comments<Tabs.Indicator />
             </Tabs.Tab>
-          ))}
-        </Tabs.List>
+            <Tabs.Tab id="subissues" className="gap-1.5">
+              <ListTree className="h-3.5 w-3.5" />
+              Sub-issues<Tabs.Indicator />
+            </Tabs.Tab>
+            <Tabs.Tab id="activity" className="gap-1.5">
+              <ActivityIcon className="h-3.5 w-3.5" />
+              Activity<Tabs.Indicator />
+            </Tabs.Tab>
+            {issuePluginTabItems.map((item) => (
+              <Tabs.Tab key={item.value} id={item.value}>
+                {item.label}<Tabs.Indicator />
+              </Tabs.Tab>
+            ))}
+          </Tabs.List>
+        </Tabs.ListContainer>
 
         <Tabs.Panel id="comments">
           <CommentThread

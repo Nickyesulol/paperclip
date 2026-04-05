@@ -145,14 +145,16 @@ export function GoalDetail() {
       </div>
 
       <Tabs defaultSelectedKey="children">
-        <Tabs.List>
-          <Tabs.Tab id="children">
-            Sub-Goals ({childGoals.length})
-          </Tabs.Tab>
-          <Tabs.Tab id="projects">
-            Projects ({linkedProjects.length})
-          </Tabs.Tab>
-        </Tabs.List>
+        <Tabs.ListContainer>
+          <Tabs.List>
+            <Tabs.Tab id="children">
+              Sub-Goals ({childGoals.length})<Tabs.Indicator />
+            </Tabs.Tab>
+            <Tabs.Tab id="projects">
+              Projects ({linkedProjects.length})<Tabs.Indicator />
+            </Tabs.Tab>
+          </Tabs.List>
+        </Tabs.ListContainer>
 
         <Tabs.Panel id="children" className="mt-4 space-y-3">
           <div className="flex items-center justify-start">
