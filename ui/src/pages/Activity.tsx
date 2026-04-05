@@ -11,7 +11,7 @@ import { queryKeys } from "../lib/queryKeys";
 import { EmptyState } from "../components/EmptyState";
 import { ActivityRow } from "../components/ActivityRow";
 import { PageSkeleton } from "../components/PageSkeleton";
-import { Select, ListBox } from "@heroui/react";
+import { Card, Select, ListBox } from "@heroui/react";
 import { History } from "lucide-react";
 import type { Agent } from "@paperclipai/shared";
 
@@ -122,17 +122,19 @@ export function Activity() {
       )}
 
       {filtered && filtered.length > 0 && (
-        <div className="border border-border divide-y divide-border">
-          {filtered.map((event) => (
-            <ActivityRow
-              key={event.id}
-              event={event}
-              agentMap={agentMap}
-              entityNameMap={entityNameMap}
-              entityTitleMap={entityTitleMap}
-            />
-          ))}
-        </div>
+        <Card className="border-default-200/60">
+          <Card.Content className="p-0">
+            {filtered.map((event) => (
+              <ActivityRow
+                key={event.id}
+                event={event}
+                agentMap={agentMap}
+                entityNameMap={entityNameMap}
+                entityTitleMap={entityTitleMap}
+              />
+            ))}
+          </Card.Content>
+        </Card>
       )}
     </div>
   );
