@@ -58,15 +58,16 @@ export function CompanySwitcher() {
 
   return (
     <Popover isOpen={open} onOpenChange={setOpen}>
-      <button
-        ref={triggerRef}
-        type="button"
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-label="Switch company"
-        onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition-colors hover:bg-default/40"
-      >
+      <Popover.Trigger>
+        <button
+          ref={triggerRef}
+          type="button"
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-label="Switch company"
+          onClick={() => setOpen((v) => !v)}
+          className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left transition-colors hover:bg-default/40"
+        >
         {selectedCompany ? (
           <CompanyAvatar company={selectedCompany} />
         ) : (
@@ -88,7 +89,8 @@ export function CompanySwitcher() {
           className="h-3.5 w-3.5 shrink-0 text-foreground/30 transition-transform duration-150"
           style={{ transform: open ? "rotate(180deg)" : undefined }}
         />
-      </button>
+        </button>
+      </Popover.Trigger>
 
       <Popover.Content placement="bottom start" offset={4} className="w-56 p-0">
         <Popover.Dialog className="overflow-hidden rounded-xl border border-default-200/60 bg-overlay shadow-lg">
